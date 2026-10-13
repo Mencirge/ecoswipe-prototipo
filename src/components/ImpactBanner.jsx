@@ -12,7 +12,7 @@ export default function ImpactBanner({ co2 = 1420.5, agua = 98500, kg = 350, com
           key={i}
           className={`flex-1 min-w-[105px] p-3.5 rounded-tarjeta ${it.bg} border border-verde-hoja/20 shadow-xs`}
         >
-          <span className="text-[11px] md:text-xs font-sans font-semibold text-verde-bosque/85 uppercase tracking-wider block mb-1">
+          <span className="text-sm font-sans font-semibold text-verde-bosque/85 uppercase tracking-wider block mb-1">
             {it.label}
           </span>
           <div className="flex items-baseline gap-1.5">
@@ -23,7 +23,7 @@ export default function ImpactBanner({ co2 = 1420.5, agua = 98500, kg = 350, com
             >
               {it.value.toLocaleString?.() || it.value}
             </span>
-            <span className="text-xs font-semibold text-verde-bosque/80">{it.unit}</span>
+            <span className="text-sm font-semibold text-verde-bosque/80">{it.unit}</span>
           </div>
         </div>
       ))}

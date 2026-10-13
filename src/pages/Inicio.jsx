@@ -42,7 +42,7 @@ export default function Inicio() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             {/* Titular y buscador con voz de taller y Gamarra */}
             <div className="lg:col-span-7">
-              <span className="inline-block px-3 py-1 rounded-full bg-menta text-verde-bosque text-xs font-semibold uppercase tracking-wider mb-3">
+              <span className="inline-block px-3 py-1 rounded-full bg-menta text-verde-bosque text-sm font-semibold uppercase tracking-wider mb-3">
                 Mercado de retazos en Gamarra
               </span>
               <h1 className="font-fredoka text-[28px] md:text-[38px] font-semibold text-verde-bosque leading-tight">
@@ -50,7 +50,7 @@ export default function Inicio() {
               </h1>
               <p className="mt-3 font-sans text-base text-verde-bosque/85 max-w-xl leading-relaxed">
                 Compra y vende saldos de corte, rollos sobrantes y retazos clasificados entre confeccionistas.
-                Al peso o por metro, sin intermediarios.
+                Venta al peso (por kilo) y por metro en lotes seleccionados.
               </p>
 
               <form onSubmit={handleSearch} className="mt-6 flex flex-col sm:flex-row gap-2.5 max-w-lg">
@@ -83,30 +83,28 @@ export default function Inicio() {
               </form>
             </div>
 
-            {/* Swipee con microcopy oficial: espacio propio, nunca fusionada con el logo */}
-            <div className="lg:col-span-5">
-              <div className="bg-white p-5 rounded-tarjeta border border-menta shadow-card flex items-center gap-4">
-                <img
-                  src={mascotaSvg}
-                  alt="Swipee, la mascota de EcoSwipe"
-                  width="80"
-                  height="80"
-                  className="flex-shrink-0 object-contain"
-                />
-                <div className="space-y-1">
-                  <div className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-verde-hoja animate-pulse" />
-                    <span className="text-xs font-semibold text-verde-hoja uppercase tracking-wider font-sans">
-                      Swipee te acompaña
-                    </span>
-                  </div>
-                  <p className="text-sm md:text-base font-sans font-semibold text-verde-bosque leading-snug">
-                    &ldquo;Desliza a la derecha si te sirve.&rdquo;
-                  </p>
-                  <p className="text-xs text-gris-calido">
-                    Filtra retazos en segundos con trato directo.
-                  </p>
+            {/* Swipee directamente sobre fondo Crema, sin tarjeta blanca */}
+            <div className="lg:col-span-5 flex items-center gap-4 sm:gap-5">
+              <img
+                src={mascotaSvg}
+                alt="Swipee, la mascota de EcoSwipe"
+                width="88"
+                height="88"
+                className="flex-shrink-0 object-contain"
+              />
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-verde-hoja" />
+                  <span className="text-sm font-semibold text-verde-bosque uppercase tracking-wider font-sans">
+                    Swipee
+                  </span>
                 </div>
+                <p className="text-base md:text-lg font-sans font-semibold text-verde-bosque leading-snug">
+                  &ldquo;Encuentra el retazo exacto para tu confecci&oacute;n.&rdquo;
+                </p>
+                <p className="text-sm text-gris-calido">
+                  Trato directo entre talleres y confeccionistas.
+                </p>
               </div>
             </div>
           </div>
@@ -120,7 +118,7 @@ export default function Inicio() {
             <h2 className="text-base md:text-lg font-fredoka font-semibold text-verde-bosque">
               Impacto ambiental acumulado
             </h2>
-            <Link to="/impacto" className="text-xs font-semibold text-verde-bosque hover:text-verde-hoja">
+            <Link to="/impacto" className="text-sm font-semibold text-verde-bosque hover:text-verde-hoja">
               Ver detalle &rarr;
             </Link>
           </div>
@@ -133,7 +131,7 @@ export default function Inicio() {
             <h2 className="text-xl md:text-2xl font-fredoka font-semibold text-verde-bosque">
               Retazos clasificados por tejido
             </h2>
-            <span className="text-xs text-gris-calido font-medium hidden sm:inline">
+            <span className="text-sm text-gris-calido font-medium hidden sm:inline">
               Toca para filtrar por tipo de tela
             </span>
           </div>
@@ -152,49 +150,48 @@ export default function Inicio() {
           </div>
         </section>
 
-        {/* Carrusel de Swipe con controles oficiales: Paso (Gris Cálido) y Me sirve (Verde Hoja) */}
+        {/* Carrusel de lotes destacados */}
         <section>
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
             <div>
               <h2 className="text-xl md:text-2xl font-fredoka font-semibold text-verde-bosque flex items-center gap-2">
-                <span>Lotes destacados para ti</span>
+                <span>Lotes destacados</span>
               </h2>
-              <p className="text-xs md:text-sm text-gris-calido mt-0.5">
-                Desliza las fichas: &ldquo;Paso&rdquo; a la izquierda o &ldquo;Me sirve&rdquo; a la derecha
+              <p className="text-sm text-gris-calido mt-0.5">
+                Explora los lotes seleccionados desplazando la galer&iacute;a
               </p>
             </div>
 
             <div className="flex items-center gap-2 self-start sm:self-auto">
-              {/* Botón Paso (Gris Cálido, ícono + texto) */}
+              {/* Botón scroll izquierda */}
               <button
                 type="button"
                 onClick={scrollLeft}
-                className="flex items-center gap-1.5 px-3.5 py-2 rounded-boton border border-gris-calido/30 bg-white text-gris-calido hover:bg-crema text-xs font-semibold min-h-[44px] transition-colors"
-                aria-label="Paso a la izquierda"
+                className="flex items-center gap-1.5 px-3.5 py-2 rounded-boton border border-gris-calido/30 bg-white text-gris-calido hover:bg-crema text-sm font-semibold min-h-[44px] transition-colors"
+                aria-label="Desplazar a la izquierda"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="18" y1="6" x2="6" y2="18" />
-                  <line x1="6" y1="6" x2="18" y2="18" />
+                  <path d="M15 18l-6-6 6-6" />
                 </svg>
-                <span>Paso</span>
+                <span>Anterior</span>
               </button>
 
-              {/* Botón Me sirve (Verde Hoja, ícono + texto) */}
+              {/* Botón scroll derecha */}
               <button
                 type="button"
                 onClick={scrollRight}
-                className="flex items-center gap-1.5 px-3.5 py-2 rounded-boton bg-verde-hoja text-white hover:bg-brand-600 text-xs font-semibold min-h-[44px] transition-colors shadow-xs"
-                aria-label="Me sirve a la derecha"
+                className="flex items-center gap-1.5 px-3.5 py-2 rounded-boton bg-verde-hoja text-white hover:bg-brand-600 text-sm font-semibold min-h-[44px] transition-colors shadow-xs"
+                aria-label="Desplazar a la derecha"
               >
+                <span>Siguiente</span>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="20 6 9 17 4 12" />
+                  <path d="M9 18l6-6-6-6" />
                 </svg>
-                <span>Me sirve</span>
               </button>
 
               <Link
                 to="/mercado"
-                className="text-xs font-semibold text-verde-bosque hover:text-verde-hoja ml-2 pl-2 border-l border-menta"
+                className="text-sm font-semibold text-verde-bosque hover:text-verde-hoja ml-2 pl-2 border-l border-menta"
               >
                 Ver todos &rarr;
               </Link>
@@ -214,18 +211,18 @@ export default function Inicio() {
         {/* Separador de puntada artesanal textil */}
         <div className="border-t border-dashed border-verde-hoja/30 my-6" />
 
-        {/* Sección de lotes con jerarquía visual: protagonista y secundarios */}
+        {/* Sección de lotes recién publicados */}
         <section>
           <div className="flex items-center justify-between mb-4">
             <div>
               <h2 className="text-xl md:text-2xl font-fredoka font-semibold text-verde-bosque">
-                Ingresos frescos del emporio
+                Últimos lotes publicados
               </h2>
-              <p className="text-xs text-gris-calido mt-0.5">
-                Últimos fardos y retazos publicados por talleres verificados
+              <p className="text-sm text-gris-calido mt-0.5">
+                Material textil disponible publicado recientemente por talleres
               </p>
             </div>
-            <Link to="/mercado" className="text-xs font-semibold text-verde-bosque hover:text-verde-hoja">
+            <Link to="/mercado" className="text-sm font-semibold text-verde-bosque hover:text-verde-hoja">
               Ver catálogo completo &rarr;
             </Link>
           </div>
@@ -234,8 +231,8 @@ export default function Inicio() {
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {recientes.length > 0 && (
               <div className="md:col-span-2 lg:col-span-2 bg-white rounded-tarjeta p-1 border-2 border-menta shadow-sm relative">
-                <span className="absolute top-3 left-3 z-10 px-2.5 py-1 rounded-full bg-verde-bosque text-crema text-[11px] font-semibold tracking-wide">
-                  ⭐ Lote protagonista del día
+                <span className="absolute top-3 left-3 z-10 px-3 py-1 rounded-full bg-verde-bosque text-crema text-sm font-semibold tracking-wide">
+                  ⭐ Lote destacado reciente
                 </span>
                 <LoteCard lote={recientes[0]} />
               </div>

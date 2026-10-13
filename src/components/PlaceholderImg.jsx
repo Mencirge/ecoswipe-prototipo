@@ -37,8 +37,8 @@ export default function PlaceholderImg({ tela, color: _color, className = '', si
     <defs><pattern id="p_${tela}" width="32" height="32" patternUnits="userSpaceOnUse">${patterns[t.pattern]}</pattern></defs>
     <rect width="${s}" height="${s}" fill="url(#p_${tela})"/>
     <g transform="translate(${s/2}, ${s/2-10})">
-      <rect x="-40" y="-12" width="80" height="24" rx="12" fill="#FFFFFF" stroke="${t.fg}" stroke-width="1" opacity="0.95"/>
-      <text text-anchor="middle" y="4" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#12372A" letter-spacing="0.5">${labelText}</text>
+      <rect x="-48" y="-14" width="96" height="28" rx="14" fill="#FFFFFF" stroke="${t.fg}" stroke-width="1" opacity="0.95"/>
+      <text text-anchor="middle" y="5" font-family="Inter,sans-serif" font-size="14" font-weight="600" fill="#12372A" letter-spacing="0.5">${labelText}</text>
     </g>
   </svg>`
 

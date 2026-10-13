@@ -32,9 +32,9 @@ export default function StarRating({ rating, size = 16 }) {
   }
 
   return (
-    <span className="inline-flex items-center gap-1" aria-label={`${rating} de 5 estrellas`}>
+    <span className="inline-flex items-center gap-1.5" aria-label={`${rating} de 5 estrellas`}>
       <span className="inline-flex items-center gap-0.5">{stars}</span>
-      <span className="text-[11px] md:text-xs font-sans font-semibold text-verde-bosque">
+      <span className="text-sm font-sans font-semibold text-verde-bosque">
         {typeof rating === 'number' ? rating.toFixed(1) : rating}
       </span>
     </span>
