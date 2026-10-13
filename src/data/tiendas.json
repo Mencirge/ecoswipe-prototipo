@@ -1,0 +1,170 @@
+[
+  {
+    "id": "t1",
+    "nombre": "Textiles Quispe",
+    "ubicacion": "Jr. Gamarra 456, Stand 12, Gal. La Reyna",
+    "distrito": "La Victoria",
+    "verificado": true,
+    "calificacion": 4.8,
+    "totalResenas": 34,
+    "descripcion": "Taller familiar con 15 anios en Gamarra. Especialistas en algodon pima y jersey.",
+    "contacto": {
+      "whatsapp": "+51999111222",
+      "telefono": "01-3456789"
+    },
+    "entrega": [
+      "recojo",
+      "delivery"
+    ],
+    "pagos": [
+      "yape",
+      "plin",
+      "efectivo"
+    ],
+    "impactoTotal": {
+      "co2Kg": 245,
+      "aguaLt": 18200,
+      "kgDesviados": 520
+    },
+    "avatar": "TQ"
+  },
+  {
+    "id": "t2",
+    "nombre": "Confecciones La Victoria",
+    "ubicacion": "Av. Aviacion 1230, 2do piso, Gal. Guizado",
+    "distrito": "La Victoria",
+    "verificado": true,
+    "calificacion": 4.5,
+    "totalResenas": 21,
+    "descripcion": "Producimos polos y poleras en volumen. Retazos de algodon y mezclas ideales para upcycling.",
+    "contacto": {
+      "whatsapp": "+51988222333",
+      "telefono": "01-4567890"
+    },
+    "entrega": [
+      "recojo"
+    ],
+    "pagos": [
+      "yape",
+      "transferencia",
+      "efectivo"
+    ],
+    "impactoTotal": {
+      "co2Kg": 180,
+      "aguaLt": 12500,
+      "kgDesviados": 380
+    },
+    "avatar": "CV"
+  },
+  {
+    "id": "t3",
+    "nombre": "Denim House Gamarra",
+    "ubicacion": "Jr. Humboldt 890, Gal. El Rey",
+    "distrito": "La Victoria",
+    "verificado": false,
+    "calificacion": 4.2,
+    "totalResenas": 12,
+    "descripcion": "Especializados en jeans y ropa denim. Retazos de jean en distintos pesos y tonalidades.",
+    "contacto": {
+      "whatsapp": "+51977333444"
+    },
+    "entrega": [
+      "recojo"
+    ],
+    "pagos": [
+      "yape",
+      "plin"
+    ],
+    "impactoTotal": {
+      "co2Kg": 95,
+      "aguaLt": 8700,
+      "kgDesviados": 210
+    },
+    "avatar": "DH"
+  },
+  {
+    "id": "t4",
+    "nombre": "Retazos del Sur",
+    "ubicacion": "Jr. Gamarra 1150, Stand 8, Gal. Parque Canepa",
+    "distrito": "La Victoria",
+    "verificado": true,
+    "calificacion": 4.9,
+    "totalResenas": 45,
+    "descripcion": "Acopiamos y clasificamos retazos de varios talleres asociados. Lotes grandes a buen precio.",
+    "contacto": {
+      "whatsapp": "+51966444555",
+      "telefono": "01-5678901"
+    },
+    "entrega": [
+      "recojo",
+      "delivery"
+    ],
+    "pagos": [
+      "yape",
+      "plin",
+      "transferencia",
+      "efectivo"
+    ],
+    "impactoTotal": {
+      "co2Kg": 560,
+      "aguaLt": 42000,
+      "kgDesviados": 1200
+    },
+    "avatar": "RS"
+  },
+  {
+    "id": "t5",
+    "nombre": "Hilados y Cortes Maria",
+    "ubicacion": "Av. 28 de Julio 1456, Gal. Santa Lucia",
+    "distrito": "La Victoria",
+    "verificado": true,
+    "calificacion": 4.6,
+    "totalResenas": 28,
+    "descripcion": "Trabajamos con telas importadas y nacionales. Retazos de poliester y licra para ropa deportiva.",
+    "contacto": {
+      "whatsapp": "+51955555666"
+    },
+    "entrega": [
+      "recojo",
+      "delivery"
+    ],
+    "pagos": [
+      "yape",
+      "efectivo"
+    ],
+    "impactoTotal": {
+      "co2Kg": 320,
+      "aguaLt": 24000,
+      "kgDesviados": 680
+    },
+    "avatar": "HM"
+  },
+  {
+    "id": "t6",
+    "nombre": "EcoTex Gamarra",
+    "ubicacion": "Jr. Sebastian Barranca 720, Gal. Mercado Central Textil",
+    "distrito": "La Victoria",
+    "verificado": false,
+    "calificacion": 4.0,
+    "totalResenas": 8,
+    "descripcion": "Startup de moda sostenible. Retazos clasificados por color y composicion.",
+    "contacto": {
+      "whatsapp": "+51944666777",
+      "telefono": "01-6789012"
+    },
+    "entrega": [
+      "delivery"
+    ],
+    "pagos": [
+      "yape",
+      "plin",
+      "transferencia"
+    ],
+    "impactoTotal": {
+      "co2Kg": 45,
+      "aguaLt": 3200,
+      "kgDesviados": 95
+    },
+    "avatar": "ET"
+  }
+]
