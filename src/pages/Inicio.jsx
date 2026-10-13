@@ -105,7 +105,7 @@ export default function Inicio() {
                 <p className="text-base md:text-lg font-sans font-semibold text-verde-bosque leading-snug">
                   &ldquo;Encuentra el retazo exacto para tu confecci&oacute;n.&rdquo;
                 </p>
-                <p className="text-sm text-gris-calido">
+                <p className="text-base text-verde-bosque/85">
                   Trato directo entre talleres y confeccionistas.
                 </p>
               </div>
@@ -134,7 +134,7 @@ export default function Inicio() {
             <h2 className="text-xl md:text-2xl font-fredoka font-semibold text-verde-bosque">
               Retazos clasificados por tejido
             </h2>
-            <span className="text-sm text-gris-calido font-medium hidden sm:inline">
+            <span className="text-sm text-gris-calido font-normal hidden sm:inline">
               Toca para filtrar por tipo de tela
             </span>
           </div>
@@ -160,7 +160,7 @@ export default function Inicio() {
               <h2 className="text-xl md:text-2xl font-fredoka font-semibold text-verde-bosque flex items-center gap-2">
                 <span>Lotes destacados</span>
               </h2>
-              <p className="text-sm text-gris-calido mt-0.5">
+              <p className="text-base text-verde-bosque/85 mt-0.5">
                 Desliza para ver m&aacute;s lotes
               </p>
             </div>
@@ -221,7 +221,7 @@ export default function Inicio() {
               <h2 className="text-xl md:text-2xl font-fredoka font-semibold text-verde-bosque">
                 Últimos lotes publicados
               </h2>
-              <p className="text-sm text-gris-calido mt-0.5">
+              <p className="text-base text-verde-bosque/85 mt-0.5">
                 Lo &uacute;ltimo que subieron los talleres.
               </p>
             </div>

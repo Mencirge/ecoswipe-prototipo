@@ -60,7 +60,7 @@ export default function PublicarLote() {
         <h1 className="text-2xl md:text-3xl font-fredoka font-semibold text-verde-bosque">
           Publicar un lote
         </h1>
-        <p className="text-sm font-sans text-gris-calido mt-1">
+        <p className="text-base font-sans font-normal text-verde-bosque/80 mt-1">
           Comparte tu excedente textil con otros talleres y confeccionistas.
         </p>
       </div>
@@ -122,7 +122,7 @@ export default function PublicarLote() {
               <h2 className="text-xl font-fredoka font-semibold text-verde-bosque">
                 1. Fotos y características del tejido
               </h2>
-              <p className="text-sm text-gris-calido mt-0.5">
+              <p className="text-base text-gris-calido mt-0.5">
                 Muestra claramente el tejido, textura y acabado de tus retazos.
               </p>
             </div>
@@ -142,7 +142,7 @@ export default function PublicarLote() {
                 <p className="text-sm font-semibold text-verde-bosque">
                   Sube fotos claras del retazo
                 </p>
-                <p className="text-sm text-gris-calido mt-1">
+                <p className="text-base text-gris-calido mt-1">
                   Incluye una regla o mano como escala de referencia
                 </p>
               </div>
@@ -181,7 +181,7 @@ export default function PublicarLote() {
                 placeholder="Ej. 100% Algodón pima, 60/40 poli-algodón..."
               />
               {!formData.composicion && step === 1 && (
-                <p className="text-sm text-gris-calido mt-1.5 flex items-center gap-1">
+                <p className="text-base text-gris-calido mt-1.5 flex items-center gap-1">
                   Campo requerido para avanzar al siguiente paso.
                 </p>
               )}
@@ -209,7 +209,7 @@ export default function PublicarLote() {
               <h2 className="text-xl font-fredoka font-semibold text-verde-bosque">
                 2. Cantidad, dimensiones y precio
               </h2>
-              <p className="text-sm text-gris-calido mt-0.5">
+              <p className="text-base text-gris-calido mt-0.5">
                 Define el peso disponible y el valor por kilogramo o metro.
               </p>
             </div>
@@ -257,7 +257,7 @@ export default function PublicarLote() {
                 className="input-field bg-white text-verde-bosque border-menta rounded-boton min-h-[44px] text-sm"
                 placeholder="Ej. Mayor a 30 cm, piezas de 50x50 cm..."
               />
-              <p className="text-sm text-gris-calido mt-1.5">
+              <p className="text-base text-gris-calido mt-1.5">
                 Ayuda a los talleres compradores a saber si el corte les sirve para sus patrones.
               </p>
             </div>
@@ -276,7 +276,7 @@ export default function PublicarLote() {
                   También vender piezas por metro
                 </span>
               </label>
-              <p className="text-sm text-gris-calido mt-1 ml-8">
+              <p className="text-base text-gris-calido mt-1 ml-8">
                 Habilita esta opción solo para retazos grandes continuos (≥ 1 metro).
               </p>
               
@@ -340,7 +340,7 @@ export default function PublicarLote() {
                   </svg>
                   <span>Impacto ecológico que generarás con este lote</span>
                 </h3>
-                <p className="text-sm text-verde-bosque/85 mt-1.5 leading-relaxed">
+                <p className="text-base text-verde-bosque/85 mt-1.5 leading-relaxed">
                   Al vender este lote evitarás la emisión de <strong>{impactoEstimado.co2} kg de CO₂</strong> y ahorrarás <strong>{impactoEstimado.agua} litros de agua</strong>.
                 </p>
               </div>
@@ -354,7 +354,7 @@ export default function PublicarLote() {
               <h2 className="text-xl font-fredoka font-semibold text-verde-bosque">
                 3. Modalidad de entrega y cobro
               </h2>
-              <p className="text-sm text-gris-calido mt-0.5">
+              <p className="text-base text-gris-calido mt-0.5">
                 Elige cómo los confeccionistas podrán retirar o recibir el lote.
               </p>
             </div>
@@ -392,7 +392,7 @@ export default function PublicarLote() {
                 </label>
               </div>
               {!formData.entrega.delivery && !formData.entrega.recojo && (
-                <div className="mt-2.5 p-3 rounded-boton bg-terracota/10 border border-terracota/30 text-verde-bosque flex items-center gap-2 text-sm font-medium">
+                <div className="mt-2.5 p-3 rounded-boton bg-terracota/10 border border-terracota/30 text-verde-bosque flex items-center gap-2 text-sm font-normal">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E4793B" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="flex-shrink-0">
                     <circle cx="12" cy="12" r="10" />
                     <line x1="12" y1="8" x2="12" y2="12" />
@@ -412,7 +412,7 @@ export default function PublicarLote() {
                 </svg>
                 <span>Información sobre cobranza</span>
               </h3>
-              <p className="text-sm text-verde-bosque/85 leading-relaxed">
+              <p className="text-base text-verde-bosque/85 leading-relaxed">
                 EcoSwipe conecta talleres directamente. Cobrarás al comprador según los medios configurados en tu taller (Yape, Plin, Transferencia o Efectivo contra entrega).
               </p>
             </div>
@@ -456,7 +456,7 @@ export default function PublicarLote() {
       {/* Modal de Vista previa */}
       <Modal isOpen={previewModal} onClose={() => setPreviewModal(false)} title="Vista previa del lote">
         <div className="space-y-4">
-          <p className="text-sm text-verde-bosque/85">
+          <p className="text-base text-verde-bosque/85">
             Así verán los demás talleres tu publicación en el mercado:
           </p>
           <div className="bg-white rounded-tarjeta p-4 border border-menta shadow-xs">
@@ -474,7 +474,7 @@ export default function PublicarLote() {
               </span>
               <span className="text-sm font-semibold text-gris-calido">por kg</span>
             </div>
-            <p className="text-sm text-verde-bosque font-medium mt-1">Peso total: {formData.pesoKg} kg</p>
+            <p className="text-sm text-verde-bosque font-normal mt-1">Peso total: {formData.pesoKg} kg</p>
             {formData.metroDisponible && (
               <p className="text-sm text-verde-bosque mt-2 font-semibold bg-menta/50 p-2 rounded-boton border border-verde-hoja/20">
                 También por metro a S/{(parseFloat(formData.precioMetro) || 0).toFixed(2)} / m
@@ -507,7 +507,7 @@ export default function PublicarLote() {
           <h3 className="text-xl font-fredoka font-semibold text-verde-bosque">
             ¡Listo! Tu retazo ya está publicado.
           </h3>
-          <p className="text-sm font-sans text-verde-bosque/85 max-w-sm mx-auto leading-relaxed">
+          <p className="text-base font-sans font-normal text-verde-bosque/85 max-w-sm mx-auto leading-relaxed">
             Los confeccionistas ya pueden encontrar tu lote en el mercado y contactarte directamente.
           </p>
           <div className="pt-3 flex flex-col sm:flex-row gap-3">

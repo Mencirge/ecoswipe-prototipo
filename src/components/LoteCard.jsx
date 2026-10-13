@@ -34,7 +34,7 @@ export default function LoteCard({ lote, variant = 'grid' }) {
           <span className="text-xl md:text-2xl font-fredoka font-bold text-verde-bosque">S/{lote.precioKg.toFixed(2)}</span>
           <span className="text-sm text-gris-calido">por kg</span>
         </div>
-        <div className="mt-1 flex items-center gap-1.5 text-sm text-gris-calido font-sans font-medium">
+        <div className="mt-1 flex items-center gap-1.5 text-sm text-gris-calido font-sans font-normal">
           <span>{lote.pesoKg} kg</span>
           <span>·</span>
           <span className="capitalize">{lote.tela}</span>
@@ -43,10 +43,10 @@ export default function LoteCard({ lote, variant = 'grid' }) {
         </div>
         {tienda && (
           <div className="mt-2.5 flex items-center gap-2 pt-2 border-t border-menta/50">
-            <div className="w-7 h-7 rounded-full bg-menta text-verde-bosque text-sm font-bold flex items-center justify-center flex-shrink-0">
+            <div className="w-7 h-7 rounded-full bg-menta text-verde-bosque text-sm font-semibold flex items-center justify-center flex-shrink-0">
               {tienda.avatar}
             </div>
-            <span className="text-sm text-verde-bosque font-medium truncate">{tienda.nombre}</span>
+            <span className="text-sm text-verde-bosque font-semibold truncate">{tienda.nombre}</span>
             {tienda.verificado && (
               <svg width="14" height="14" viewBox="0 0 24 24" fill="#1E8449" className="flex-shrink-0" aria-label="Verificado">
                 <path d="M12 2L15.09 5.09L19.5 5.5L18.91 9.91L22 13L18.91 16.09L19.5 20.5L15.09 20.91L12 24L8.91 20.91L4.5 20.5L5.09 16.09L2 13L5.09 9.91L4.5 5.5L8.91 5.09L12 2ZM10.5 16.5L17.5 9.5L16.09 8.09L10.5 13.68L7.91 11.09L6.5 12.5L10.5 16.5Z"/>

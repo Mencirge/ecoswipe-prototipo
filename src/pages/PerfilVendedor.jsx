@@ -12,7 +12,7 @@ export default function PerfilVendedor() {
   if (!tienda) return (
     <div className="text-center py-20 px-4">
       <h2 className="text-2xl font-fredoka font-semibold text-verde-bosque">Tienda no encontrada</h2>
-      <p className="text-sm font-semibold text-verde-bosque/80 mt-2">No encontramos ningún taller registrado con este identificador.</p>
+      <p className="text-base text-verde-bosque/80 mt-2">No encontramos ningún taller registrado con este identificador.</p>
       <Link to="/mercado" className="btn-primary min-h-[44px] mt-6 inline-flex items-center justify-center">
         Ir al mercado
       </Link>
@@ -86,7 +86,7 @@ export default function PerfilVendedor() {
               </span>
             </div>
 
-            <p className="text-sm font-semibold text-verde-bosque/90 max-w-2xl leading-relaxed pt-1">
+            <p className="text-base font-normal text-verde-bosque/90 max-w-2xl leading-relaxed pt-1">
               {tienda.descripcion}
             </p>
           </div>
@@ -189,7 +189,7 @@ export default function PerfilVendedor() {
               <h2 className="text-xl font-fredoka font-semibold text-verde-bosque">
                 Lotes disponibles ({lotesTienda.length})
               </h2>
-              <p className="text-sm font-semibold text-verde-bosque/70 mt-0.5">
+              <p className="text-base text-verde-bosque/75 mt-0.5">
                 Retazos listos para entrega directa en Gamarra
               </p>
             </div>
@@ -203,7 +203,7 @@ export default function PerfilVendedor() {
             </div>
           ) : (
             <div className="bg-white rounded-tarjeta border border-menta p-8 text-center space-y-3">
-              <p className="text-sm font-semibold text-verde-bosque">
+              <p className="text-base font-normal text-verde-bosque">
                 Este taller no tiene lotes activos en este momento.
               </p>
               <Link to="/mercado" className="btn-secondary min-h-[44px] inline-flex items-center justify-center text-sm font-semibold">

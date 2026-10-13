@@ -51,7 +51,7 @@ export default function Impacto() {
         <h1 className="text-2xl md:text-3xl font-fredoka font-semibold text-verde-bosque">
           Balance de impacto del taller
         </h1>
-        <p className="text-sm font-semibold text-verde-bosque/80 mt-1">
+        <p className="text-base text-verde-bosque/80 mt-1">
           Seguimiento de merma textil evitada y recursos preservados en Gamarra.
         </p>
       </div>
@@ -91,14 +91,14 @@ export default function Impacto() {
             <div className="bg-crema p-6 border-b-2 border-dashed border-menta/50">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <span className="text-sm font-semibold text-verde-hoja uppercase tracking-wider block mb-1">
-                    Nivel del taller
+                  <span className="text-sm font-semibold text-verde-bosque uppercase tracking-wider block mb-1">
+                    Actividad registrada
                   </span>
                   <h2 className="text-xl md:text-2xl font-fredoka font-semibold text-verde-bosque">
-                    Nivel {userImpact.nivel}: Taller en marcha
+                    Taller activo en EcoSwipe
                   </h2>
-                  <p className="text-sm font-semibold text-verde-bosque/75 mt-1">
-                    Faltan {userImpact.proxNivel - userImpact.xp} puntos para el siguiente nivel de taller
+                  <p className="text-base font-normal text-verde-bosque/80 mt-1">
+                    Cifras estimadas según los retazos registrados y entregados en la plataforma.
                   </p>
                 </div>
                 <div className="w-16 h-16 rounded-full bg-verde-bosque text-crema flex items-center justify-center font-fredoka text-2xl font-bold border-2 border-verde-hoja/40 shadow-xs flex-shrink-0">
@@ -172,7 +172,7 @@ export default function Impacto() {
                       <h4 className={`text-sm font-semibold ${l.completado ? 'text-verde-bosque' : 'text-neutral-500'}`}>
                         {l.titulo}
                       </h4>
-                      <p className="text-sm font-semibold text-verde-bosque/70 mt-0.5">
+                      <p className="text-base text-verde-bosque/75 mt-0.5">
                         {l.desc}
                       </p>
                     </div>
@@ -220,7 +220,7 @@ export default function Impacto() {
             <h2 className="text-xl md:text-2xl font-fredoka font-semibold text-verde-bosque">
               Talleres participantes en Gamarra
             </h2>
-            <p className="text-sm font-semibold text-verde-bosque/85 max-w-lg mx-auto leading-relaxed">
+            <p className="text-base text-verde-bosque/85 max-w-lg mx-auto leading-relaxed">
               En conjunto, los talleres de la comunidad han evitado más de 1.4 toneladas de CO₂ en Gamarra.
             </p>
           </div>
@@ -240,11 +240,7 @@ export default function Impacto() {
                     r.isUser ? 'bg-menta/20 font-semibold' : 'bg-white'
                   }`}
                 >
-                  <div
-                    className={`w-12 text-center font-fredoka font-bold text-base ${
-                      r.pos <= 3 ? 'text-verde-hoja' : 'text-verde-bosque/60'
-                    }`}
-                  >
+                  <div className="w-12 text-center font-fredoka font-bold text-lg text-verde-bosque">
                     {r.pos}
                   </div>
                   <div className="flex-1 flex items-center gap-3">
@@ -259,7 +255,7 @@ export default function Impacto() {
                     </div>
                     <span
                       className={`text-sm font-semibold ${
-                        r.isUser ? 'text-verde-bosque font-bold' : 'text-verde-bosque/90'
+                        r.isUser ? 'text-verde-bosque font-semibold' : 'text-verde-bosque/90'
                       }`}
                     >
                       {r.nombre} {r.isUser && '(Taller propio)'}

@@ -183,14 +183,14 @@ export default function Mercado() {
         {/* Listado de resultados */}
         <div className="flex-1">
           <div className="flex items-center justify-between mb-4">
-            <p className="text-sm font-sans font-medium text-gris-calido">
+            <p className="text-sm font-sans font-normal text-gris-calido">
               {filtered.length} lote{filtered.length !== 1 ? 's' : ''} disponible{filtered.length !== 1 ? 's' : ''}
             </p>
 
             <select
               value={orden}
               onChange={e => setOrden(e.target.value)}
-              className="hidden md:block text-sm font-sans font-semibold border border-menta rounded-boton px-3 py-2 text-verde-bosque bg-white min-h-[40px]"
+              className="hidden md:block text-sm font-sans font-semibold border border-menta rounded-boton px-3 py-2 text-verde-bosque bg-white min-h-[44px]"
             >
               {ORDEN.map(o => (
                 <option key={o.value} value={o.value}>
@@ -216,7 +216,7 @@ export default function Mercado() {
               <h3 className="text-lg font-fredoka font-semibold text-verde-bosque">
                 Aún no hay coincidencias
               </h3>
-              <p className="text-sm font-sans font-medium text-verde-bosque/80 mt-1 max-w-xs mx-auto">
+              <p className="text-base font-sans font-normal text-verde-bosque/85 mt-1 max-w-xs mx-auto">
                 &ldquo;Aún no hay coincidencias. Vuelvo a buscar por ti.&rdquo;
               </p>
               <button

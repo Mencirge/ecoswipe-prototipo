@@ -28,7 +28,7 @@ export default function DetalleLote() {
         </svg>
       </div>
       <h2 className="text-2xl font-fredoka font-semibold text-verde-bosque">Lote no encontrado</h2>
-      <p className="text-sm text-gris-calido mt-2">El retazo que buscas ya no está disponible o el enlace es incorrecto.</p>
+      <p className="text-base text-verde-bosque/85 mt-2">El retazo que buscas ya no está disponible o el enlace es incorrecto.</p>
       <Link to="/mercado" className="btn-primary mt-6 inline-flex min-h-[44px] items-center">
         Ir al mercado
       </Link>
@@ -123,7 +123,7 @@ export default function DetalleLote() {
               ['Tamaño mín. de pieza', lote.tamanoMinPieza],
             ].map(([k, v]) => (
               <div key={k} className="flex justify-between items-baseline text-sm pt-0.5">
-                <span className="text-gris-calido font-medium">{k}</span>
+                <span className="text-gris-calido font-normal">{k}</span>
                 <span className="font-semibold text-verde-bosque text-right">{v}</span>
               </div>
             ))}
@@ -151,7 +151,7 @@ export default function DetalleLote() {
                 <div className="text-sm font-semibold text-verde-bosque/75">L agua ahorrada</div>
               </div>
             </div>
-            <p className="text-sm text-gris-calido mt-2">
+            <p className="text-base text-verde-bosque/85 mt-2">
               Factores referenciales de circularidad textil en Gamarra.
             </p>
           </div>
@@ -162,7 +162,7 @@ export default function DetalleLote() {
               to={`/tienda/${tienda.id}`}
               className="flex items-center gap-3.5 p-3.5 rounded-tarjeta bg-white border border-menta hover:border-verde-hoja transition-colors shadow-xs"
             >
-              <div className="w-12 h-12 rounded-full bg-menta text-verde-bosque font-bold flex items-center justify-center text-lg flex-shrink-0">
+              <div className="w-12 h-12 rounded-full bg-menta text-verde-bosque font-semibold flex items-center justify-center text-lg flex-shrink-0">
                 {tienda.avatar}
               </div>
               <div className="flex-1 min-w-0">
@@ -261,8 +261,8 @@ export default function DetalleLote() {
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
               </svg>
             </div>
-            <p className="text-sm font-semibold text-verde-bosque">Aún no hay reseñas para este lote</p>
-            <p className="text-sm text-gris-calido mt-1">Sé el primero en compartir tu experiencia tras recibirlo.</p>
+            <p className="text-base font-semibold text-verde-bosque">Aún no hay reseñas para este lote</p>
+            <p className="text-base text-verde-bosque/80 mt-1">Sé el primero en compartir tu experiencia tras recibirlo.</p>
             {confirmDone && (
               <button type="button" className="btn-primary mt-4 text-sm min-h-[44px]">
                 Escribir reseña
@@ -274,14 +274,14 @@ export default function DetalleLote() {
             {lote.resenas.map((r, i) => (
               <div key={i} className="bg-white rounded-tarjeta p-4 border border-menta shadow-xs">
                 <div className="flex items-center gap-2.5 mb-1.5">
-                  <div className="w-8 h-8 rounded-full bg-menta text-verde-bosque font-bold flex items-center justify-center text-sm flex-shrink-0">
+                  <div className="w-8 h-8 rounded-full bg-menta text-verde-bosque font-semibold flex items-center justify-center text-sm flex-shrink-0">
                     {r.usuario.charAt(0)}
                   </div>
                   <span className="font-semibold text-sm text-verde-bosque">{r.usuario}</span>
                   <StarRating rating={r.calificacion} size={14} />
                   <span className="text-sm text-gris-calido ml-auto">{r.fecha}</span>
                 </div>
-                <p className="text-sm text-verde-bosque/85 ml-10 leading-relaxed">{r.texto}</p>
+                <p className="text-base text-verde-bosque/90 ml-10 leading-relaxed">{r.texto}</p>
               </div>
             ))}
           </div>
@@ -292,7 +292,7 @@ export default function DetalleLote() {
       <Modal isOpen={contactModal} onClose={() => setContactModal(false)} title="Contactar vendedor">
         {tienda && (
           <div className="space-y-4">
-            <p className="text-sm text-verde-bosque/85">
+            <p className="text-base text-verde-bosque/85">
               Contacta directamente a <strong>{tienda.nombre}</strong> para coordinar entrega y pago:
             </p>
             {tienda.contacto.whatsapp && (
@@ -328,7 +328,7 @@ export default function DetalleLote() {
                 </div>
               </button>
             )}
-            <p className="text-sm text-gris-calido text-center pt-2">
+            <p className="text-base text-gris-calido text-center pt-2">
               Contacto directo de taller a taller, sin intermediarios.
             </p>
           </div>
@@ -376,14 +376,14 @@ export default function DetalleLote() {
           >
             Enviar oferta al taller
           </button>
-          <p className="text-sm text-gris-calido text-center">
+          <p className="text-base text-gris-calido text-center">
             El confeccionista recibirá tu propuesta por mensaje.
           </p>
         </div>
       </Modal>
 
       {/* Modal de Confirmación ("Trato cerrado" con Swipee) */}
-      <Modal isOpen={confirmModal} onClose={() => setConfirmModal(false)} title="Confirmar entrega">
+      <Modal isOpen={confirmModal} onClose={() => setConfirmModal(false)} title={confirmDone ? "Trato cerrado" : "Confirmar entrega"}>
         <div className="space-y-5 text-center">
           {confirmDone ? (
             /* Vista de Trato Cerrado con Swipee */
@@ -401,8 +401,8 @@ export default function DetalleLote() {
               <h3 className="text-xl font-fredoka font-semibold text-verde-bosque">
                 ¡Trato cerrado!
               </h3>
-              {/* Frase oficial en la voz de Swipee (PENDIENTE DE APROBACIÓN) */}
-              <p className="text-sm font-sans font-medium text-verde-bosque/90 max-w-sm mx-auto leading-relaxed">
+              {/* Frase oficial en la voz de Swipee (APROBADA) */}
+              <p className="text-base font-sans font-normal text-verde-bosque/90 max-w-sm mx-auto leading-relaxed">
                 &ldquo;¡Trato hecho! Ese retazo ya tiene dónde seguir.&rdquo;
               </p>
               <button
@@ -416,10 +416,10 @@ export default function DetalleLote() {
           ) : (
             /* Opciones de entrega: reemplazo de emojis por SVG */
             <>
-              <p className="text-sm font-semibold text-verde-bosque">
+              <p className="text-base font-semibold text-verde-bosque">
                 ¿Ya entregaste o recibiste el lote?
               </p>
-              <p className="text-sm text-verde-bosque/85">
+              <p className="text-base text-verde-bosque/85">
                 Confirma la entrega según tu rol para habilitar la calificación mutua.
               </p>
               <div className="flex gap-3">
@@ -447,7 +447,7 @@ export default function DetalleLote() {
                   <span>Recibí</span>
                 </button>
               </div>
-              <p className="text-sm text-gris-calido">
+              <p className="text-base text-gris-calido">
                 Al confirmar sumas impacto ambiental y habilitas la calificación de taller.
               </p>
             </>
