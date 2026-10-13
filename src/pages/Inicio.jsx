@@ -244,9 +244,6 @@ export default function Inicio() {
                 <LoteCard lote={recientes[0]} />
               </div>
             )}
-                <LoteCard lote={recientes[0]} />
-              </div>
-            )}
             {recientes.slice(1).map(l => (
               <div key={l.id} className="col-span-1">
                 <LoteCard lote={l} />
