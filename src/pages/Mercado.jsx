@@ -207,7 +207,7 @@ export default function Mercado() {
                 <source srcSet={mascotaWebp} type="image/webp" />
                 <img
                   src={mascotaPng}
-                  alt="Swipee"
+                  alt=""
                   width="88"
                   height="108"
                   className="mx-auto object-contain"

@@ -50,8 +50,7 @@ export default function Inicio() {
                 El excedente textil de Gamarra, directo a tu taller
               </h1>
               <p className="mt-3 font-sans text-base text-verde-bosque/85 max-w-xl leading-relaxed">
-                Compra y vende saldos de corte, rollos sobrantes y retazos clasificados entre confeccionistas.
-                Venta al peso (por kilo) y por metro en lotes seleccionados.
+                Retazos y saldos al peso. Algunos lotes tambi&eacute;n por metro.
               </p>
 
               <form onSubmit={handleSearch} className="mt-6 flex flex-col sm:flex-row gap-2.5 max-w-lg">
@@ -90,7 +89,7 @@ export default function Inicio() {
                 <source srcSet={mascotaWebp} type="image/webp" />
                 <img
                   src={mascotaPng}
-                  alt="Swipee, la mascota de EcoSwipe"
+                  alt=""
                   width="88"
                   height="108"
                   className="object-contain"
@@ -223,7 +222,7 @@ export default function Inicio() {
                 Últimos lotes publicados
               </h2>
               <p className="text-sm text-gris-calido mt-0.5">
-                Rollos y saldos de corte listos para entrega o recojo.
+                Lo &uacute;ltimo que subieron los talleres.
               </p>
             </div>
             <Link to="/mercado" className="text-sm font-semibold text-verde-bosque hover:text-verde-hoja">
@@ -239,7 +238,7 @@ export default function Inicio() {
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="#FBF7EE" stroke="#FBF7EE" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                   </svg>
-                  <span>Lote destacado reciente</span>
+                  <span>&Uacute;ltimo lote publicado</span>
                 </span>
                 <LoteCard lote={recientes[0]} />
               </div>
