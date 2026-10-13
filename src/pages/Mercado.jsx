@@ -154,7 +154,7 @@ export default function Mercado() {
             <line x1="8" y1="12" x2="20" y2="12" />
             <line x1="12" y1="18" x2="20" y2="18" />
           </svg>
-          <span className="text-xs font-semibold">Filtros</span>
+          <span className="text-sm font-semibold">Filtros</span>
         </button>
       </div>
 
@@ -170,7 +170,7 @@ export default function Mercado() {
                 <button
                   type="button"
                   onClick={() => { setTela('Todas'); setEntrega('todas'); setQuery(''); }}
-                  className="text-xs text-terracota font-semibold hover:underline"
+                  className="text-sm text-verde-bosque font-semibold hover:underline underline-offset-2"
                 >
                   Limpiar
                 </button>

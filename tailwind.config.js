@@ -60,6 +60,7 @@ export default {
         'boton': '14px',
       },
       boxShadow: {
+        xs: '0 1px 2px rgba(18, 55, 42, 0.05)',
         card: '0 2px 8px rgba(18, 55, 42, 0.05)',
         'card-hover': '0 6px 18px rgba(18, 55, 42, 0.09)',
         modal: '0 16px 40px rgba(18, 55, 42, 0.16)',

@@ -197,7 +197,7 @@
 
   /* Indicador de Datos de Ejemplo */
   .sample-badge {
-    @apply fixed top-2 right-2 z-[100] font-sans text-xs font-semibold px-2.5 py-1 rounded-full pointer-events-none select-none;
+    @apply fixed top-2 right-2 z-[100] font-sans text-sm font-semibold px-3 py-1 rounded-full pointer-events-none select-none;
     background-color: var(--verde-bosque);
     color: var(--crema);
   }

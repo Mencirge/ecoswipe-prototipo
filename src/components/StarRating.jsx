@@ -6,17 +6,17 @@ export default function StarRating({ rating, size = 16 }) {
   for (let i = 0; i < 5; i++) {
     if (i < full) {
       stars.push(
-        <svg key={i} width={size} height={size} viewBox="0 0 24 24" fill="#E4793B">
+        <svg key={i} width={size} height={size} viewBox="0 0 24 24" fill="#E4793B" stroke="#12372A" strokeWidth="1.2" strokeLinejoin="round">
           <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
         </svg>
       )
     } else if (i === full && hasHalf) {
       stars.push(
-        <svg key={i} width={size} height={size} viewBox="0 0 24 24" fill="url(#halfGrad)">
+        <svg key={i} width={size} height={size} viewBox="0 0 24 24" fill="url(#halfGrad)" stroke="#12372A" strokeWidth="1.2" strokeLinejoin="round">
           <defs>
             <linearGradient id="halfGrad">
               <stop offset="50%" stopColor="#E4793B" />
-              <stop offset="50%" stopColor="rgba(107, 111, 106, 0.3)" />
+              <stop offset="50%" stopColor="rgba(107, 111, 106, 0.25)" />
             </linearGradient>
           </defs>
           <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
@@ -24,7 +24,7 @@ export default function StarRating({ rating, size = 16 }) {
       )
     } else {
       stars.push(
-        <svg key={i} width={size} height={size} viewBox="0 0 24 24" fill="rgba(107, 111, 106, 0.3)">
+        <svg key={i} width={size} height={size} viewBox="0 0 24 24" fill="rgba(107, 111, 106, 0.15)" stroke="#6B6F6A" strokeWidth="1.2" strokeLinejoin="round">
           <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
         </svg>
       )
