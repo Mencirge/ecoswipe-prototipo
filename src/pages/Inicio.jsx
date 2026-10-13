@@ -1,104 +1,253 @@
-import { useState, useRef } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import LoteCard from '../components/LoteCard'
-import ImpactBanner from '../components/ImpactBanner'
-import Logo from '../components/Logo'
-import lotes from '../data/lotes.json'
-
-const TELAS = ['Todas', 'Algodón', 'Poliéster', 'Denim', 'Jersey', 'Mezcla', 'Licra', 'Franela']
-
-export default function Inicio() {
-  const [search, setSearch] = useState('')
-  const [telaFilter, setTelaFilter] = useState('Todas')
-  const scrollRef = useRef(null)
-  const navigate = useNavigate()
-
-  const destacados = lotes.filter(l => l.destacado)
-  const recientes = lotes.slice().sort((a, b) => b.fechaPublicacion.localeCompare(a.fechaPublicacion)).slice(0, 6)
-
-  const handleSearch = (e) => {
-    e.preventDefault()
-    navigate(`/mercado?q=${encodeURIComponent(search)}`)
-  }
-
-  return (
-    <div className="page-enter">
-      {/* Hero */}
-      <section className="bg-gradient-to-br from-brand-500 via-brand-400 to-brand-300 text-white">
-        <div className="max-w-6xl mx-auto px-4 md:px-8 py-10 md:py-16">
-          <div className="md:hidden mb-4"><Logo size={28} /></div>
-          <h1 className="text-3xl md:text-5xl font-extrabold leading-tight text-balance">
-            Dale nueva vida a los<br/>retazos de Gamarra
-          </h1>
-          <p className="mt-3 text-base md:text-lg opacity-90 max-w-xl">
-            Compra y vende retazos textiles. Cada kilo que rescatas reduce desperdicios y genera impacto real.
-          </p>
-          <form onSubmit={handleSearch} className="mt-6 flex gap-2 max-w-lg">
-            <div className="relative flex-1">
-              <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              <input
-                type="text"
-                placeholder="Buscar por tela, color, tienda..."
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-                className="input-field pl-10 bg-white/95 text-neutral-800"
-              />
-            </div>
-            <button type="submit" className="btn-accent whitespace-nowrap">Buscar</button>
-          </form>
-        </div>
-      </section>
-
-      <div className="max-w-6xl mx-auto px-4 md:px-8 py-6 md:py-10 space-y-8 md:space-y-12">
-        {/* Impact */}
-        <ImpactBanner />
-
-        {/* Filter chips */}
-        <div>
-          <h2 className="text-xl md:text-2xl font-bold text-neutral-800 mb-3">Descubre retazos</h2>
-          <div className="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1 scrollbar-none">
-            {TELAS.map(t => (
-              <button
-                key={t}
-                onClick={() => setTelaFilter(t)}
-                className={`chip whitespace-nowrap ${telaFilter === t ? 'chip-active' : 'chip-inactive'}`}
-              >
-                {t}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Swipe section */}
-        <div>
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-xl md:text-2xl font-bold text-neutral-800">✨ Lotes destacados</h2>
-            <Link to="/mercado" className="text-sm font-medium text-brand-500 hover:text-brand-600">Ver todos &rarr;</Link>
-          </div>
-          <div
-            ref={scrollRef}
-            className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-none -mx-4 px-4"
-          >
-            {destacados.map(l => (
-              <LoteCard key={l.id} lote={l} variant="swipe" />
-            ))}
-          </div>
-        </div>
-
-        {/* Recent grid */}
-        <div>
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-xl md:text-2xl font-bold text-neutral-800">Publicados recientemente</h2>
-            <Link to="/mercado" className="text-sm font-medium text-brand-500 hover:text-brand-600">Ver todos &rarr;</Link>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
-            {recientes.map(l => (
-              <LoteCard key={l.id} lote={l} />
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
+import { useState, useRef } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import LoteCard from '../components/LoteCard'
+import ImpactBanner from '../components/ImpactBanner'
+import Logo from '../components/Logo'
+import mascotaSvg from '../assets/mascota.svg'
+import lotes from '../data/lotes.json'
 
+const TELAS = ['Todas', 'Algodón', 'Poliéster', 'Denim', 'Jersey', 'Mezcla', 'Licra', 'Franela']
+
+export default function Inicio() {
+  const [search, setSearch] = useState('')
+  const [telaFilter, setTelaFilter] = useState('Todas')
+  const scrollRef = useRef(null)
+  const navigate = useNavigate()
+
+  const destacados = lotes.filter(l => l.destacado)
+  const recientes = lotes.slice().sort((a, b) => b.fechaPublicacion.localeCompare(a.fechaPublicacion)).slice(0, 6)
+
+  const handleSearch = (e) => {
+    e.preventDefault()
+    navigate(`/mercado?q=${encodeURIComponent(search)}`)
+  }
+
+  const scrollLeft = () => {
+    scrollRef.current?.scrollBy({ left: -280, behavior: 'smooth' })
+  }
+
+  const scrollRight = () => {
+    scrollRef.current?.scrollBy({ left: 280, behavior: 'smooth' })
+  }
+
+  return (
+    <div className="page-enter bg-crema">
+      {/* Hero cálido sobre Crema: sin degradados, sin glassmorphism */}
+      <section className="bg-crema border-b border-menta/70 py-8 md:py-14">
+        <div className="max-w-6xl mx-auto px-4 md:px-8">
+          <div className="md:hidden mb-4">
+            <Logo size={32} />
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            {/* Titular y buscador con voz de taller y Gamarra */}
+            <div className="lg:col-span-7">
+              <span className="inline-block px-3 py-1 rounded-full bg-menta text-verde-bosque text-xs font-semibold uppercase tracking-wider mb-3">
+                Mercado de retazos en Gamarra
+              </span>
+              <h1 className="font-fredoka text-[28px] md:text-[38px] font-semibold text-verde-bosque leading-tight">
+                El excedente textil de Gamarra, directo a tu taller
+              </h1>
+              <p className="mt-3 font-sans text-base text-verde-bosque/85 max-w-xl leading-relaxed">
+                Compra y vende saldos de corte, rollos sobrantes y retazos clasificados entre confeccionistas.
+                Al peso o por metro, sin intermediarios.
+              </p>
+
+              <form onSubmit={handleSearch} className="mt-6 flex flex-col sm:flex-row gap-2.5 max-w-lg">
+                <div className="relative flex-1">
+                  <svg
+                    className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gris-calido pointer-events-none"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                  </svg>
+                  <input
+                    type="text"
+                    placeholder="Buscar por tela, fardo, color o taller..."
+                    value={search}
+                    onChange={e => setSearch(e.target.value)}
+                    className="input-field pl-10 bg-white text-verde-bosque border-menta placeholder:text-gris-calido/70"
+                  />
+                </div>
+                <button type="submit" className="btn-primary min-h-[44px] whitespace-nowrap">
+                  Buscar
+                </button>
+              </form>
+            </div>
+
+            {/* Swipee con microcopy oficial: espacio propio, nunca fusionada con el logo */}
+            <div className="lg:col-span-5">
+              <div className="bg-white p-5 rounded-tarjeta border border-menta shadow-card flex items-center gap-4">
+                <img
+                  src={mascotaSvg}
+                  alt="Swipee, la mascota de EcoSwipe"
+                  width="80"
+                  height="80"
+                  className="flex-shrink-0 object-contain"
+                />
+                <div className="space-y-1">
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-verde-hoja animate-pulse" />
+                    <span className="text-xs font-semibold text-verde-hoja uppercase tracking-wider font-sans">
+                      Swipee te acompaña
+                    </span>
+                  </div>
+                  <p className="text-sm md:text-base font-sans font-semibold text-verde-bosque leading-snug">
+                    &ldquo;Desliza a la derecha si te sirve.&rdquo;
+                  </p>
+                  <p className="text-xs text-gris-calido">
+                    Filtra retazos en segundos con trato directo.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="max-w-6xl mx-auto px-4 md:px-8 py-8 md:py-12 space-y-10 md:space-y-14">
+        {/* Banner de Impacto */}
+        <section>
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="text-base md:text-lg font-fredoka font-semibold text-verde-bosque">
+              Impacto ambiental acumulado
+            </h2>
+            <Link to="/impacto" className="text-xs font-semibold text-verde-bosque hover:text-verde-hoja">
+              Ver detalle &rarr;
+            </Link>
+          </div>
+          <ImpactBanner />
+        </section>
+
+        {/* Chips de filtro por tejido con tap targets de 44px */}
+        <section>
+          <div className="flex items-baseline justify-between mb-3">
+            <h2 className="text-xl md:text-2xl font-fredoka font-semibold text-verde-bosque">
+              Retazos clasificados por tejido
+            </h2>
+            <span className="text-xs text-gris-calido font-medium hidden sm:inline">
+              Toca para filtrar por tipo de tela
+            </span>
+          </div>
+          <div className="flex gap-2 overflow-x-auto pb-2 -mx-1 px-1 scrollbar-none">
+            {TELAS.map(t => (
+              <button
+                key={t}
+                onClick={() => setTelaFilter(t)}
+                className={`chip min-h-[44px] px-4 whitespace-nowrap text-sm font-semibold ${
+                  telaFilter === t ? 'chip-active' : 'chip-inactive'
+                }`}
+              >
+                {t}
+              </button>
+            ))}
+          </div>
+        </section>
+
+        {/* Carrusel de Swipe con controles oficiales: Paso (Gris Cálido) y Me sirve (Verde Hoja) */}
+        <section>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+            <div>
+              <h2 className="text-xl md:text-2xl font-fredoka font-semibold text-verde-bosque flex items-center gap-2">
+                <span>Lotes destacados para ti</span>
+              </h2>
+              <p className="text-xs md:text-sm text-gris-calido mt-0.5">
+                Desliza las fichas: &ldquo;Paso&rdquo; a la izquierda o &ldquo;Me sirve&rdquo; a la derecha
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2 self-start sm:self-auto">
+              {/* Botón Paso (Gris Cálido, ícono + texto) */}
+              <button
+                type="button"
+                onClick={scrollLeft}
+                className="flex items-center gap-1.5 px-3.5 py-2 rounded-boton border border-gris-calido/30 bg-white text-gris-calido hover:bg-crema text-xs font-semibold min-h-[44px] transition-colors"
+                aria-label="Paso a la izquierda"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+                <span>Paso</span>
+              </button>
+
+              {/* Botón Me sirve (Verde Hoja, ícono + texto) */}
+              <button
+                type="button"
+                onClick={scrollRight}
+                className="flex items-center gap-1.5 px-3.5 py-2 rounded-boton bg-verde-hoja text-white hover:bg-brand-600 text-xs font-semibold min-h-[44px] transition-colors shadow-xs"
+                aria-label="Me sirve a la derecha"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                <span>Me sirve</span>
+              </button>
+
+              <Link
+                to="/mercado"
+                className="text-xs font-semibold text-verde-bosque hover:text-verde-hoja ml-2 pl-2 border-l border-menta"
+              >
+                Ver todos &rarr;
+              </Link>
+            </div>
+          </div>
+
+          <div
+            ref={scrollRef}
+            className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-none -mx-4 px-4"
+          >
+            {destacados.map(l => (
+              <LoteCard key={l.id} lote={l} variant="swipe" />
+            ))}
+          </div>
+        </section>
+
+        {/* Separador de puntada artesanal textil */}
+        <div className="border-t border-dashed border-verde-hoja/30 my-6" />
+
+        {/* Sección de lotes con jerarquía visual: protagonista y secundarios */}
+        <section>
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="text-xl md:text-2xl font-fredoka font-semibold text-verde-bosque">
+                Ingresos frescos del emporio
+              </h2>
+              <p className="text-xs text-gris-calido mt-0.5">
+                Últimos fardos y retazos publicados por talleres verificados
+              </p>
+            </div>
+            <Link to="/mercado" className="text-xs font-semibold text-verde-bosque hover:text-verde-hoja">
+              Ver catálogo completo &rarr;
+            </Link>
+          </div>
+
+          {/* Grilla asimétrica: lote protagonista de mayor tamaño + lotes complementarios */}
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {recientes.length > 0 && (
+              <div className="md:col-span-2 lg:col-span-2 bg-white rounded-tarjeta p-1 border-2 border-menta shadow-sm relative">
+                <span className="absolute top-3 left-3 z-10 px-2.5 py-1 rounded-full bg-verde-bosque text-crema text-[11px] font-semibold tracking-wide">
+                  ⭐ Lote protagonista del día
+                </span>
+                <LoteCard lote={recientes[0]} />
+              </div>
+            )}
+            {recientes.slice(1).map(l => (
+              <div key={l.id} className="col-span-1">
+                <LoteCard lote={l} />
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
+    </div>
+  )
+}
