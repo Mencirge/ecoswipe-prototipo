@@ -1,12 +1,44 @@
-export default function Logo({ size = 32, className = '' }) {
-  return (
-    <svg className={className} width={size} height={size} viewBox="0 0 120 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="32" height="32" rx="8" fill="#2D6A4F"/>
-      <path d="M16 6c-2 0-6 4-6 10s4 10 6 10c1 0 2-1 3-3-1 1-2 1.5-3 1.5-3.5 0-4.5-4-4.5-8.5S13.5 7.5 16 7.5c1.5 0 3 1.5 4 4 .5-1.5.5-3 0-4C19 6.5 17.5 6 16 6z" fill="#52B788"/>
-      <path d="M18 10c-1 0-3 2-3 6s2 6 3 6 3-2 3-6-2-6-3-6z" fill="#A5D6A7" opacity=".7"/>
-      <text x="38" y="22" fontFamily="Inter, sans-serif" fontWeight="800" fontSize="18" fill="#2D6A4F">eco</text>
-      <text x="62" y="22" fontFamily="Inter, sans-serif" fontWeight="800" fontSize="18" fill="#52B788">swipe</text>
-    </svg>
-  )
-}
+import logoPrincipal from '../assets/logo-principal.svg'
+import logoBlanco from '../assets/logo-blanco.svg'
+import faviconSvg from '../assets/favicon.svg'
 
+/**
+ * Componente oficial Logo EcoSwipe
+ * Reglas de Brandbook:
+ * - Utiliza los archivos SVG oficiales de la marca (logo-principal.svg y logo-blanco.svg).
+ * - Símbolo: favicon.svg (hoja con nervadura curva de swipe). Tamaño mínimo: 24px.
+ * - Horizontal: logo-principal.svg (hoja + wordmark). Tamaño mínimo: 96px de ancho.
+ * - Respeta la zona de respeto integrada en el archivo SVG.
+ */
+export default function Logo({ size = 36, variant = 'full', className = '' }) {
+  const isWhite = variant === 'blanco'
+  const isSymbol = variant === 'symbol'
+
+  if (isSymbol) {
+    const symbolSize = Math.max(size, 24)
+    return (
+      <img
+        src={faviconSvg}
+        alt="EcoSwipe"
+        width={symbolSize}
+        height={symbolSize}
+        className={`inline-block flex-shrink-0 object-contain select-none ${className}`}
+        style={{ width: `${symbolSize}px`, height: `${symbolSize}px` }}
+      />
+    )
+  }
+
+  const height = Math.max(size, 32)
+  const width = Math.max(Math.round(height * 1.81), 96)
+
+  return (
+    <img
+      src={isWhite ? logoBlanco : logoPrincipal}
+      alt="EcoSwipe"
+      width={width}
+      height={height}
+      className={`inline-block object-contain select-none flex-shrink-0 ${className}`}
+      style={{ height: `${height}px`, width: 'auto', minWidth: '96px' }}
+    />
+  )
+}
