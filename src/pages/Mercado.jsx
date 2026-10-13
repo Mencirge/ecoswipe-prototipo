@@ -1,7 +1,8 @@
 import { useState, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import LoteCard from '../components/LoteCard'
-import mascotaSvg from '../assets/mascota.svg'
+import mascotaWebp from '../assets/mascota.webp'
+import mascotaPng from '../assets/mascota.png'
 import lotes from '../data/lotes.json'
 import tiendas from '../data/tiendas.json'
 
@@ -202,13 +203,16 @@ export default function Mercado() {
           {/* Estado vacío: Swipee con microcopy oficial en lugar de emoji */}
           {filtered.length === 0 ? (
             <div className="text-center py-16 px-4 bg-white rounded-tarjeta border border-menta shadow-xs max-w-md mx-auto my-6">
-              <img
-                src={mascotaSvg}
-                alt="Swipee"
-                width="96"
-                height="96"
-                className="mx-auto mb-4 object-contain"
-              />
+              <picture className="mx-auto mb-4 block">
+                <source srcSet={mascotaWebp} type="image/webp" />
+                <img
+                  src={mascotaPng}
+                  alt="Swipee"
+                  width="88"
+                  height="108"
+                  className="mx-auto object-contain"
+                />
+              </picture>
               <h3 className="text-lg font-fredoka font-semibold text-verde-bosque">
                 Aún no hay coincidencias
               </h3>
@@ -218,7 +222,7 @@ export default function Mercado() {
               <button
                 type="button"
                 onClick={() => { setTela('Todas'); setEntrega('todas'); setQuery(''); }}
-                className="mt-5 btn-secondary min-h-[44px] text-xs font-semibold"
+                className="mt-5 btn-secondary min-h-[44px] text-sm font-semibold"
               >
                 Restablecer todos los filtros
               </button>

@@ -3,7 +3,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import LoteCard from '../components/LoteCard'
 import ImpactBanner from '../components/ImpactBanner'
 import Logo from '../components/Logo'
-import mascotaSvg from '../assets/mascota.svg'
+import mascotaWebp from '../assets/mascota.webp'
+import mascotaPng from '../assets/mascota.png'
 import lotes from '../data/lotes.json'
 
 const TELAS = ['Todas', 'Algodón', 'Poliéster', 'Denim', 'Jersey', 'Mezcla', 'Licra', 'Franela']
@@ -85,13 +86,16 @@ export default function Inicio() {
 
             {/* Swipee directamente sobre fondo Crema, sin tarjeta blanca */}
             <div className="lg:col-span-5 flex items-center gap-4 sm:gap-5">
-              <img
-                src={mascotaSvg}
-                alt="Swipee, la mascota de EcoSwipe"
-                width="88"
-                height="88"
-                className="flex-shrink-0 object-contain"
-              />
+              <picture className="flex-shrink-0">
+                <source srcSet={mascotaWebp} type="image/webp" />
+                <img
+                  src={mascotaPng}
+                  alt="Swipee, la mascota de EcoSwipe"
+                  width="88"
+                  height="108"
+                  className="object-contain"
+                />
+              </picture>
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
                   <span className="w-2.5 h-2.5 rounded-full bg-verde-hoja" />
@@ -158,7 +162,7 @@ export default function Inicio() {
                 <span>Lotes destacados</span>
               </h2>
               <p className="text-sm text-gris-calido mt-0.5">
-                Explora los lotes seleccionados desplazando la galer&iacute;a
+                Desliza para ver m&aacute;s lotes
               </p>
             </div>
 
@@ -219,7 +223,7 @@ export default function Inicio() {
                 Últimos lotes publicados
               </h2>
               <p className="text-sm text-gris-calido mt-0.5">
-                Material textil disponible publicado recientemente por talleres
+                Rollos y saldos de corte listos para entrega o recojo.
               </p>
             </div>
             <Link to="/mercado" className="text-sm font-semibold text-verde-bosque hover:text-verde-hoja">
@@ -231,9 +235,15 @@ export default function Inicio() {
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {recientes.length > 0 && (
               <div className="md:col-span-2 lg:col-span-2 bg-white rounded-tarjeta p-1 border-2 border-menta shadow-sm relative">
-                <span className="absolute top-3 left-3 z-10 px-3 py-1 rounded-full bg-verde-bosque text-crema text-sm font-semibold tracking-wide">
-                  ⭐ Lote destacado reciente
+                <span className="absolute top-3 left-3 z-10 px-3 py-1 rounded-full bg-verde-bosque text-crema text-sm font-semibold tracking-wide flex items-center gap-1.5">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="#FBF7EE" stroke="#FBF7EE" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                  <span>Lote destacado reciente</span>
                 </span>
+                <LoteCard lote={recientes[0]} />
+              </div>
+            )}
                 <LoteCard lote={recientes[0]} />
               </div>
             )}
