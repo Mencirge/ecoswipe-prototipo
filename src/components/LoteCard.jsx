@@ -14,14 +14,16 @@ export default function LoteCard({ lote, variant = 'grid' }) {
     >
       <div className="relative">
         <PlaceholderImg tela={lote.tela} color={lote.color} className="w-full aspect-[4/3]" size="lg" />
-        {lote.metroDisponible && (
-          <span className="absolute top-2 left-2 badge badge-metro">
-            Tambi&eacute;n por metro
-          </span>
-        )}
-        <div className="absolute top-2 right-2 flex gap-1">
-          {lote.entrega.includes('delivery') && <span className="badge badge-delivery">Delivery</span>}
-          {lote.entrega.includes('recojo') && <span className="badge badge-recojo">Recojo</span>}
+        <div className="absolute top-2 left-2 right-2 flex flex-wrap gap-1 items-start justify-between pointer-events-none">
+          {lote.metroDisponible && (
+            <span className="badge badge-metro">
+              Por metro
+            </span>
+          )}
+          <div className="flex gap-1 ml-auto">
+            {lote.entrega.includes('delivery') && <span className="badge badge-delivery">Delivery</span>}
+            {lote.entrega.includes('recojo') && <span className="badge badge-recojo">Recojo</span>}
+          </div>
         </div>
       </div>
       <div className="p-3.5 md:p-4">
