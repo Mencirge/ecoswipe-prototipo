@@ -81,7 +81,7 @@ export default function Layout() {
             <NavLink
               key={item.to}
               to={item.to}
-              className="flex flex-col items-center gap-1 py-1.5 min-w-[44px] min-h-[44px] justify-center transition-colors"
+              className="flex-1 flex flex-col items-center gap-0.5 py-1 min-h-[44px] justify-center transition-colors text-center"
             >
               <NavIcon icon={item.icon} active={isActive} />
               <span className={`text-sm font-semibold ${isActive ? 'text-verde-bosque' : 'text-gris-calido'}`}>
