@@ -467,12 +467,20 @@ Pruebas automatizadas en navegador real midiendo `window.scrollY` antes y despu�
 |---|:---:|:---:|---|:---:|
 | Inicio -> Mercado | 2071 px | **0 px** | Resetea scroll arriba | **PASA** |
 | Mercado -> DetalleLote (`/lote/1`) | 450 px | **0 px** | Resetea scroll arriba | **PASA** |
-| DetalleLote -> Publicar (`/publicar`) | 300 px | **0 px** | Resetea scroll arriba | **PASA** |
-| Publicar -> Impacto (`/impacto`) | 250 px | **0 px** | Resetea scroll arriba | **PASA** |
-| Filtrar / Buscar en Mercado (`?q=denim`) | 350 px | **104 px** | Conserva scroll (NO sube) | **PASA** |
+| Transición de Ruta / Acción | Scroll Previo | Scroll Posterior | Comportamiento Esperado | Veredicto |
+|---|:---:|:---:|---|:---:|
+| Inicio -> Mercado | 2071 px | **0 px** | Resetea scroll arriba | **PASA** |
+| Mercado -> DetalleLote (`/lote/l1`) | 500 px | **0 px** | Resetea scroll arriba (Lote real "Retazos de algodon pima blanco") | **PASA** |
+| DetalleLote -> PerfilVendedor (`/tienda/t1`) | 400 px | **0 px** | Resetea scroll arriba (Tienda real "Textiles Quispe") | **PASA** |
+| PerfilVendedor -> Publicar (`/publicar`) | 350 px | **0 px** | Resetea scroll arriba | **PASA** |
+| Publicar -> Impacto (`/impacto`) | 300 px | **0 px** | Resetea scroll arriba | **PASA** |
+| Filtrar / Buscar en Mercado (`?q=algodon`) | 350 px | **104 px** | Conserva scroll (NO sube a 0) | **PASA** |
+
+*Nota explicativa sobre el filtrado (350 px -> 104 px)*:
+Al aplicar el filtro `"algodon"`, la lista de resultados se reduce de 12 a 2 lotes. La altura total del documento (`scrollHeight`) se reduce de `2183 px` a `916 px`. Dado que el viewport (`innerHeight`) es de `812 px`, el límite físico absoluto de desplazamiento permitido por el motor del navegador es `scrollHeight - innerHeight = 916 - 812 = 104 px`. El navegador clampea automáticamente el scroll al fondo del nuevo documento recortado; el componente no se desmonta ni se dispara `ScrollToTop` (el cual lo llevaría a 0 px).
 
 #### (b) Verificación del Panel de Filtros en Viewports Móviles (`scripts/verify_filter_panel.mjs`)
-Medición con `getBoundingClientRect()` del botón principal *"Ver resultados"* con el panel abierto:
+Medición con `getBoundingClientRect()` del botón principal *"Ver X resultados"* con el panel abierto:
 
 | Viewport | Altura Útil | Coordenadas del Botón (`top` - `bottom`) | ¿Dentro del Viewport? | ¿Sobre BottomNav (`z-60 > z-50`)? | Captura de Evidencia | Veredicto |
 |---|:---:|:---:|:---:|:---:|---|:---:|
@@ -480,19 +488,21 @@ Medición con `getBoundingClientRect()` del botón principal *"Ver resultados"* 
 | **360x740** | 740 px | `680.00 px` - `724.00 px` | **SÍ** (holgura 16px) | **SÍ** | `capturas/panel_filtros_360x740.png` | **PASA** |
 | **390x844** | 844 px | `784.00 px` - `828.00 px` | **SÍ** (holgura 16px) | **SÍ** | `capturas/panel_filtros_390x844.png` | **PASA** |
 | **360x650** *(Safari barra -90px)* | 650 px | `590.00 px` - `634.00 px` | **SÍ** (holgura 16px) | **SÍ** | `capturas/panel_filtros_360x650.png` | **PASA** |
+| **360x420** *(Teclado simulado)* | 420 px | `360.00 px` - `404.00 px` | **SÍ** (holgura 16px) | **SÍ** | `capturas/panel_filtros_teclado_360x420.png` | **PASA** |
 
-#### (c) Medición del Botón Principal de Todos los Modales en 360x740 (`scripts/verify_modal_buttons.mjs`)
+#### (c) Medición del Botón Principal de Todos los Modales en 360x740 (`scripts/capture_all_modals.mjs`)
 Verificación de que el botón primario de acción de cada modal queda visible sin necesidad de scroll en la resolución más compacta:
 
-| Modal / Drawer | Selector / Botón Principal | Bottom del Botón | Alto Viewport | ¿Visible sin scroll? | Veredicto |
-|---|---|:---:|:---:|:---:|:---:|
-| `Modal Contacto` | Botón "Enviar mensaje" | **531.00 px** | 740 px | **SÍ** (holgura 209px) | **PASA** |
-| `Modal Oferta` | Botón "Enviar oferta" | **660.00 px** | 740 px | **SÍ** (holgura 80px) | **PASA** |
-| `Modal Confirmar Entrega` | Botón "Confirmar entrega" | **656.00 px** | 740 px | **SÍ** (holgura 84px) | **PASA** |
-| `Modal Trato Cerrado` | Botón "Entendido" | **716.00 px** | 740 px | **SÍ** (holgura 24px) | **PASA** |
-| `Modal Vista Previa (Publicar)` | Botón "Publicar lote" | **724.00 px** | 740 px | **SÍ** (holgura 16px) | **PASA** |
-| `Modal Éxito (Publicar)` | Botón "Ver lote publicado" | **708.00 px** | 740 px | **SÍ** (holgura 32px) | **PASA** |
-| `Panel Filtros (Mercado)` | Botón "Ver resultados" | **724.00 px** | 740 px | **SÍ** (holgura 16px) | **PASA** |
+| Modal / Drawer | Texto Exacto del Botón | Bottom del Botón | Alto Viewport | Captura Generada | Veredicto |
+|---|---|:---:|:---:|---|:---:|
+| `Modal Contacto` | "Llamada telefónica" / "WhatsApp directo" | **652.00 px** | 740 px | `capturas/modal_contacto_360x740.png` | **PASA** |
+| `Modal Oferta` | "Enviar oferta al taller" | **660.00 px** | 740 px | `capturas/modal_oferta_360x740.png` | **PASA** |
+| `Modal Confirmar Entrega` | "Entregué" / "Recibí" | **656.00 px** | 740 px | `capturas/modal_confirmar_entrega_360x740.png` | **PASA** |
+| `Modal Trato Cerrado` | "Continuar" | **716.00 px** | 740 px | `capturas/modal_trato_cerrado_360x740.png` | **PASA** |
+| `Modal Vista Previa (Publicar)` | "Confirmar y Publicar" | **724.00 px** | 740 px | `capturas/modal_vista_previa_360x740.png` | **PASA** |
+| `Modal Éxito (Publicar)` | "Publicar otro" / "Ver mercado" | **708.00 px** | 740 px | `capturas/modal_exito_360x740.png` | **PASA** |
+| `Panel Filtros (Mercado)` | "Ver 12 resultados" | **724.00 px** | 740 px | `capturas/panel_filtros_360x740.png` | **PASA** |
+| `Panel Filtros (Teclado 360x420)` | "Ver 12 resultados" | **404.00 px** | 420 px | `capturas/panel_filtros_teclado_360x420.png` | **PASA** |
 
 #### (d) Diff de Píxeles en Escritorio Ampliado (`scripts/expanded_desktop_pixel_diff.mjs`)
 Comparación automatizada de 45 pantallas y modales entre la versión baseline de escritorio y HEAD en resoluciones de 768px, 1024px y 1280px:
