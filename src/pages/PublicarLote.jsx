@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Modal from '../components/Modal'
-import mascotaWebp from '../assets/mascota.webp'
-import mascotaPng from '../assets/mascota.png'
+import Swipee from '../components/Swipee'
 import impactoConfig from '../data/impactoConfig.json'
 
 const PASOS = [
@@ -205,13 +204,16 @@ export default function PublicarLote() {
 
         {step === 2 && (
           <div className="space-y-6 page-enter">
-            <div>
-              <h2 className="text-xl font-fredoka font-semibold text-verde-bosque">
-                2. Cantidad, dimensiones y precio
-              </h2>
-              <p className="text-base text-gris-calido mt-0.5">
-                Define el peso disponible y el valor por kilogramo o metro.
-              </p>
+            <div className="flex items-center gap-3 sm:gap-4">
+              <Swipee pose="anotando" size="sm" alt="" className="flex-shrink-0" />
+              <div>
+                <h2 className="text-xl font-fredoka font-semibold text-verde-bosque">
+                  2. Cantidad, dimensiones y precio
+                </h2>
+                <p className="text-base text-gris-calido mt-0.5">
+                  Anota el peso y el precio del lote.
+                </p>
+              </div>
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -494,16 +496,7 @@ export default function PublicarLote() {
       {/* Modal de Éxito con Swipee y microcopy oficial del Brandbook */}
       <Modal isOpen={successModal} onClose={() => setSuccessModal(false)} title="¡Lote publicado!">
         <div className="text-center py-4 space-y-4">
-          <picture className="mx-auto block">
-            <source srcSet={mascotaWebp} type="image/webp" />
-            <img
-              src={mascotaPng}
-              alt=""
-              width="120"
-              height="147"
-              className="mx-auto object-contain"
-            />
-          </picture>
+          <Swipee pose="celebrando" size="md" className="mx-auto block" alt="" />
           <h3 className="text-xl font-fredoka font-semibold text-verde-bosque">
             ¡Listo! Tu retazo ya está publicado.
           </h3>

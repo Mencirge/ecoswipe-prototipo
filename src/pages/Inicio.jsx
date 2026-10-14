@@ -3,8 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import LoteCard from '../components/LoteCard'
 import ImpactBanner from '../components/ImpactBanner'
 import Logo from '../components/Logo'
-import mascotaWebp from '../assets/mascota.webp'
-import mascotaPng from '../assets/mascota.png'
+import Swipee from '../components/Swipee'
 import lotes from '../data/lotes.json'
 
 const TELAS = ['Todas', 'Algodón', 'Poliéster', 'Denim', 'Jersey', 'Mezcla', 'Licra', 'Franela']
@@ -85,16 +84,7 @@ export default function Inicio() {
 
             {/* Swipee directamente sobre fondo Crema, sin tarjeta blanca */}
             <div className="lg:col-span-5 flex items-center gap-4 sm:gap-5">
-              <picture className="flex-shrink-0">
-                <source srcSet={mascotaWebp} type="image/webp" />
-                <img
-                  src={mascotaPng}
-                  alt=""
-                  width="88"
-                  height="108"
-                  className="object-contain"
-                />
-              </picture>
+              <Swipee pose="principal" size={108} priority alt="" />
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
                   <span className="w-2.5 h-2.5 rounded-full bg-verde-hoja" />

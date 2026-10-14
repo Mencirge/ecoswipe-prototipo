@@ -89,14 +89,61 @@ Para garantizar la integridad del prototipo sin alterar su modelo de datos ni su
    * El brandbook y la narrativa de producto contemplan gestos táctiles de deslizamiento tipo Tinder ("Me sirve" / "Paso"). El prototipo actual opera sobre un carrusel navegable y filtros por catálogo.
 4. **Colores de Producto en Muestras de Tela**:
    * Los componentes de muestra fotográfica y placeholders requieren alimentarse de los colores reales del corte por cada lote publicado.
-5. **Lista de Frases Propuestas Pendientes de Aprobación Formal**:
-   * *"Balance de impacto del taller"* (propuesta alternativa a "Calculadora de Impacto").
-   * *"Talleres participantes en Gamarra"* (propuesta alternativa a "Ranking de Talleres").
-   * *"Taller activo en EcoSwipe"* / *"Actividad registrada"* (propuesta para sustituir "Nivel del taller", dado que `tiendas.json` no cuenta con gamificación de niveles registrada).
-   * *"Material textil aprovechado"* (propuesta de métrica para kilogramos recuperados).
-   * *"Retazos y saldos al peso. Algunos lotes también por metro."* (subtítulo de hero).
-   * *"Lo último que subieron los talleres"* (sección de lotes recientes).
-   * *"Último lote publicado"* (etiqueta del lote reciente protagonista).
-   * *"Contacto directo de taller a taller, sin intermediarios."* (modal de contacto).
-   * *"¡Trato hecho! Ese retazo ya tiene dónde seguir."* (voz de Swipee en modal de confirmación).
-   * *"¡Listo! Tu retazo ya está publicado."* (voz de Swipee en modal de publicación).
+5. **Lista de Frases y su Estado de Aprobación**:
+   * *Oficiales del Brandbook*:
+     - *"¡Listo! Tu retazo ya está publicado."* (voz de Swipee en modal de éxito de Publicar).
+     - *"Aún no hay coincidencias. Vuelvo a buscar por ti."* (voz de Swipee en estado vacío de Mercado).
+   * *Propuestas y Aprobadas por el Usuario (no del Brandbook)*:
+     - *"Encuentra el retazo exacto para tu confección."* (hero de Inicio).
+     - *"¡Trato hecho! Ese retazo ya tiene dónde seguir."* (modal de confirmación de entrega / trato cerrado).
+     - *"¿Ya entregaste o recibiste el lote?"* (pregunta de confirmación).
+     - *"Balance de impacto del taller"* (alternativa a Calculadora de Impacto).
+     - *"Talleres participantes en Gamarra"* (alternativa a Ranking de Talleres).
+     - *"Taller activo en EcoSwipe"* / *"Actividad registrada"* (sustitución de Nivel del taller).
+     - *"Material textil aprovechado"* (métrica de kg recuperados).
+     - *"Retazos y saldos al peso. Algunos lotes también por metro."* (subtítulo de hero).
+     - *"Lo último que subieron los talleres"* (lotes recientes).
+     - *"Último lote publicado"* (etiqueta del lote protagonista).
+     - *"Contacto directo de taller a taller, sin intermediarios."* (modal de contacto).
+   * *Texto Preexistente del Prototipo*:
+     - *"Este taller no tiene lotes activos en este momento."* (incorporado en `rediseno-v1.0`).
+   * *Frases Nuevas [PENDIENTES DE APROBACIÓN]*:
+     - *"Anota el peso y el precio del lote."* (PublicarLote, paso 2 — pose Anotando).
+     - *"No encuentro ese lote. Revisa el enlace o vuelve al mercado."* (DetalleLote — pose Triste en lote no encontrado).
+
+---
+
+## 5. Swipee: Poses y Sistema de Ilustración (rediseno-v1.2)
+
+### Regla Fundamental
+La mascota original (`mascota.webp` / `mascota.png`) permanece intacta como versión principal y por defecto. Las nuevas emociones amplían el sistema visual sin alterar el modelo de datos, rutas ni lógica funcional preexistente.
+
+### Factor de Escala Común y Calibración
+Todas las poses se calibraron con un **factor de escala unificado (0.3045)** contra la mascota principal de referencia (cuerpo de pie = 380 px en archivo, correspondiente a 147 px CSS en tamaño `md`), garantizando que la altura del cuerpo y las proporciones se mantengan idénticas entre poses y alineadas a la misma línea de base (pies).
+La hoja de validación visual de coherencia y contraste se encuentra en `capturas/swipee_hoja_poses.png`.
+
+### Tabla Final de Implementación de Poses
+
+| Pose | Pantalla / Momento | Tamaño CSS | Dimensiones Render (`width` × `height`) | Copy Asociado | Origen del Copy |
+| :--- | :--- | :---: | :---: | :--- | :--- |
+| **`principal`** | Inicio (Hero de bienvenida) | `md` (calibrado) | 88 × 108 px | *“Encuentra el retazo exacto para tu confección.”* | Aprobado por el usuario |
+| **`celebrando`** | PublicarLote (Modal de éxito) | `md` (120 px base) | 151 × 166 px | *“¡Listo! Tu retazo ya está publicado.”* | **Oficial Brandbook** |
+| **`celebrando`** | DetalleLote (Modal de trato cerrado) | `md` (120 px base) | 151 × 166 px | *“¡Trato hecho! Ese retazo ya tiene dónde seguir.”* | Aprobado por el usuario |
+| **`pensando`** | Mercado (Sin coincidencias de búsqueda/filtro) | `md` (120 px base) | 132 × 154 px | *“Aún no hay coincidencias. Vuelvo a buscar por ti.”* | **Oficial Brandbook** |
+| **`durmiendo`** | PerfilVendedor (Taller sin lotes activos) | `md` (120 px base) | 130 × 147 px | *“Este taller no tiene lotes activos en este momento.”* | Preexistente prototipo |
+| **`anotando`** | PublicarLote (Cabecera paso 2: Cantidad y precio) | `sm` (~74 px alto) | 52 × 74 px | *“Anota el peso y el precio del lote.”* | **Pendiente de aprobación** |
+| **`triste`** | DetalleLote (Lote no encontrado / error) | `md` (120 px base) | 105 × 147 px | *“No encuentro ese lote. Revisa el enlace o vuelve al mercado.”* | **Pendiente de aprobación** |
+| **`carta`** | *(Sin uso)* | — | 106 × 154 px (base) | — | Disponible en biblioteca |
+| **`molesto`** | *(Sin uso)* | — | 88 × 148 px (base) | — | Disponible en biblioteca |
+
+### Poses Sin Uso (Disponibles en Biblioteca)
+* **`mascota-carta`**: Descartada en Inicio para evitar saturación y cumplir la regla de oro: *"Máximo una mascota por pantalla o modal visible"*. Queda disponible para futuros flujos de correspondencia, mensajería o guía de remisión.
+* **`mascota-molesto`**: Sin uso por directriz de tono de marca: en EcoSwipe no se regaña al usuario, no se transmiten culpas ambientales y no hay estados de furia en las transacciones. Queda archivada en la biblioteca de activos.
+
+### Especificaciones Técnicas del Componente `<Swipee />`
+1. **Contenedor `<picture>`**: Entrega formato moderno WebP de alto rendimiento (20–38 KB) con respaldo PNG automático.
+2. **Dimensiones explícitas**: `width` y `height` definidos de forma exacta según la escala del cuerpo para evitar saltos de layout (CLS = 0).
+3. **Carga diferida**: `loading="lazy"` y `decoding="async"` para todas las poses secundarias fuera del primer pantallazo; `priority={true}` (`loading="eager"`) exclusivo para el hero de Inicio.
+4. **Accesibilidad**: `alt=""` decorativo cuando el componente acompaña textos o titulares; texto alternativo semántico (`alt="Swipee, la hojita de EcoSwipe"`) en apariciones autónomas.
+5. **Canal alfa y contraste**: Extracción de fondo con defringe asistido por alpha matting; verificado al 400% sobre Magenta (`#FF00FF`), Crema (`#FBF7EE`), Menta (`#DDF3E6`) y Blanco (`#FFFFFF`) con 0% de halo blanquecino o artefactos oscuros.
+

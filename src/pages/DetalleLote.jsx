@@ -3,8 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import StarRating from '../components/StarRating'
 import PlaceholderImg from '../components/PlaceholderImg'
 import Modal from '../components/Modal'
-import mascotaWebp from '../assets/mascota.webp'
-import mascotaPng from '../assets/mascota.png'
+import Swipee from '../components/Swipee'
 import lotes from '../data/lotes.json'
 import tiendas from '../data/tiendas.json'
 import impactoConfig from '../data/impactoConfig.json'
@@ -20,15 +19,9 @@ export default function DetalleLote() {
 
   if (!lote) return (
     <div className="page-enter max-w-5xl mx-auto px-4 md:px-8 py-20 text-center">
-      <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-menta text-verde-bosque flex items-center justify-center">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-          <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
-          <line x1="12" y1="22.08" x2="12" y2="12" />
-        </svg>
-      </div>
+      <Swipee pose="triste" size="md" className="mx-auto mb-4" alt="" />
       <h2 className="text-2xl font-fredoka font-semibold text-verde-bosque">Lote no encontrado</h2>
-      <p className="text-base text-verde-bosque/85 mt-2">El retazo que buscas ya no está disponible o el enlace es incorrecto.</p>
+      <p className="text-base text-verde-bosque/85 mt-2">No encuentro ese lote. Revisa el enlace o vuelve al mercado.</p>
       <Link to="/mercado" className="btn-primary mt-6 inline-flex min-h-[44px] items-center">
         Ir al mercado
       </Link>
@@ -388,16 +381,7 @@ export default function DetalleLote() {
           {confirmDone ? (
             /* Vista de Trato Cerrado con Swipee */
             <div className="space-y-4 py-2 page-enter">
-              <picture className="mx-auto block">
-                <source srcSet={mascotaWebp} type="image/webp" />
-                <img
-                  src={mascotaPng}
-                  alt=""
-                  width="120"
-                  height="147"
-                  className="mx-auto object-contain"
-                />
-              </picture>
+              <Swipee pose="celebrando" size="md" className="mx-auto block" alt="" />
               <h3 className="text-xl font-fredoka font-semibold text-verde-bosque">
                 ¡Trato cerrado!
               </h3>

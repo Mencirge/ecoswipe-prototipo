@@ -1,6 +1,7 @@
 import { useParams, Link } from 'react-router-dom'
 import LoteCard from '../components/LoteCard'
 import StarRating from '../components/StarRating'
+import Swipee from '../components/Swipee'
 import lotes from '../data/lotes.json'
 import tiendas from '../data/tiendas.json'
 
@@ -203,6 +204,7 @@ export default function PerfilVendedor() {
             </div>
           ) : (
             <div className="bg-white rounded-tarjeta border border-menta p-8 text-center space-y-3">
+              <Swipee pose="durmiendo" size="md" className="mx-auto mb-2" alt="" />
               <p className="text-base font-normal text-verde-bosque">
                 Este taller no tiene lotes activos en este momento.
               </p>
