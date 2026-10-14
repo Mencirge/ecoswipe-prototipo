@@ -43,6 +43,13 @@ export default function Layout() {
   const location = useLocation()
   return (
     <div className="min-h-screen bg-crema text-verde-bosque pb-20 md:pb-0">
+      {/* Mobile top bar: barra de 56px con logo a la izquierda */}
+      <header className="flex md:hidden items-center h-14 px-4 bg-crema border-b border-menta sticky top-0 z-40">
+        <NavLink to="/" className="flex items-center min-w-[96px] h-full py-1.5 hover:opacity-95 transition-opacity" aria-label="EcoSwipe - Ir a inicio">
+          <Logo size={42} variant="mobile" />
+        </NavLink>
+      </header>
+
       {/* Desktop top nav */}
       <header className="hidden md:flex items-center justify-between px-6 lg:px-12 py-3.5 bg-crema border-b border-menta sticky top-0 z-40">
         <NavLink to="/" className="flex items-center gap-2 hover:opacity-95 transition-opacity">
@@ -84,7 +91,7 @@ export default function Layout() {
               className="flex-1 flex flex-col items-center gap-0.5 py-1 min-h-[44px] justify-center transition-colors text-center"
             >
               <NavIcon icon={item.icon} active={isActive} />
-              <span className={`text-sm font-semibold ${isActive ? 'text-verde-bosque' : 'text-gris-calido'}`}>
+              <span className={`text-[12px] font-semibold leading-tight ${isActive ? 'text-verde-bosque' : 'text-gris-calido'}`}>
                 {item.label}
               </span>
             </NavLink>

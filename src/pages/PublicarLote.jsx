@@ -73,7 +73,7 @@ export default function PublicarLote() {
             return (
               <li
                 key={p.num}
-                className={`flex flex-col sm:flex-row items-center sm:items-center gap-2 p-2.5 rounded-tarjeta border transition-colors ${
+                className={`flex flex-col sm:flex-row items-center sm:items-center gap-1.5 sm:gap-2 p-2 sm:p-2.5 rounded-tarjeta border transition-colors ${
                   isCurrent
                     ? 'bg-white border-verde-hoja shadow-xs'
                     : isCompleted
@@ -82,7 +82,7 @@ export default function PublicarLote() {
                 }`}
               >
                 <div
-                  className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-sans font-semibold text-sm flex-shrink-0 transition-colors ${
+                  className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-sans font-semibold text-xs sm:text-sm flex-shrink-0 transition-colors ${
                     isCurrent
                       ? 'bg-verde-bosque text-crema'
                       : isCompleted
@@ -100,7 +100,7 @@ export default function PublicarLote() {
                 </div>
                 <div className="text-center sm:text-left min-w-0">
                   <span
-                    className={`block font-sans text-sm font-semibold truncate ${
+                    className={`block font-sans text-[12px] sm:text-sm font-semibold truncate ${
                       isCurrent ? 'text-verde-bosque' : isCompleted ? 'text-verde-bosque' : 'text-gris-calido'
                     }`}
                   >
@@ -114,7 +114,7 @@ export default function PublicarLote() {
       </nav>
 
       {/* Tarjeta del formulario con radio de 16px (rounded-tarjeta) */}
-      <div className="bg-white rounded-tarjeta p-5 sm:p-7 border border-menta shadow-xs">
+      <div className="bg-white rounded-tarjeta p-4 sm:p-7 border border-menta shadow-xs">
         {step === 1 && (
           <div className="space-y-6 page-enter">
             <div>

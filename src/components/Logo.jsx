@@ -13,6 +13,7 @@ import faviconSvg from '../assets/favicon.svg'
 export default function Logo({ size = 36, variant = 'full', className = '' }) {
   const isWhite = variant === 'blanco'
   const isSymbol = variant === 'symbol'
+  const isMobile = variant === 'mobile'
 
   if (isSymbol) {
     const symbolSize = Math.max(size, 24)
@@ -31,7 +32,17 @@ export default function Logo({ size = 36, variant = 'full', className = '' }) {
   const height = Math.max(size, 32)
   const width = Math.max(Math.round(height * 1.81), 96)
 
-  return (
+  return isMobile ? (
+    <svg
+      viewBox="50 50 227 171"
+      className={`inline-block select-none flex-shrink-0 ${className}`}
+      style={{ height: `${size || 42}px`, width: 'auto' }}
+      role="img"
+      aria-label="EcoSwipe"
+    >
+      <image href={isWhite ? logoBlanco : logoPrincipal} width="327" height="271" />
+    </svg>
+  ) : (
     <img
       src={isWhite ? logoBlanco : logoPrincipal}
       alt="EcoSwipe"

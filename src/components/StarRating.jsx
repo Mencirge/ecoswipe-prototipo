@@ -31,11 +31,24 @@ export default function StarRating({ rating, size = 16 }) {
     }
   }
 
+  const numText = typeof rating === 'number' ? rating.toFixed(1) : rating
+
   return (
-    <span className="inline-flex items-center gap-1.5" aria-label={`${rating} de 5 estrellas`}>
-      <span className="inline-flex items-center gap-0.5">{stars}</span>
-      <span className="text-sm font-sans font-semibold text-verde-bosque">
-        {typeof rating === 'number' ? rating.toFixed(1) : rating}
+    <span className="inline-flex items-center gap-1 md:gap-1.5" aria-label={`${rating} de 5 estrellas`}>
+      {/* Móvil: 1 sola estrella + número visible */}
+      <span className="inline-flex md:hidden items-center gap-1">
+        <svg width={size} height={size} viewBox="0 0 24 24" fill="#E4793B" stroke="#12372A" strokeWidth="1.2" strokeLinejoin="round" aria-hidden="true">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+        </svg>
+        <span className="text-[13px] font-sans font-semibold text-verde-bosque">
+          {numText}
+        </span>
+      </span>
+
+      {/* Desktop (md+): 5 estrellas completas idéntico a baseline */}
+      <span className="hidden md:inline-flex items-center gap-0.5">{stars}</span>
+      <span className="hidden md:inline text-sm font-sans font-semibold text-verde-bosque">
+        {numText}
       </span>
     </span>
   )

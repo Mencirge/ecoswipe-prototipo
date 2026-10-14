@@ -169,9 +169,9 @@ export default function DetalleLote() {
                     </span>
                   )}
                 </div>
-                <div className="flex items-center gap-2 mt-1">
+                <div className="flex items-center gap-1.5 md:gap-2 mt-1 flex-wrap">
                   <StarRating rating={tienda.calificacion} size={14} />
-                  <span className="text-sm text-gris-calido">({tienda.totalResenas} reseñas)</span>
+                  <span className="text-xs md:text-sm text-gris-calido">({tienda.totalResenas} reseñas)</span>
                 </div>
               </div>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6B6F6A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

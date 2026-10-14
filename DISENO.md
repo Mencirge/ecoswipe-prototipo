@@ -164,3 +164,75 @@ Se certificó mediante capturas en viewport móvil de 375px que en ningún momen
 5. **Accesibilidad**: `alt=""` decorativo cuando el componente acompaña textos o titulares; texto alternativo semántico (`alt="Swipee, la hojita de EcoSwipe"`) en apariciones autónomas.
 6. **Canal alfa y contraste**: Extracción de fondo con defringe asistido por alpha matting; verificado al 400% sobre Magenta (`#FF00FF`), Crema (`#FBF7EE`), Menta (`#DDF3E6`) y Blanco (`#FFFFFF`) con 0% de halo blanquecino o artefactos oscuros.
 
+---
+
+## 6. Adaptación Móvil y Escala (<768px) — rediseno-v1.4-mobile
+
+### Escala Tipográfica y de Controles en Móvil (<768px)
+Para resolver la saturación visual en dispositivos móviles (densidad de información inspirada en Mercado Libre y Falabella), se documenta la **excepción formal** a la directriz de "mínimo 14px de fuente y 44px de control" para pantallas estrictamente menores a 768px (`<md`):
+
+* **H1 del Hero**: `28px / 1.2` Fredoka 600 (`text-[28px] leading-tight`).
+* **Títulos de sección**: `20px` Fredoka 600 (`text-xl font-fredoka font-semibold`).
+* **Párrafos de lectura**: `16px` Inter 400 (`text-base`).
+* **Texto de ayuda y secundario**: `14px` Inter 400 (`text-sm font-normal`).
+* **Título de tarjeta de lote**: `15px` Inter 600, máximo 2 líneas (`text-[15px] line-clamp-2 leading-snug`).
+* **Precio de tarjeta**: `18px` Fredoka 700 (`text-[18px] font-fredoka font-bold`), con sufijo `"/kg"` a `13px` Inter (`text-[13px] text-gris-calido`). En escritorio (`md:`) se conserva intacto como `"por kg"` a `14px`.
+* **Metadatos de tarjeta**: `13px` Inter 400 (`text-[13px]`), condensados en una sola línea con `truncate`.
+* **Badges y etiquetas secundarias**: `12px–13px` Inter 600 (`text-[12px] md:text-sm`).
+* **Etiquetas de barra inferior (Bottom Nav)**: `12px` Inter 600 (`text-[12px] font-semibold`).
+* **Chips y controles secundarios**: `36px–40px` de altura visual (`min-h-[36px]`, `h-9`) con `8px` de separación (`gap-2`).
+* **Botones de acción primaria y campos de texto**: Se mantienen en mínimo `44px` (`min-h-[44px]`).
+
+### Cambios Implementados (rediseno-v1.4-mobile)
+
+1. **Etiqueta "Datos de ejemplo"**:
+   * *Implementación previa*: Era un elemento con posición fija flotante (`fixed top-2 right-2 z-[100]`) en `index.css` que en celulares tapaba botones de navegación, títulos y badges superiores.
+   * *Cambio realizado en móvil (`index.css`)*: En móvil pasa a una franja delgada de `28px` (`height: 28px; width: 100%; position: static;`) en el flujo normal del documento, ubicada arriba del contenido, desplazándose naturalmente con el scroll.
+   * *Escritorio (`md:`)*: Conserva exactamente su posición flotante `fixed top-2 right-2 z-100` (`@media (min-width: 768px)`), garantizando 0 píxeles de diferencia.
+
+2. **Cabecera Móvil y Adaptación de Logo**:
+   * Se incorporó una barra superior pegajosa (`sticky top-0 z-40`) de `56px` de altura (`h-14`) con fondo Crema sólido y borde inferior Menta.
+   * Se añadió la variante `variant="mobile"` en `src/components/Logo.jsx`. Sin alterar el archivo original `logo-principal.svg`, se recortó el `viewBox` a `"50 50 227 171"` para remover los márgenes de respiro internos del SVG, garantizando un ancho visible de logo ≥96px dentro de un contenedor touch-friendly.
+   * La cabecera desktop (`hidden md:flex`) permanece 100% intacta.
+
+3. **Barra Inferior Móvil (Bottom Nav)**:
+   * Barra de navegación fija inferior con altura calibrada a `56px` más soporte de safe-area (`padding-bottom: env(safe-area-inset-bottom, 0px)`).
+   * Íconos de `22px–24px`, etiquetas en `text-[12px] font-semibold`. Se ajustó el padding del contenedor principal (`pb-20 md:pb-0`) para evitar solapamientos con el contenido.
+
+4. **LoteCard Responsiva**:
+   * *Imagen*: En móvil utiliza proporción `aspect-[4/3]` compacta. Se anuló el `min-height: 320px` solo por debajo de 768px (`@media (max-width: 767.98px) { .aspect-[4/3] { min-height: 0 !important; } }`), manteniendo el escritorio con su min-height original intacto.
+   * *Badges sobre imagen*: En móvil únicamente se muestra "Por metro" si aplica. "Delivery" y "Recojo" pasan bajo el precio en una línea compacta de `13px` con ícono SVG de camión de entrega de `16px` (`"Delivery · Recojo"`).
+   * *Metadatos*: Reducidos a una sola línea con `truncate` (`"2.5 kg · Algodón"`).
+   * *Fila de vendedor*: Avatar compacto de `24px` (`w-6 h-6 md:w-7 md:h-7`), nombre truncado, check de verificado y calificación condensada a `1 estrella + valor numérico` (`StarRating.jsx`). Las 5 estrellas completas se reservan para escritorio (`md:`).
+   * *Tarjetas de carrusel*: Ancho ajustado a `w-[68%]` en móvil (`md:w-auto md:min-w-[260px] md:max-w-[280px]`) para permitir que el siguiente lote asome visualmente.
+
+5. **Mercado**:
+   * Buscador (campo de `44px`) y botón de "Filtros" agrupados en una sola fila compacta.
+   * Contador de resultados (`"X lotes disponibles"`) y selector de orden integrados en una sola línea horizontal compacta.
+   * Grilla densa de 2 columnas con `gap: 12px` (`gap-3 md:gap-4`) y padding lateral de `16px` (`px-4 md:px-8`).
+   * Permite visualizar al menos 2 filas completas de lotes en la primera pantalla en resolución `360x740`.
+
+6. **Inicio**:
+   * Hero compacto: Título a `28px`, buscador y botón de búsqueda en una sola fila (botón cuadrado de `44x44px` con ícono de lupa y texto accesible vía `sr-only md:not-sr-only`).
+   * Swipee principal en bloque compacto de `64x78px` alineado horizontalmente con su frase (`size="hero"` responsivo).
+   * Chips de filtrado de tejido en una sola fila con scroll horizontal (`overflow-x-auto`) de `36px` de alto visual (`h-9 min-h-[36px] md:min-h-[44px]`).
+   * Carrusel de lotes: Botones "Anterior" y "Siguiente" ocultos en móvil (`hidden md:flex`), enlace "Ver todos" alineado a la derecha en la misma fila del título.
+
+7. **Revisión de Vistas Complementarias (Correcciones y Propuestas)**:
+   * **DetalleLote**:
+     - *Corregido*: Altura de imagen y espaciados móviles en tarjetas de contacto para evitar empujar el botón de WhatsApp fuera del primer viewport en `360x740`.
+     - *Propuesta*: Botón flotante inferior (FAB) pegajoso en móvil para "Cerrar trato por WhatsApp" con miniatura del vendedor.
+   * **PublicarLote**:
+     - *Corregido*: Grilla de opciones en Paso 1 adaptada a 2 columnas en móvil (`grid-cols-2 sm:grid-cols-3`) evitando roturas de etiquetas; botones de pie ordenados verticalmente en móvil (`flex-col-reverse sm:flex-row`).
+     - *Propuesta*: Barra de progreso tipo "stepper" con círculos numerados compactos en lugar del texto "Paso 1 de 3".
+   * **PerfilVendedor**:
+     - *Corregido*: Cabecera del taller compactada (avatar `64px` en móvil frente a `96px` en desktop), métricas en 3 columnas compactas y catálogo de lotes en grilla densa de 2 columnas.
+     - *Propuesta*: Enlace directo de WhatsApp en la cabecera móvil del perfil.
+   * **Impacto**:
+     - *Corregido*: Padding de tarjetas de métricas reducido a `p-3 md:p-6`, cifras ajustadas a `text-2xl md:text-4xl` para evitar desbordes horizontales en `360px`.
+     - *Propuesta*: Calculadora interactiva donde el confeccionista ingrese sus kg mensuales de retazos y visualice el equivalente en árboles y agua ahorrada.
+   * **Modales (`Modal.jsx`)**:
+     - *Corregido*: Altura máxima acotada a `max-h-[90vh]` con `overflow-y-auto` y padding adaptativo `p-4 md:p-6` para garantizar que modales largos quepan sin cortarse en viewports de `360x740`.
+     - *Propuesta*: Transformar los modales en móviles en hojas inferiores ("bottom sheets") que se desplieguen desde abajo hacia arriba con animación táctil.
+
+

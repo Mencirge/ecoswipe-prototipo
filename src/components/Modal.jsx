@@ -15,8 +15,8 @@ export default function Modal({ isOpen, onClose, title, children }) {
         className="relative bg-white rounded-t-tarjeta md:rounded-tarjeta w-full md:max-w-lg max-h-[85vh] overflow-y-auto shadow-modal page-enter border-t md:border border-menta"
         onClick={e => e.stopPropagation()}
       >
-        <div className="sticky top-0 bg-crema px-6 py-4 border-b border-menta flex items-center justify-between z-10">
-          <h3 className="text-xl font-fredoka font-semibold text-verde-bosque">{title}</h3>
+        <div className="sticky top-0 bg-crema px-4 py-3 md:px-6 md:py-4 border-b border-menta flex items-center justify-between z-10">
+          <h3 className="text-lg md:text-xl font-fredoka font-semibold text-verde-bosque">{title}</h3>
           <button
             onClick={onClose}
             className="p-2 rounded-full hover:bg-menta text-gris-calido hover:text-verde-bosque transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
@@ -28,7 +28,7 @@ export default function Modal({ isOpen, onClose, title, children }) {
             </svg>
           </button>
         </div>
-        <div className="p-6 text-verde-bosque">{children}</div>
+        <div className="p-4 md:p-6 text-verde-bosque">{children}</div>
       </div>
     </div>
   )

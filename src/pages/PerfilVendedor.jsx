@@ -198,7 +198,7 @@ export default function PerfilVendedor() {
           </div>
 
           {lotesTienda.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-2 sm:gap-4">
               {lotesTienda.map(l => (
                 <LoteCard key={l.id} lote={l} />
               ))}

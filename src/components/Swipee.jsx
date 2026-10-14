@@ -101,7 +101,7 @@ export default function Swipee({
         loading={priority ? 'eager' : 'lazy'}
         decoding={priority ? 'sync' : 'async'}
         className={`object-contain block mx-auto select-none pointer-events-none ${
-          isHero ? 'w-[88px] h-[108px] lg:w-[120px] lg:h-[147px]' : ''
+          isHero ? 'w-[64px] h-[78px] md:w-[88px] md:h-[108px] lg:w-[120px] lg:h-[147px]' : ''
         }`}
         style={isHero ? undefined : { width: `${width}px`, height: `${height}px` }}
       />

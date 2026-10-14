@@ -262,6 +262,62 @@ const COMBINACIONES = [
     textName: 'alerta-rojo (#B91C1C)', textRgb: PALETTE['alerta-rojo'],
     bgName: 'crema (#FBF7EE)', bgRgb: PALETTE['crema'],
     tipoTexto: 'Normal (14px)'
+  },
+
+  // 7. Escala Móvil (12px - 13px)
+  {
+    contexto: 'Móvil: Barra inferior activo (12px Verde Bosque sobre Crema)',
+    textName: 'verde-bosque (#1C3B20)', textRgb: PALETTE['verde-bosque'],
+    bgName: 'crema (#FBF7EE)', bgRgb: PALETTE['crema'],
+    tipoTexto: 'Normal (12px SemiBold)'
+  },
+  {
+    contexto: 'Móvil: Barra inferior inactivo (12px Gris Cálido sobre Crema)',
+    textName: 'gris-calido (#5A6B5C)', textRgb: PALETTE['gris-calido'],
+    bgName: 'crema (#FBF7EE)', bgRgb: PALETTE['crema'],
+    tipoTexto: 'Normal (12px SemiBold)'
+  },
+  {
+    contexto: 'Móvil: LoteCard precio "/kg" (13px Gris Cálido sobre Blanco)',
+    textName: 'gris-calido (#5A6B5C)', textRgb: PALETTE['gris-calido'],
+    bgName: 'blanco (#FFFFFF)', bgRgb: PALETTE['white'],
+    tipoTexto: 'Normal (13px)'
+  },
+  {
+    contexto: 'Móvil: LoteCard "Delivery · Recojo" (13px Gris Cálido sobre Blanco)',
+    textName: 'gris-calido (#5A6B5C)', textRgb: PALETTE['gris-calido'],
+    bgName: 'blanco (#FFFFFF)', bgRgb: PALETTE['white'],
+    tipoTexto: 'Normal (13px)'
+  },
+  {
+    contexto: 'Móvil: LoteCard metadatos (13px Gris Cálido sobre Blanco)',
+    textName: 'gris-calido (#5A6B5C)', textRgb: PALETTE['gris-calido'],
+    bgName: 'blanco (#FFFFFF)', bgRgb: PALETTE['white'],
+    tipoTexto: 'Normal (13px)'
+  },
+  {
+    contexto: 'Móvil: LoteCard vendedor y calificación (13px Verde Bosque sobre Blanco)',
+    textName: 'verde-bosque (#1C3B20)', textRgb: PALETTE['verde-bosque'],
+    bgName: 'blanco (#FFFFFF)', bgRgb: PALETTE['white'],
+    tipoTexto: 'Normal (13px SemiBold)'
+  },
+  {
+    contexto: 'Móvil: Mercado contador y orden (13px Gris Cálido sobre Crema)',
+    textName: 'gris-calido (#5A6B5C)', textRgb: PALETTE['gris-calido'],
+    bgName: 'crema (#FBF7EE)', bgRgb: PALETTE['crema'],
+    tipoTexto: 'Normal (13px)'
+  },
+  {
+    contexto: 'Móvil: Badges 12-13px (Verde Bosque sobre Menta)',
+    textName: 'verde-bosque (#1C3B20)', textRgb: PALETTE['verde-bosque'],
+    bgName: 'menta (#C8E6C9)', bgRgb: PALETTE['menta'],
+    tipoTexto: 'Normal (12px SemiBold)'
+  },
+  {
+    contexto: 'Móvil: Franja Datos de Ejemplo (12px Crema sobre Verde Bosque)',
+    textName: 'crema (#FBF7EE)', textRgb: PALETTE['crema'],
+    bgName: 'verde-bosque (#1C3B20)', bgRgb: PALETTE['verde-bosque'],
+    tipoTexto: 'Normal (12px SemiBold)'
   }
 ];
 

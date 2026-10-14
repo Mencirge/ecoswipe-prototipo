@@ -116,9 +116,9 @@ export default function Mercado() {
   )
 
   return (
-    <div className="page-enter max-w-6xl mx-auto px-4 md:px-8 py-6 md:py-8 bg-crema">
-      {/* Search bar y botón de filtros móvil */}
-      <div className="flex items-center gap-3 mb-6">
+    <div className="page-enter max-w-6xl mx-auto px-4 md:px-8 py-3 md:py-8 bg-crema">
+      {/* Search bar y botón de filtros móvil en una fila */}
+      <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-6">
         <div className="relative flex-1">
           <svg
             className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gris-calido pointer-events-none"
@@ -145,10 +145,10 @@ export default function Mercado() {
 
         <button
           onClick={() => setShowFilters(!showFilters)}
-          className="md:hidden btn-secondary px-3.5 py-2.5 min-h-[44px] flex items-center gap-1.5"
+          className="md:hidden btn-secondary px-3 py-2 min-h-[44px] flex items-center gap-1.5 flex-shrink-0"
           aria-label="Filtros"
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <line x1="4" y1="6" x2="20" y2="6" />
             <line x1="8" y1="12" x2="20" y2="12" />
             <line x1="12" y1="18" x2="20" y2="18" />
@@ -181,22 +181,26 @@ export default function Mercado() {
 
         {/* Listado de resultados */}
         <div className="flex-1">
-          <div className="flex items-center justify-between mb-4">
-            <p className="text-sm font-sans font-normal text-gris-calido">
+          {/* Contador de resultados y selector de orden en una sola línea de texto compacta */}
+          <div className="flex items-center justify-between mb-3 md:mb-4 gap-2">
+            <p className="text-[13px] md:text-sm font-sans font-normal text-gris-calido truncate">
               {filtered.length} lote{filtered.length !== 1 ? 's' : ''} disponible{filtered.length !== 1 ? 's' : ''}
             </p>
 
-            <select
-              value={orden}
-              onChange={e => setOrden(e.target.value)}
-              className="hidden md:block text-sm font-sans font-semibold border border-menta rounded-boton px-3 py-2 text-verde-bosque bg-white min-h-[44px]"
-            >
-              {ORDEN.map(o => (
-                <option key={o.value} value={o.value}>
-                  {o.label}
-                </option>
-              ))}
-            </select>
+            <div className="flex items-center gap-1.5 flex-shrink-0">
+              <span className="text-[13px] text-gris-calido md:hidden">Orden:</span>
+              <select
+                value={orden}
+                onChange={e => setOrden(e.target.value)}
+                className="text-[13px] md:text-sm font-sans font-semibold border border-menta rounded-boton px-2 md:px-3 py-1 md:py-2 text-verde-bosque bg-white min-h-[36px] md:min-h-[44px]"
+              >
+                {ORDEN.map(o => (
+                  <option key={o.value} value={o.value}>
+                    {o.label}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
           {/* Estado vacío: Swipee con microcopy oficial en lugar de emoji */}
@@ -218,7 +222,7 @@ export default function Mercado() {
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3.5 md:gap-4">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
               {filtered.map(l => (
                 <LoteCard key={l.id} lote={l} />
               ))}

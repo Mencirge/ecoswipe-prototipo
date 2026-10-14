@@ -125,9 +125,9 @@
     margin: 1.5rem 0;
   }
 
-  /* Badges - 14px Inter SemiBold */
+  /* Badges - 12-13px en móvil, 14px en desktop (md:) */
   .badge {
-    @apply inline-flex items-center px-3 py-1 rounded-full font-sans text-sm font-semibold;
+    @apply inline-flex items-center px-2.5 py-0.5 md:px-3 md:py-1 rounded-full font-sans text-[12px] md:text-sm font-semibold;
   }
   .badge-delivery {
     background-color: var(--menta);
@@ -188,18 +188,54 @@
     background-color: rgba(221, 243, 230, 0.3);
   }
 
-  /* Barra de Navegación Móvil - Fondo Crema sólido SIN glassmorphism */
+  /* Barra de Navegación Móvil - Alto ~56px + safe-area, fondo Crema sólido */
   .bottom-nav {
-    @apply fixed bottom-0 left-0 right-0 flex items-center justify-between py-1.5 px-2 z-50;
+    @apply fixed bottom-0 left-0 right-0 flex items-center justify-around z-50 h-[56px] px-2 md:hidden;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
     background-color: var(--crema);
     border-top: 1.5px solid rgba(221, 243, 230, 0.9);
   }
 
-  /* Indicador de Datos de Ejemplo */
+  /* Indicador de Datos de Ejemplo:
+     Móvil: franja delgada (28px) en flujo normal arriba, se desplaza con la página.
+     Desktop (md:): fixed top-2 right-2 como antes. */
   .sample-badge {
-    @apply fixed top-2 right-2 z-[100] font-sans text-sm font-semibold px-3 py-1 rounded-full pointer-events-none select-none;
+    height: 28px;
+    width: 100%;
+    position: static;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--fuente-cuerpo);
+    font-size: 0.75rem;
+    font-weight: 600;
+    pointer-events: none;
+    user-select: none;
     background-color: var(--verde-bosque);
     color: var(--crema);
+  }
+
+  @media (min-width: 768px) {
+    .sample-badge {
+      position: fixed;
+      top: 0.5rem;
+      right: 0.5rem;
+      z-index: 100;
+      width: auto;
+      height: auto;
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+    }
+  }
+
+  /* Anular min-height en móvil para aspect-[4/3] sin afectar escritorio */
+  @media (max-width: 767.98px) {
+    .aspect-\[4\/3\] {
+      min-height: 0 !important;
+    }
   }
 
   /* Cifras Métricas con Alto Contraste (Regla: Verde Bosque con subrayado Terracota)
