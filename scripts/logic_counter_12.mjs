@@ -1,6 +1,5 @@
 // scripts/logic_counter_12.mjs
 import fs from 'fs'
-import path from 'path'
 import { execSync } from 'child_process'
 
 const PATTERNS = [
@@ -20,9 +19,28 @@ const PATTERNS = [
 
 const REGEX_12 = new RegExp(PATTERNS.join('|'), 'g')
 
-function getAllSrcFiles() {
-  const output = execSync('git ls-tree -r --name-only HEAD src/', { encoding: 'utf8' })
-  return output.trim().split(/\r?\n/).filter(Boolean)
+function getAllSrcFiles(baselineRef) {
+  const diskFiles = []
+  function walk(dir) {
+    const entries = fs.readdirSync(dir, { withFileTypes: true })
+    for (const ent of entries) {
+      const full = `${dir}/${ent.name}`.replace(/\\/g, '/')
+      if (ent.isDirectory()) walk(full)
+      else diskFiles.push(full)
+    }
+  }
+  if (fs.existsSync('src')) walk('src')
+
+  let gitFiles = []
+  try {
+    const output = execSync(`git ls-tree -r --name-only ${baselineRef} src/`, { encoding: 'utf8' })
+    gitFiles = output.trim().split(/\r?\n/).filter(Boolean)
+  } catch {
+    // ignore
+  }
+
+  const set = new Set([...diskFiles, ...gitFiles])
+  return Array.from(set).sort()
 }
 
 function countMatches(content, regex) {
@@ -40,8 +58,8 @@ function countPerPattern(content) {
   return res
 }
 
-export function runAudit(baselineRef = 'rediseno-v1.3-deploy') {
-  const files = getAllSrcFiles()
+export function runAudit(baselineRef = process.argv[2] || 'rediseno-v1.4.1') {
+  const files = getAllSrcFiles(baselineRef)
   const rows = []
 
   let totalBaseline = 0
@@ -88,7 +106,7 @@ export function runAudit(baselineRef = 'rediseno-v1.3-deploy') {
   }
 
   console.log(`=== AUDITORÍA DE CONTEO DE LÓGICA (12 PATRONES OFICIALES) ===`)
-  console.log(`Baseline: ${baselineRef} | HEAD: rediseno-v1.4-mobile\n`)
+  console.log(`Baseline: ${baselineRef} | HEAD: HEAD (working tree)\n`)
   console.log('| Archivo | Baseline | HEAD | Diferencia | Estado |')
   console.log('|---|:---:|:---:|:---:|:---:|')
 

@@ -87,7 +87,6 @@ async function run() {
         })
 
         // 4. Check for any truncated text with ellipsis or clipped bounding
-        const allTextNodes = []
         const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_ELEMENT)
         let node
         while ((node = walker.nextNode())) {

@@ -12,7 +12,7 @@ export default function Modal({ isOpen, onClose, title, children }) {
     <div className="fixed inset-0 z-[60] flex items-end md:items-center justify-center" onClick={onClose}>
       <div className="fixed inset-0 bg-verde-bosque/40 transition-opacity" style={{ animation: 'fadeIn 0.2s ease' }} />
       <div
-        className="relative bg-white rounded-t-tarjeta md:rounded-tarjeta w-full md:max-w-lg max-h-[85vh] overflow-y-auto shadow-modal page-enter border-t md:border border-menta"
+        className="relative bg-white rounded-t-tarjeta md:rounded-tarjeta w-full md:max-w-lg max-h-[85dvh] md:max-h-[85vh] overflow-y-auto shadow-modal page-enter border-t md:border border-menta"
         onClick={e => e.stopPropagation()}
       >
         <div className="sticky top-0 bg-crema px-4 py-3 md:px-6 md:py-4 border-b border-menta flex items-center justify-between z-10">

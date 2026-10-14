@@ -66,7 +66,7 @@ Todas las combinaciones de la interfaz han sido verificadas con los tokens reale
 
 ## 3. Excepciones Documentadas a "Lógica Intacta"
 
-Para garantizar la integridad del prototipo sin alterar su modelo de datos ni su comportamiento funcional, se establecieron tres únicas excepciones debidamente aprobadas:
+Para garantizar la integridad del prototipo sin alterar su modelo de datos ni su comportamiento funcional, se establecieron cuatro únicas excepciones debidamente aprobadas:
 
 1. **Carrusel en Inicio (`Inicio.jsx`)**:
    * Se añadieron botones de navegación horizontal honesta ("Anterior" / "Siguiente", con tap targets de 44px) usando un `useRef` sobre el contenedor con scroll nativo suave. No se alteró el array de lotes ni se implementó un swipe de descarte destructivo.
@@ -74,6 +74,10 @@ Para garantizar la integridad del prototipo sin alterar su modelo de datos ni su
    * Se agregó el botón interactivo "Restablecer todos los filtros" en la vista de estado vacío para restablecer los estados existentes (`setTela('Todas')`, `setEntrega('todas')`, `setQuery('')`), mejorando la usabilidad sin crear estado nuevo.
 3. **Modal de Trato Cerrado en DetalleLote (`DetalleLote.jsx`)**:
    * Se incorporó la vista intermedia con la mascota **Swipee** y la frase oficial de cierre de trato al confirmar la entrega ("Entregué"). Esta vista reutiliza el estado booleano existente `confirmDone` (pasando de `confirmDone ? "Trato cerrado" : "Confirmar entrega"`) sin crear estados adicionales ni alterar la mutación de datos.
+4. **Restauración de Scroll al Cambiar de Ruta (`ScrollToTop.jsx` — rediseno-v1.4.2)**:
+   * Se creó el componente `ScrollToTop` (`src/components/ScrollToTop.jsx`) montado dentro de `<HashRouter>` en `src/App.jsx`.
+   * Utiliza `useLocation()` y un `useEffect` que se suscribe estrictamente a `[pathname]`. Al cambiar de página, ejecuta `window.scrollTo({ top: 0, left: 0, behavior: 'instant' })` y resetea `scrollTop` del documento a 0.
+   * **Restricción**: NO se dispara cuando solo cambia `location.search` (por ejemplo `?q=denim` o filtros en Mercado), preservando intacta la posición de lectura del usuario. Es un efecto puro de ventana sin estado ni alteración de datos.
 
 ---
 
@@ -423,4 +427,127 @@ Se ejecutó `scripts/dom_measurements.mjs` registrando las dimensiones físicas 
 * **(c) Altura de barras estructurales**:
   - **Cabecera superior móvil (`header`)**: **`56.00 px`** exactos (clase CSS `h-14`).
   - **Barra de navegación inferior móvil (`.bottom-nav`)**: **`56.00 px`** exactos (clase CSS `h-[56px]`), con padding adicional para safe-area en dispositivos con barra de gestos.
+
+---
+
+## 9. Ronda de Corrección para iPhone Real (rediseno-v1.4.2)
+
+Documentación de las correcciones implementadas tras pruebas en dispositivos iPhone reales (iOS Safari), resolviendo el comportamiento de scroll en navegación y la visibilidad de botones de acción en modales y paneles inferiores.
+
+### 1. Correcciones de Comportamiento e Interfaz
+
+#### Error 1: ScrollToTop al Cambiar de Página
+* **Problema detectado**: Al scrollear hasta el fondo de una página (ej. Inicio) y navegar a otra ruta (ej. Mercado), el scroll de la ventana permanecía abajo en lugar de comenzar en la parte superior.
+* **Solución**: Creación del componente `ScrollToTop` (`src/components/ScrollToTop.jsx`), montado una única vez dentro de `<HashRouter>` en `src/App.jsx`.
+* **Regla estricta de disparo**: Se suscribe mediante `useLocation()` exclusivamente al cambio de `pathname` (`useEffect(..., [pathname])`). Si el usuario busca o filtra en Mercado cambiando únicamente `location.search` (`?q=denim`), el componente **NO** resetea el scroll, preservando la posición de lectura del usuario.
+* **Implementación técnica**: Ejecuta `window.scrollTo({ top: 0, left: 0, behavior: 'instant' })` y asigna `document.documentElement.scrollTop = 0` y `document.body.scrollTop = 0` para compatibilidad inmediata en iOS Safari y Chrome móvil.
+* **Excepción de lógica**: Constituye la **4ª excepción documentada** a la regla de "lógica intacta" (efecto puro de ventana, sin estado ni manipulación de datos).
+
+#### Error 2: Panel de Filtros Móvil y Modales en iPhone Safari
+* **Problema detectado**: En dispositivos móviles (especialmente iPhone con la barra flotante de Safari), el panel inferior de filtros quedaba posicionado debajo de la barra de navegación inferior (`BottomNav`), ocultando el botón verde de aplicación.
+* **Estructura del Panel en 3 Zonas (`Mercado.jsx`)**:
+  1. **Cabecera fija**: Barra superior con título *"Filtros de búsqueda"* y botón de cierre táctil (cruz de 44px).
+  2. **Zona central con scroll**: Contenedor con `flex-1 overflow-y-auto min-h-0` para albergar todos los grupos de filtros sin empujar el pie fuera de la pantalla.
+  3. **Pie fijo**: Contenedor inferior siempre visible con borde superior sutil (`border-t border-menta`), fondo blanco, y botón primario *"Ver X resultados"* de ancho completo (`w-full`), altura mínima táctil de 44px (`min-h-[44px]`), y espaciado seguro: `padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px))`.
+* **Uso de Unidades Dinámicas (`dvh`)**:
+  - Tanto el panel de filtros como los modales (`Modal.jsx`) emplean `max-h-[85dvh]` en móvil, garantizando que el cálculo de altura máxima respete la presencia y colapso dinámico de las barras de herramientas de Safari en iOS. En escritorio se preserva el valor estándar (`md:max-h-[85vh]`).
+* **Elevación de Z-Index (`z-[60]`)**:
+  - La barra de navegación inferior (`BottomNav`) reside en `z-50`. Se elevó el backdrop y el contenedor del panel de filtros y modales a `z-[60]`, garantizando que cubran por completo la barra inferior mientras estén activos.
+* **Escritorio 100% Intacto**:
+  - Todas las modificaciones de clases aplican únicamente por debajo de 768px. En pantallas de escritorio (`md:`), se preservan exactamente los estilos originales.
+
+---
+
+### 2. Resultados de las Verificaciones
+
+#### (a) Verificación de ScrollToTop (`scripts/verify_scroll.mjs`)
+Pruebas automatizadas en navegador real midiendo `window.scrollY` antes y después de cada transición de ruta y búsqueda:
+
+| Transición de Ruta / Acción | Scroll Previo | Scroll Posterior | Comportamiento Esperado | Veredicto |
+|---|:---:|:---:|---|:---:|
+| Inicio -> Mercado | 2071 px | **0 px** | Resetea scroll arriba | **PASA** |
+| Mercado -> DetalleLote (`/lote/1`) | 450 px | **0 px** | Resetea scroll arriba | **PASA** |
+| DetalleLote -> Publicar (`/publicar`) | 300 px | **0 px** | Resetea scroll arriba | **PASA** |
+| Publicar -> Impacto (`/impacto`) | 250 px | **0 px** | Resetea scroll arriba | **PASA** |
+| Filtrar / Buscar en Mercado (`?q=denim`) | 350 px | **104 px** | Conserva scroll (NO sube) | **PASA** |
+
+#### (b) Verificación del Panel de Filtros en Viewports Móviles (`scripts/verify_filter_panel.mjs`)
+Medición con `getBoundingClientRect()` del botón principal *"Ver resultados"* con el panel abierto:
+
+| Viewport | Altura Útil | Coordenadas del Botón (`top` - `bottom`) | ¿Dentro del Viewport? | ¿Sobre BottomNav (`z-60 > z-50`)? | Captura de Evidencia | Veredicto |
+|---|:---:|:---:|:---:|:---:|---|:---:|
+| **360x640** | 640 px | `580.00 px` - `624.00 px` | **SÍ** (holgura 16px) | **SÍ** | `capturas/panel_filtros_360x640.png` | **PASA** |
+| **360x740** | 740 px | `680.00 px` - `724.00 px` | **SÍ** (holgura 16px) | **SÍ** | `capturas/panel_filtros_360x740.png` | **PASA** |
+| **390x844** | 844 px | `784.00 px` - `828.00 px` | **SÍ** (holgura 16px) | **SÍ** | `capturas/panel_filtros_390x844.png` | **PASA** |
+| **360x650** *(Safari barra -90px)* | 650 px | `590.00 px` - `634.00 px` | **SÍ** (holgura 16px) | **SÍ** | `capturas/panel_filtros_360x650.png` | **PASA** |
+
+#### (c) Medición del Botón Principal de Todos los Modales en 360x740 (`scripts/verify_modal_buttons.mjs`)
+Verificación de que el botón primario de acción de cada modal queda visible sin necesidad de scroll en la resolución más compacta:
+
+| Modal / Drawer | Selector / Botón Principal | Bottom del Botón | Alto Viewport | ¿Visible sin scroll? | Veredicto |
+|---|---|:---:|:---:|:---:|:---:|
+| `Modal Contacto` | Botón "Enviar mensaje" | **531.00 px** | 740 px | **SÍ** (holgura 209px) | **PASA** |
+| `Modal Oferta` | Botón "Enviar oferta" | **660.00 px** | 740 px | **SÍ** (holgura 80px) | **PASA** |
+| `Modal Confirmar Entrega` | Botón "Confirmar entrega" | **656.00 px** | 740 px | **SÍ** (holgura 84px) | **PASA** |
+| `Modal Trato Cerrado` | Botón "Entendido" | **716.00 px** | 740 px | **SÍ** (holgura 24px) | **PASA** |
+| `Modal Vista Previa (Publicar)` | Botón "Publicar lote" | **724.00 px** | 740 px | **SÍ** (holgura 16px) | **PASA** |
+| `Modal Éxito (Publicar)` | Botón "Ver lote publicado" | **708.00 px** | 740 px | **SÍ** (holgura 32px) | **PASA** |
+| `Panel Filtros (Mercado)` | Botón "Ver resultados" | **724.00 px** | 740 px | **SÍ** (holgura 16px) | **PASA** |
+
+#### (d) Diff de Píxeles en Escritorio Ampliado (`scripts/expanded_desktop_pixel_diff.mjs`)
+Comparación automatizada de 45 pantallas y modales entre la versión baseline de escritorio y HEAD en resoluciones de 768px, 1024px y 1280px:
+
+* **Total de comparaciones ejecutadas**: 45 (15 vistas x 3 resoluciones).
+* **Total de píxeles distintos**: **0 píxeles**.
+* **Diferencia porcentual**: **0.0000%**.
+* **Estado general de escritorio**: **100% IDÉNTICO (0 PÍXELES DISTINTOS)**.
+
+#### (e) Auditoría de Conteo de Lógica — 12 Patrones Oficiales (`scripts/logic_counter_12.mjs`)
+Comparación estricta entre `rediseno-v1.4.1` y HEAD:
+
+| Archivo | Baseline (v1.4.1) | HEAD | Diferencia | Estado |
+|---|:---:|:---:|:---:|:---:|
+| `src/App.jsx` | 0 | 0 | 0 | INTACTO |
+| `src/components/ImpactBanner.jsx` | 0 | 0 | 0 | INTACTO |
+| `src/components/Layout.jsx` | 0 | 0 | 0 | INTACTO |
+| `src/components/Logo.jsx` | 0 | 0 | 0 | INTACTO |
+| `src/components/LoteCard.jsx` | 0 | 0 | 0 | INTACTO |
+| `src/components/Modal.jsx` | 5 | 5 | 0 | INTACTO |
+| `src/components/PlaceholderImg.jsx` | 0 | 0 | 0 | INTACTO |
+| `src/components/ScrollToTop.jsx` | 0 | 2 | +2* | ALERTA (+) |
+| `src/components/StarRating.jsx` | 0 | 0 | 0 | INTACTO |
+| `src/components/Swipee.jsx` | 0 | 0 | 0 | INTACTO |
+| `src/data/impactoConfig.json` | 0 | 0 | 0 | INTACTO |
+| `src/data/lotes.json` | 0 | 0 | 0 | INTACTO |
+| `src/data/tiendas.json` | 0 | 0 | 0 | INTACTO |
+| `src/index.css` | 0 | 0 | 0 | INTACTO |
+| `src/main.jsx` | 0 | 0 | 0 | INTACTO |
+| `src/pages/DetalleLote.jsx` | 12 | 12 | 0 | INTACTO |
+| `src/pages/Impacto.jsx` | 4 | 4 | 0 | INTACTO |
+| `src/pages/Inicio.jsx` | 12 | 12 | 0 | INTACTO |
+| `src/pages/Mercado.jsx` | 25 | 25 | 0 | INTACTO |
+| `src/pages/PerfilVendedor.jsx` | 0 | 0 | 0 | INTACTO |
+| `src/pages/PublicarLote.jsx` | 43 | 43 | 0 | INTACTO |
+| **TOTAL GENERAL** | **101** | **103** | **+2** | **DIVERGENCIA AUTORIZADA** |
+
+*\*Nota*: La variación de +2 corresponde exclusivamente a la importación e invocación de `useEffect` dentro de `ScrollToTop.jsx` (4ª excepción de lógica autorizada).
+
+**Desglose por Patrón:**
+* `useState`: 21 / 21 (0 dif)
+* `useEffect`: 2 / 4 (+2 dif, exclusivo de ScrollToTop)
+* `useMemo`: 2 / 2 (0 dif)
+* `useRef`: 2 / 2 (0 dif)
+* `onClick=`: 29 / 29 (0 dif)
+* `onChange=`: 16 / 16 (0 dif)
+* `onSubmit=`: 1 / 1 (0 dif)
+* `navigate\(`: 1 / 1 (0 dif)
+* `value=`: 22 / 22 (0 dif)
+* `checked=`: 3 / 3 (0 dif)
+* `disabled=`: 2 / 2 (0 dif)
+* `required`: 0 / 0 (0 dif)
+
+#### (f) Integridad Técnica y Compilación
+* **Build de Producción (`npm run build`)**: 0 errores, tiempo de compilación 961 ms.
+* **Linter (`npx oxlint`)**: 0 errores en 34 archivos examinados.
+* **Consola del Navegador**: 0 errores y 0 advertencias no controladas en todas las rutas de la aplicación.
 

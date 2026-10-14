@@ -231,21 +231,22 @@ export default function Mercado() {
         </div>
       </div>
 
-      {/* Modal / bottom sheet de filtros en móvil */}
+      {/* Modal / bottom sheet de filtros en móvil (Estructura de 3 zonas con z-[60] y 85dvh) */}
       {showFilters && (
-        <div className="fixed inset-0 z-50 md:hidden" onClick={() => setShowFilters(false)}>
+        <div className="fixed inset-0 z-[60] md:hidden" onClick={() => setShowFilters(false)}>
           <div className="absolute inset-0 bg-verde-bosque/40 transition-opacity" style={{ animation: 'fadeIn 0.2s ease' }} />
           <div
-            className="absolute bottom-0 left-0 right-0 bg-white rounded-t-tarjeta max-h-[80vh] overflow-y-auto page-enter border-t border-menta"
+            className="absolute bottom-0 left-0 right-0 bg-white rounded-t-tarjeta max-h-[85dvh] flex flex-col page-enter border-t border-menta shadow-modal overflow-hidden"
             onClick={e => e.stopPropagation()}
           >
-            <div className="sticky top-0 bg-crema px-5 py-4 border-b border-menta flex items-center justify-between z-10">
+            {/* Zona 1: Cabecera fija */}
+            <div className="flex-shrink-0 bg-crema px-5 py-3.5 border-b border-menta flex items-center justify-between">
               <h3 className="font-fredoka font-semibold text-lg text-verde-bosque">
                 Filtros de búsqueda
               </h3>
               <button
                 onClick={() => setShowFilters(false)}
-                className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-gris-calido hover:text-verde-bosque"
+                className="p-2 min-w-[44px] min-h-[44px] flex items-center justify-center text-gris-calido hover:text-verde-bosque transition-colors"
                 aria-label="Cerrar filtros"
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -254,11 +255,20 @@ export default function Mercado() {
                 </svg>
               </button>
             </div>
-            <FilterPanel mobile />
-            <div className="p-4 border-t border-menta bg-crema sticky bottom-0">
+
+            {/* Zona 2: Central con scroll vertical */}
+            <div className="flex-1 overflow-y-auto min-h-0">
+              <FilterPanel mobile />
+            </div>
+
+            {/* Zona 3: Pie fijo con botón principal */}
+            <div
+              className="flex-shrink-0 px-4 pt-3 border-t border-menta bg-crema"
+              style={{ paddingBottom: 'calc(16px + env(safe-area-inset-bottom, 0px))' }}
+            >
               <button
                 onClick={() => setShowFilters(false)}
-                className="btn-primary w-full min-h-[44px]"
+                className="btn-primary w-full min-h-[44px] flex items-center justify-center"
               >
                 Ver {filtered.length} resultado{filtered.length !== 1 ? 's' : ''}
               </button>

@@ -166,10 +166,17 @@ async function compareImages(fileA, fileB) {
 }
 
 async function run() {
-  await capturePort(5174, 'baseline')
+  const allBaselinesExist = VIEWPORTS.every(vp =>
+    SCENARIOS.every(sc => fs.existsSync(path.join(CAPTURAS_DIR, `d${vp.name}_${sc.id}_baseline.png`)))
+  )
+  if (!allBaselinesExist) {
+    await capturePort(5174, 'baseline')
+  } else {
+    console.log('--- Usando capturas baseline pre-existentes verificadas (rediseno-v1.3-deploy) ---')
+  }
   await capturePort(5173, 'head')
 
-  console.log('\n=== DIFF DE PÍXELES DESKTOP AMPLIADO (BASELINE v1.3 vs HEAD v1.4.1) ===\n')
+  console.log('\n=== DIFF DE PÍXELES DESKTOP AMPLIADO (BASELINE v1.3 vs HEAD) ===\n')
   console.log('| Viewport | Pantalla / Modal | Dimensiones | Total Píxeles | Píxeles Distintos | % Diferencia | Veredicto |')
   console.log('|---|---|:---:|:---:|:---:|:---:|---|')
 
