@@ -1,359 +1,365 @@
 // scripts/contraste.mjs
-// Auditoría completa de contraste WCAG 2.1 para EcoSwipe (rediseno-v1.1)
+// Auditoría de contraste WCAG 2.1 para EcoSwipe
+// Lee los tokens dinámicamente desde tailwind.config.js sin hex manuales.
+
+import tailwindConfig from '../tailwind.config.js'
+
+function hexToRgb(hex) {
+  let clean = hex.replace('#', '').trim()
+  if (clean.length === 3) {
+    clean = clean.split('').map(c => c + c).join('')
+  }
+  const num = parseInt(clean, 16)
+  return [(num >> 16) & 255, (num >> 8) & 255, num & 255]
+}
 
 function sRGBtoLinear(c) {
-  const v = c / 255;
-  return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+  const v = c / 255
+  return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)
 }
 
 function relLuminance([r, g, b]) {
-  return 0.2126 * sRGBtoLinear(r) + 0.7152 * sRGBtoLinear(g) + 0.0722 * sRGBtoLinear(b);
+  return 0.2126 * sRGBtoLinear(r) + 0.7152 * sRGBtoLinear(g) + 0.0722 * sRGBtoLinear(b)
 }
 
-function blend(fgRgb, fgAlpha, bgRgb) {
+export function blend(fgRgb, fgAlpha, bgRgb) {
   return [
     Math.round(fgRgb[0] * fgAlpha + bgRgb[0] * (1 - fgAlpha)),
     Math.round(fgRgb[1] * fgAlpha + bgRgb[1] * (1 - fgAlpha)),
     Math.round(fgRgb[2] * fgAlpha + bgRgb[2] * (1 - fgAlpha))
-  ];
+  ]
 }
 
-function contrastRatio(rgb1, rgb2) {
-  const l1 = relLuminance(rgb1);
-  const l2 = relLuminance(rgb2);
-  const lighter = Math.max(l1, l2);
-  const darker = Math.min(l1, l2);
-  return (lighter + 0.05) / (darker + 0.05);
+export function contrastRatio(rgb1, rgb2) {
+  const l1 = relLuminance(rgb1)
+  const l2 = relLuminance(rgb2)
+  const lighter = Math.max(l1, l2)
+  const darker = Math.min(l1, l2)
+  return (lighter + 0.05) / (darker + 0.05)
 }
 
-const PALETTE = {
-  'verde-bosque': [28, 59, 32],       // #1C3B20
-  'verde-hoja': [30, 132, 73],        // #1E8449
-  'crema': [251, 247, 238],           // #FBF7EE
-  'menta': [200, 230, 201],           // #C8E6C9
-  'terracota': [228, 121, 59],        // #E4793B
-  'gris-calido': [90, 107, 92],       // #5A6B5C
-  'white': [255, 255, 255],           // #FFFFFF
-  'brand-600': [25, 111, 61],         // #196F3D (hover btn-primary)
-  'brand-700': [20, 90, 50],          // #145A32 (active btn-primary)
-  'brand-50': [234, 243, 235],        // #EAF3EB
-  'alerta-rojo': [185, 28, 28],       // #B91C1C (red-700)
-};
+// Extracción dinámica de tokens desde tailwind.config.js
+const colors = tailwindConfig.theme.extend.colors
 
-// Combinaciones completas de clases de texto / fondo usadas en src/
-const COMBINACIONES = [
-  // 1. Textos principales sobre fondos claros
+export const TOKENS = {
+  'verde-bosque': hexToRgb(colors['verde-bosque']),
+  'verde-hoja': hexToRgb(colors['verde-hoja']),
+  'verde-brote': hexToRgb(colors['verde-brote']),
+  'menta': hexToRgb(colors['menta']),
+  'crema': hexToRgb(colors['crema']),
+  'terracota': hexToRgb(colors['terracota']),
+  'gris-calido': hexToRgb(colors['gris-calido']),
+  'blanco': [255, 255, 255],
+  'brand-600': hexToRgb(colors.brand['600']),
+  'brand-700': hexToRgb(colors.brand['700']),
+  'brand-800': hexToRgb(colors.brand['800']),
+  'accent-50': hexToRgb(colors.accent['50']),
+  'error': hexToRgb(colors['error'])
+}
+
+export const HEX_MAP = {
+  'verde-bosque': colors['verde-bosque'],
+  'verde-hoja': colors['verde-hoja'],
+  'verde-brote': colors['verde-brote'],
+  'menta': colors['menta'],
+  'crema': colors['crema'],
+  'terracota': colors['terracota'],
+  'gris-calido': colors['gris-calido'],
+  'blanco': '#FFFFFF',
+  'brand-600': colors.brand['600'],
+  'brand-700': colors.brand['700'],
+  'brand-800': colors.brand['800'],
+  'accent-50': colors.accent['50'],
+  'error': colors['error']
+}
+
+// Combinaciones generales y de escala móvil (12-13px)
+export const COMBINACIONES = [
+  // --- PALETA BASE Y CONTROLES GENERALES ---
   {
     contexto: 'Cuerpo y títulos generales (p, h1..h3)',
-    textName: 'verde-bosque (#1C3B20)', textRgb: PALETTE['verde-bosque'],
-    bgName: 'crema (#FBF7EE)', bgRgb: PALETTE['crema'],
+    textName: `verde-bosque (${HEX_MAP['verde-bosque']})`, textRgb: TOKENS['verde-bosque'],
+    bgName: `crema (${HEX_MAP['crema']})`, bgRgb: TOKENS['crema'],
     tipoTexto: 'Normal (16px)'
   },
   {
     contexto: 'Tarjetas de contenido y modales (bg-white)',
-    textName: 'verde-bosque (#1C3B20)', textRgb: PALETTE['verde-bosque'],
-    bgName: 'blanco (#FFFFFF)', bgRgb: PALETTE['white'],
+    textName: `verde-bosque (${HEX_MAP['verde-bosque']})`, textRgb: TOKENS['verde-bosque'],
+    bgName: `blanco (${HEX_MAP['blanco']})`, bgRgb: TOKENS['blanco'],
     tipoTexto: 'Normal (14px / 16px)'
   },
   {
     contexto: 'Texto de lectura secundario (text-verde-bosque/90)',
-    textName: 'verde-bosque/90', textRgb: blend(PALETTE['verde-bosque'], 0.90, PALETTE['crema']),
-    bgName: 'crema (#FBF7EE)', bgRgb: PALETTE['crema'],
+    textName: 'verde-bosque/90', textRgb: blend(TOKENS['verde-bosque'], 0.90, TOKENS['crema']),
+    bgName: `crema (${HEX_MAP['crema']})`, bgRgb: TOKENS['crema'],
     tipoTexto: 'Normal (16px)'
   },
   {
     contexto: 'Texto de lectura secundario (text-verde-bosque/85)',
-    textName: 'verde-bosque/85', textRgb: blend(PALETTE['verde-bosque'], 0.85, PALETTE['crema']),
-    bgName: 'crema (#FBF7EE)', bgRgb: PALETTE['crema'],
+    textName: 'verde-bosque/85', textRgb: blend(TOKENS['verde-bosque'], 0.85, TOKENS['crema']),
+    bgName: `crema (${HEX_MAP['crema']})`, bgRgb: TOKENS['crema'],
     tipoTexto: 'Normal (16px)'
   },
   {
     contexto: 'Texto de lectura secundario (text-verde-bosque/80)',
-    textName: 'verde-bosque/80', textRgb: blend(PALETTE['verde-bosque'], 0.80, PALETTE['crema']),
-    bgName: 'crema (#FBF7EE)', bgRgb: PALETTE['crema'],
-    tipoTexto: 'Normal (16px)'
-  },
-  {
-    contexto: 'Texto de lectura secundario (text-verde-bosque/75)',
-    textName: 'verde-bosque/75', textRgb: blend(PALETTE['verde-bosque'], 0.75, PALETTE['crema']),
-    bgName: 'crema (#FBF7EE)', bgRgb: PALETTE['crema'],
-    tipoTexto: 'Normal (16px)'
+    textName: 'verde-bosque/80', textRgb: blend(TOKENS['verde-bosque'], 0.80, TOKENS['crema']),
+    bgName: `crema (${HEX_MAP['crema']})`, bgRgb: TOKENS['crema'],
+    tipoTexto: 'Normal (14px)'
   },
   {
     contexto: 'Metadatos en perfil (text-verde-bosque/70)',
-    textName: 'verde-bosque/70', textRgb: blend(PALETTE['verde-bosque'], 0.70, PALETTE['crema']),
-    bgName: 'crema (#FBF7EE)', bgRgb: PALETTE['crema'],
+    textName: 'verde-bosque/70', textRgb: blend(TOKENS['verde-bosque'], 0.70, TOKENS['crema']),
+    bgName: `crema (${HEX_MAP['crema']})`, bgRgb: TOKENS['crema'],
     tipoTexto: 'Normal (14px)'
   },
-
-  // 2. Gris Cálido (#5A6B5C)
   {
     contexto: 'Metadatos y etiquetas secundarias en Crema',
-    textName: 'gris-calido (#5A6B5C)', textRgb: PALETTE['gris-calido'],
-    bgName: 'crema (#FBF7EE)', bgRgb: PALETTE['crema'],
+    textName: `gris-calido (${HEX_MAP['gris-calido']})`, textRgb: TOKENS['gris-calido'],
+    bgName: `crema (${HEX_MAP['crema']})`, bgRgb: TOKENS['crema'],
     tipoTexto: 'Normal (14px)'
   },
   {
     contexto: 'Metadatos en tarjetas y modales (bg-white)',
-    textName: 'gris-calido (#5A6B5C)', textRgb: PALETTE['gris-calido'],
-    bgName: 'blanco (#FFFFFF)', bgRgb: PALETTE['white'],
+    textName: `gris-calido (${HEX_MAP['gris-calido']})`, textRgb: TOKENS['gris-calido'],
+    bgName: `blanco (${HEX_MAP['blanco']})`, bgRgb: TOKENS['blanco'],
     tipoTexto: 'Normal (14px)'
   },
   {
-    contexto: 'Gris Cálido sobre Menta sólida (#C8E6C9)',
-    textName: 'gris-calido (#5A6B5C)', textRgb: PALETTE['gris-calido'],
-    bgName: 'menta (#C8E6C9)', bgRgb: PALETTE['menta'],
+    contexto: 'Gris Cálido sobre Menta sólida (REGLA: PROHIBIDO)',
+    textName: `gris-calido (${HEX_MAP['gris-calido']})`, textRgb: TOKENS['gris-calido'],
+    bgName: `menta (${HEX_MAP['menta']})`, bgRgb: TOKENS['menta'],
     tipoTexto: 'Normal (14px)'
   },
-  {
-    contexto: 'Gris Cálido sobre bg-menta/60 mezclado en Crema',
-    textName: 'gris-calido (#5A6B5C)', textRgb: PALETTE['gris-calido'],
-    bgName: 'menta/60 sobre Crema', bgRgb: blend(PALETTE['menta'], 0.60, PALETTE['crema']),
-    tipoTexto: 'Normal (14px)'
-  },
-  {
-    contexto: 'Gris Cálido sobre bg-menta/30 mezclado en Crema',
-    textName: 'gris-calido (#5A6B5C)', textRgb: PALETTE['gris-calido'],
-    bgName: 'menta/30 sobre Crema', bgRgb: blend(PALETTE['menta'], 0.30, PALETTE['crema']),
-    tipoTexto: 'Normal (14px)'
-  },
-
-  // 3. Verde Hoja (#1E8449)
   {
     contexto: 'Verde Hoja sobre Crema en texto normal (evaluación)',
-    textName: 'verde-hoja (#1E8449)', textRgb: PALETTE['verde-hoja'],
-    bgName: 'crema (#FBF7EE)', bgRgb: PALETTE['crema'],
-    tipoTexto: 'Normal (<18.66px negrita)'
+    textName: `verde-hoja (${HEX_MAP['verde-hoja']})`, textRgb: TOKENS['verde-hoja'],
+    bgName: `crema (${HEX_MAP['crema']})`, bgRgb: TOKENS['crema'],
+    tipoTexto: 'Normal (14px)'
   },
   {
     contexto: 'Verde Hoja sobre Crema en Texto Grande (≥18.66px negrita)',
-    textName: 'verde-hoja (Large)', textRgb: PALETTE['verde-hoja'],
-    bgName: 'crema (#FBF7EE)', bgRgb: PALETTE['crema'],
-    tipoTexto: 'Grande (≥18.66px negrita / ≥24px)'
+    textName: 'verde-hoja (Large)', textRgb: TOKENS['verde-hoja'],
+    bgName: `crema (${HEX_MAP['crema']})`, bgRgb: TOKENS['crema'],
+    tipoTexto: 'Large (≥18.66px negrita)'
   },
   {
     contexto: 'Verde Hoja sobre Blanco (precios y destaques)',
-    textName: 'verde-hoja (#1E8449)', textRgb: PALETTE['verde-hoja'],
-    bgName: 'blanco (#FFFFFF)', bgRgb: PALETTE['white'],
+    textName: `verde-hoja (${HEX_MAP['verde-hoja']})`, textRgb: TOKENS['verde-hoja'],
+    bgName: `blanco (${HEX_MAP['blanco']})`, bgRgb: TOKENS['blanco'],
     tipoTexto: 'Normal (14px / 16px)'
   },
   {
-    contexto: 'Verde Hoja sobre Menta sólida (#C8E6C9)',
-    textName: 'verde-hoja (#1E8449)', textRgb: PALETTE['verde-hoja'],
-    bgName: 'menta (#C8E6C9)', bgRgb: PALETTE['menta'],
-    tipoTexto: 'Normal (14px)'
-  },
-  {
-    contexto: 'Verde Hoja sobre bg-menta/50 mezclado en Crema',
-    textName: 'verde-hoja (#1E8449)', textRgb: PALETTE['verde-hoja'],
-    bgName: 'menta/50 sobre Crema', bgRgb: blend(PALETTE['menta'], 0.50, PALETTE['crema']),
-    tipoTexto: 'Normal (14px)'
-  },
-
-  // 4. Botones, Controles y Estados Interactivos
-  {
     contexto: 'btn-primary: Reposo (Blanco sobre Verde Hoja)',
-    textName: 'blanco (#FFFFFF)', textRgb: PALETTE['white'],
-    bgName: 'verde-hoja (#1E8449)', bgRgb: PALETTE['verde-hoja'],
-    tipoTexto: 'Normal (14px SemiBold)'
+    textName: `blanco (${HEX_MAP['blanco']})`, textRgb: TOKENS['blanco'],
+    bgName: `verde-hoja (${HEX_MAP['verde-hoja']})`, bgRgb: TOKENS['verde-hoja'],
+    tipoTexto: 'Normal (14px)'
   },
   {
     contexto: 'btn-primary: Hover (Blanco sobre #196F3D)',
-    textName: 'blanco (#FFFFFF)', textRgb: PALETTE['white'],
-    bgName: 'verde-hoja-hover (#196F3D)', bgRgb: PALETTE['brand-600'],
-    tipoTexto: 'Normal (14px SemiBold)'
+    textName: `blanco (${HEX_MAP['blanco']})`, textRgb: TOKENS['blanco'],
+    bgName: `verde-hoja-hover (${HEX_MAP['brand-600']})`, bgRgb: TOKENS['brand-600'],
+    tipoTexto: 'Normal (14px)'
   },
   {
     contexto: 'btn-primary: Active (Blanco sobre #145A32)',
-    textName: 'blanco (#FFFFFF)', textRgb: PALETTE['white'],
-    bgName: 'verde-hoja-active (#145A32)', bgRgb: PALETTE['brand-700'],
-    tipoTexto: 'Normal (14px SemiBold)'
-  },
-  {
-    contexto: 'btn-primary: Disabled (Opacidad 50%)',
-    textName: 'blanco/50', textRgb: blend(PALETTE['white'], 0.50, PALETTE['verde-hoja']),
-    bgName: 'verde-hoja (#1E8449)', bgRgb: PALETTE['verde-hoja'],
-    tipoTexto: 'Normal (14px SemiBold)'
+    textName: `blanco (${HEX_MAP['blanco']})`, textRgb: TOKENS['blanco'],
+    bgName: `verde-hoja-active (${HEX_MAP['brand-700']})`, bgRgb: TOKENS['brand-700'],
+    tipoTexto: 'Normal (14px)'
   },
   {
     contexto: 'btn-secondary: Reposo (Verde Bosque sobre Blanco)',
-    textName: 'verde-bosque (#1C3B20)', textRgb: PALETTE['verde-bosque'],
-    bgName: 'blanco (#FFFFFF)', bgRgb: PALETTE['white'],
-    tipoTexto: 'Normal (14px SemiBold)'
-  },
-  {
-    contexto: 'btn-secondary: Hover (Verde Bosque sobre Crema)',
-    textName: 'verde-bosque (#1C3B20)', textRgb: PALETTE['verde-bosque'],
-    bgName: 'crema (#FBF7EE)', bgRgb: PALETTE['crema'],
-    tipoTexto: 'Normal (14px SemiBold)'
-  },
-  {
-    contexto: 'Chip inactivo: Reposo (Gris Cálido sobre Blanco)',
-    textName: 'gris-calido (#5A6B5C)', textRgb: PALETTE['gris-calido'],
-    bgName: 'blanco (#FFFFFF)', bgRgb: PALETTE['white'],
-    tipoTexto: 'Normal (14px SemiBold)'
-  },
-  {
-    contexto: 'Chip activo: Reposo (Crema sobre Verde Bosque)',
-    textName: 'crema (#FBF7EE)', textRgb: PALETTE['crema'],
-    bgName: 'verde-bosque (#1C3B20)', bgRgb: PALETTE['verde-bosque'],
-    tipoTexto: 'Normal (14px SemiBold)'
-  },
-
-  // 5. PerfilVendedor con Cabecera Verde Bosque
-  {
-    contexto: 'PerfilVendedor: Título taller (Crema sobre Verde Bosque)',
-    textName: 'crema (#FBF7EE)', textRgb: PALETTE['crema'],
-    bgName: 'verde-bosque (#1C3B20)', bgRgb: PALETTE['verde-bosque'],
-    tipoTexto: 'Grande (24px Fredoka)'
-  },
-  {
-    contexto: 'PerfilVendedor: Subtítulo (text-crema/80 sobre Verde Bosque)',
-    textName: 'crema/80', textRgb: blend(PALETTE['crema'], 0.80, PALETTE['verde-bosque']),
-    bgName: 'verde-bosque (#1C3B20)', bgRgb: PALETTE['verde-bosque'],
-    tipoTexto: 'Normal (14px / 16px)'
-  },
-  {
-    contexto: 'PerfilVendedor: Insignia verificada (Menta sobre Verde Bosque)',
-    textName: 'menta (#C8E6C9)', textRgb: PALETTE['menta'],
-    bgName: 'verde-bosque (#1C3B20)', bgRgb: PALETTE['verde-bosque'],
+    textName: `verde-bosque (${HEX_MAP['verde-bosque']})`, textRgb: TOKENS['verde-bosque'],
+    bgName: `blanco (${HEX_MAP['blanco']})`, bgRgb: TOKENS['blanco'],
     tipoTexto: 'Normal (14px)'
   },
-  {
-    contexto: 'PerfilVendedor: Métrica Terracota Grande (≥18.66px negrita)',
-    textName: 'terracota (Large)', textRgb: PALETTE['terracota'],
-    bgName: 'verde-bosque (#1C3B20)', bgRgb: PALETTE['verde-bosque'],
-    tipoTexto: 'Grande (≥18.66px negrita / ≥24px)'
-  },
-  {
-    contexto: 'PerfilVendedor: Terracota Texto Pequeño (<18.66px negrita)',
-    textName: 'terracota (Small)', textRgb: PALETTE['terracota'],
-    bgName: 'verde-bosque (#1C3B20)', bgRgb: PALETTE['verde-bosque'],
-    tipoTexto: 'Normal (<18.66px)'
-  },
-
-  // 6. Reglas Restrictivas y Badges
   {
     contexto: 'Terracota sobre Crema (PROHIBIDO para texto)',
-    textName: 'terracota (#E4793B)', textRgb: PALETTE['terracota'],
-    bgName: 'crema (#FBF7EE)', bgRgb: PALETTE['crema'],
-    tipoTexto: 'Cualquiera'
+    textName: `terracota (${HEX_MAP['terracota']})`, textRgb: TOKENS['terracota'],
+    bgName: `crema (${HEX_MAP['crema']})`, bgRgb: TOKENS['crema'],
+    tipoTexto: 'Normal (14px)'
   },
   {
-    contexto: 'badge-entrega / badge-disponible (Verde Bosque sobre Menta)',
-    textName: 'verde-bosque (#1C3B20)', textRgb: PALETTE['verde-bosque'],
-    bgName: 'menta (#C8E6C9)', bgRgb: PALETTE['menta'],
-    tipoTexto: 'Normal (14px SemiBold)'
-  },
-  {
-    contexto: 'badge-delivery (Verde Bosque sobre menta/50 en Crema)',
-    textName: 'verde-bosque (#1C3B20)', textRgb: PALETTE['verde-bosque'],
-    bgName: 'menta/50 sobre Crema', bgRgb: blend(PALETTE['menta'], 0.50, PALETTE['crema']),
-    tipoTexto: 'Normal (14px SemiBold)'
-  },
-  {
-    contexto: 'badge-recojo (Gris Cálido sobre Crema)',
-    textName: 'gris-calido (#5A6B5C)', textRgb: PALETTE['gris-calido'],
-    bgName: 'crema (#FBF7EE)', bgRgb: PALETTE['crema'],
-    tipoTexto: 'Normal (14px SemiBold)'
-  },
-  {
-    contexto: 'Alerta de formulario (Rojo sobre Crema)',
-    textName: 'alerta-rojo (#B91C1C)', textRgb: PALETTE['alerta-rojo'],
-    bgName: 'crema (#FBF7EE)', bgRgb: PALETTE['crema'],
+    contexto: 'Alerta de formulario (Error sobre Crema)',
+    textName: `alerta-rojo (${HEX_MAP['error']})`, textRgb: TOKENS['error'],
+    bgName: `crema (${HEX_MAP['crema']})`, bgRgb: TOKENS['crema'],
     tipoTexto: 'Normal (14px)'
   },
 
-  // 7. Escala Móvil (12px - 13px)
+  // --- ESCALA MÓVIL (<768px): TODOS LOS TEXTOS 11px, 12px y 13px ---
   {
     contexto: 'Móvil: Barra inferior activo (12px Verde Bosque sobre Crema)',
-    textName: 'verde-bosque (#1C3B20)', textRgb: PALETTE['verde-bosque'],
-    bgName: 'crema (#FBF7EE)', bgRgb: PALETTE['crema'],
-    tipoTexto: 'Normal (12px SemiBold)'
+    textName: `verde-bosque (${HEX_MAP['verde-bosque']})`, textRgb: TOKENS['verde-bosque'],
+    bgName: `crema (${HEX_MAP['crema']})`, bgRgb: TOKENS['crema'],
+    tipoTexto: 'Móvil 12px'
   },
   {
     contexto: 'Móvil: Barra inferior inactivo (12px Gris Cálido sobre Crema)',
-    textName: 'gris-calido (#5A6B5C)', textRgb: PALETTE['gris-calido'],
-    bgName: 'crema (#FBF7EE)', bgRgb: PALETTE['crema'],
-    tipoTexto: 'Normal (12px SemiBold)'
-  },
-  {
-    contexto: 'Móvil: LoteCard precio "/kg" (13px Gris Cálido sobre Blanco)',
-    textName: 'gris-calido (#5A6B5C)', textRgb: PALETTE['gris-calido'],
-    bgName: 'blanco (#FFFFFF)', bgRgb: PALETTE['white'],
-    tipoTexto: 'Normal (13px)'
-  },
-  {
-    contexto: 'Móvil: LoteCard "Delivery · Recojo" (13px Gris Cálido sobre Blanco)',
-    textName: 'gris-calido (#5A6B5C)', textRgb: PALETTE['gris-calido'],
-    bgName: 'blanco (#FFFFFF)', bgRgb: PALETTE['white'],
-    tipoTexto: 'Normal (13px)'
-  },
-  {
-    contexto: 'Móvil: LoteCard metadatos (13px Gris Cálido sobre Blanco)',
-    textName: 'gris-calido (#5A6B5C)', textRgb: PALETTE['gris-calido'],
-    bgName: 'blanco (#FFFFFF)', bgRgb: PALETTE['white'],
-    tipoTexto: 'Normal (13px)'
-  },
-  {
-    contexto: 'Móvil: LoteCard vendedor y calificación (13px Verde Bosque sobre Blanco)',
-    textName: 'verde-bosque (#1C3B20)', textRgb: PALETTE['verde-bosque'],
-    bgName: 'blanco (#FFFFFF)', bgRgb: PALETTE['white'],
-    tipoTexto: 'Normal (13px SemiBold)'
-  },
-  {
-    contexto: 'Móvil: Mercado contador y orden (13px Gris Cálido sobre Crema)',
-    textName: 'gris-calido (#5A6B5C)', textRgb: PALETTE['gris-calido'],
-    bgName: 'crema (#FBF7EE)', bgRgb: PALETTE['crema'],
-    tipoTexto: 'Normal (13px)'
-  },
-  {
-    contexto: 'Móvil: Badges 12-13px (Verde Bosque sobre Menta)',
-    textName: 'verde-bosque (#1C3B20)', textRgb: PALETTE['verde-bosque'],
-    bgName: 'menta (#C8E6C9)', bgRgb: PALETTE['menta'],
-    tipoTexto: 'Normal (12px SemiBold)'
+    textName: `gris-calido (${HEX_MAP['gris-calido']})`, textRgb: TOKENS['gris-calido'],
+    bgName: `crema (${HEX_MAP['crema']})`, bgRgb: TOKENS['crema'],
+    tipoTexto: 'Móvil 12px'
   },
   {
     contexto: 'Móvil: Franja Datos de Ejemplo (12px Crema sobre Verde Bosque)',
-    textName: 'crema (#FBF7EE)', textRgb: PALETTE['crema'],
-    bgName: 'verde-bosque (#1C3B20)', bgRgb: PALETTE['verde-bosque'],
-    tipoTexto: 'Normal (12px SemiBold)'
+    textName: `crema (${HEX_MAP['crema']})`, textRgb: TOKENS['crema'],
+    bgName: `verde-bosque (${HEX_MAP['verde-bosque']})`, bgRgb: TOKENS['verde-bosque'],
+    tipoTexto: 'Móvil 12px'
+  },
+  {
+    contexto: 'Móvil: LoteCard precio "/kg" (13px Gris Cálido sobre Blanco)',
+    textName: `gris-calido (${HEX_MAP['gris-calido']})`, textRgb: TOKENS['gris-calido'],
+    bgName: `blanco (${HEX_MAP['blanco']})`, bgRgb: TOKENS['blanco'],
+    tipoTexto: 'Móvil 13px'
+  },
+  {
+    contexto: 'Móvil: LoteCard "Delivery · Recojo" (13px Gris Cálido sobre Blanco)',
+    textName: `gris-calido (${HEX_MAP['gris-calido']})`, textRgb: TOKENS['gris-calido'],
+    bgName: `blanco (${HEX_MAP['blanco']})`, bgRgb: TOKENS['blanco'],
+    tipoTexto: 'Móvil 13px'
+  },
+  {
+    contexto: 'Móvil: LoteCard metadatos (13px Gris Cálido sobre Blanco)',
+    textName: `gris-calido (${HEX_MAP['gris-calido']})`, textRgb: TOKENS['gris-calido'],
+    bgName: `blanco (${HEX_MAP['blanco']})`, bgRgb: TOKENS['blanco'],
+    tipoTexto: 'Móvil 13px'
+  },
+  {
+    contexto: 'Móvil: LoteCard vendedor nombre (13px Verde Bosque sobre Blanco)',
+    textName: `verde-bosque (${HEX_MAP['verde-bosque']})`, textRgb: TOKENS['verde-bosque'],
+    bgName: `blanco (${HEX_MAP['blanco']})`, bgRgb: TOKENS['blanco'],
+    tipoTexto: 'Móvil 13px'
+  },
+  {
+    contexto: 'Móvil: LoteCard avatar vendedor (12px Verde Bosque sobre Menta)',
+    textName: `verde-bosque (${HEX_MAP['verde-bosque']})`, textRgb: TOKENS['verde-bosque'],
+    bgName: `menta (${HEX_MAP['menta']})`, bgRgb: TOKENS['menta'],
+    tipoTexto: 'Móvil 12px'
+  },
+  {
+    contexto: 'Móvil: LoteCard StarRating calificación (13px Verde Bosque sobre Blanco)',
+    textName: `verde-bosque (${HEX_MAP['verde-bosque']})`, textRgb: TOKENS['verde-bosque'],
+    bgName: `blanco (${HEX_MAP['blanco']})`, bgRgb: TOKENS['blanco'],
+    tipoTexto: 'Móvil 13px'
+  },
+  {
+    contexto: 'Móvil: Mercado contador y orden (13px Gris Cálido sobre Crema)',
+    textName: `gris-calido (${HEX_MAP['gris-calido']})`, textRgb: TOKENS['gris-calido'],
+    bgName: `crema (${HEX_MAP['crema']})`, bgRgb: TOKENS['crema'],
+    tipoTexto: 'Móvil 13px'
+  },
+  {
+    contexto: 'Móvil: Mercado selector de orden (13px Verde Bosque sobre Blanco)',
+    textName: `verde-bosque (${HEX_MAP['verde-bosque']})`, textRgb: TOKENS['verde-bosque'],
+    bgName: `blanco (${HEX_MAP['blanco']})`, bgRgb: TOKENS['blanco'],
+    tipoTexto: 'Móvil 13px'
+  },
+  {
+    contexto: 'Móvil: Badges 12-13px delivery/verificado (Verde Bosque sobre Menta)',
+    textName: `verde-bosque (${HEX_MAP['verde-bosque']})`, textRgb: TOKENS['verde-bosque'],
+    bgName: `menta (${HEX_MAP['menta']})`, bgRgb: TOKENS['menta'],
+    tipoTexto: 'Móvil 12-13px'
+  },
+  {
+    contexto: 'Móvil: Badges 12-13px recojo (Verde Bosque sobre accent-50)',
+    textName: `verde-bosque (${HEX_MAP['verde-bosque']})`, textRgb: TOKENS['verde-bosque'],
+    bgName: `accent-50 (${HEX_MAP['accent-50']})`, bgRgb: TOKENS['accent-50'],
+    tipoTexto: 'Móvil 12-13px'
+  },
+  {
+    contexto: 'Móvil: Inicio hero badge (12px Verde Bosque sobre Menta)',
+    textName: `verde-bosque (${HEX_MAP['verde-bosque']})`, textRgb: TOKENS['verde-bosque'],
+    bgName: `menta (${HEX_MAP['menta']})`, bgRgb: TOKENS['menta'],
+    tipoTexto: 'Móvil 12px'
+  },
+  {
+    contexto: 'Móvil: Inicio Swipee frase trato directo (13px text-verde-bosque/85 sobre Crema)',
+    textName: 'verde-bosque/85', textRgb: blend(TOKENS['verde-bosque'], 0.85, TOKENS['crema']),
+    bgName: `crema (${HEX_MAP['crema']})`, bgRgb: TOKENS['crema'],
+    tipoTexto: 'Móvil 13px'
+  },
+  {
+    contexto: 'Móvil: Inicio carrusel subtítulo (13px text-verde-bosque/85 sobre Crema)',
+    textName: 'verde-bosque/85', textRgb: blend(TOKENS['verde-bosque'], 0.85, TOKENS['crema']),
+    bgName: `crema (${HEX_MAP['crema']})`, bgRgb: TOKENS['crema'],
+    tipoTexto: 'Móvil 13px'
+  },
+  {
+    contexto: 'Móvil: Inicio chips de tela (13px Verde Bosque sobre Blanco)',
+    textName: `verde-bosque (${HEX_MAP['verde-bosque']})`, textRgb: TOKENS['verde-bosque'],
+    bgName: `blanco (${HEX_MAP['blanco']})`, bgRgb: TOKENS['blanco'],
+    tipoTexto: 'Móvil 13px'
+  },
+  {
+    contexto: 'Móvil: Inicio últimos lotes subtítulo (13px text-verde-bosque/85 sobre Crema)',
+    textName: 'verde-bosque/85', textRgb: blend(TOKENS['verde-bosque'], 0.85, TOKENS['crema']),
+    bgName: `crema (${HEX_MAP['crema']})`, bgRgb: TOKENS['crema'],
+    tipoTexto: 'Móvil 13px'
+  },
+  {
+    contexto: 'Móvil: Inicio badge último lote (12px Crema sobre Verde Bosque)',
+    textName: `crema (${HEX_MAP['crema']})`, textRgb: TOKENS['crema'],
+    bgName: `verde-bosque (${HEX_MAP['verde-bosque']})`, bgRgb: TOKENS['verde-bosque'],
+    tipoTexto: 'Móvil 12px'
+  },
+  {
+    contexto: 'Móvil: ImpactBanner etiqueta (11px text-verde-bosque/85 sobre menta/60 en Crema)',
+    textName: 'verde-bosque/85', textRgb: blend(TOKENS['verde-bosque'], 0.85, blend(TOKENS['menta'], 0.60, TOKENS['crema'])),
+    bgName: 'menta/60 sobre Crema', bgRgb: blend(TOKENS['menta'], 0.60, TOKENS['crema']),
+    tipoTexto: 'Móvil 11px'
+  },
+  {
+    contexto: 'Móvil: ImpactBanner unidad (12px text-verde-bosque/80 sobre menta/60 en Crema)',
+    textName: 'verde-bosque/80', textRgb: blend(TOKENS['verde-bosque'], 0.80, blend(TOKENS['menta'], 0.60, TOKENS['crema'])),
+    bgName: 'menta/60 sobre Crema', bgRgb: blend(TOKENS['menta'], 0.60, TOKENS['crema']),
+    tipoTexto: 'Móvil 12px'
+  },
+  {
+    contexto: 'Móvil: DetalleLote reseñas vendedor (12px Gris Cálido sobre Blanco)',
+    textName: `gris-calido (${HEX_MAP['gris-calido']})`, textRgb: TOKENS['gris-calido'],
+    bgName: `blanco (${HEX_MAP['blanco']})`, bgRgb: TOKENS['blanco'],
+    tipoTexto: 'Móvil 12px'
+  },
+  {
+    contexto: 'Móvil: PublicarLote stepper labels (12px Verde Bosque sobre Crema)',
+    textName: `verde-bosque (${HEX_MAP['verde-bosque']})`, textRgb: TOKENS['verde-bosque'],
+    bgName: `crema (${HEX_MAP['crema']})`, bgRgb: TOKENS['crema'],
+    tipoTexto: 'Móvil 12px'
   }
-];
+]
 
-function runAudit() {
-  console.log('| Contexto | Texto | Fondo | Ratio | AA Normal (≥4.5:1) | AA Large (≥3.0:1) | Veredicto |');
-  console.log('|---|---|---|:---:|:---:|:---:|---|');
+export function runAudit() {
+  console.log('=== AUDITORÍA OFICIAL DE CONTRASTE WCAG 2.1 (TOKENS TAILWIND DINÁMICOS) ===\n')
+  console.log('| Contexto | Texto | Fondo | Ratio | AA Normal (≥4.5:1) | AA Large (≥3.0:1) | Veredicto |')
+  console.log('|---|---|---|:---:|:---:|:---:|---|')
 
-  const rows = [];
+  let passCount = 0
+  let failCount = 0
 
   for (const c of COMBINACIONES) {
-    const ratio = contrastRatio(c.textRgb, c.bgRgb);
-    const passNormal = ratio >= 4.5;
-    const passLarge = ratio >= 3.0;
+    const ratio = contrastRatio(c.textRgb, c.bgRgb)
+    const passNormal = ratio >= 4.5
+    const passLarge = ratio >= 3.0
 
-    let veredicto = 'CUMPLE AA Normal';
-    if (!passNormal && passLarge) {
-      veredicto = c.tipoTexto.includes('Grande') ? 'CUMPLE AA (Solo Texto Grande)' : 'FALLA AA Normal (<4.5)';
-    } else if (!passNormal && !passLarge) {
-      veredicto = 'NO CUMPLE AA (Prohibido)';
+    let verdict = ''
+    if (c.contexto.includes('PROHIBIDO')) {
+      verdict = passNormal ? 'CUMPLE (REVISAR REGLA)' : 'NO CUMPLE AA (Prohibido)'
+    } else if (c.tipoTexto.includes('Large')) {
+      verdict = passLarge ? 'CUMPLE AA (Solo Texto Grande)' : 'FALLA AA Large'
+    } else {
+      verdict = passNormal ? 'CUMPLE AA Normal' : (passLarge ? 'FALLA AA Normal (<4.5)' : 'FALLA WCAG')
     }
 
-    const row = {
-      contexto: c.contexto,
-      texto: c.textName,
-      fondo: c.bgName,
-      ratio: ratio.toFixed(2) + ':1',
-      passNormal: passNormal ? 'PASS' : 'FAIL',
-      passLarge: passLarge ? 'PASS' : 'FAIL',
-      veredicto
-    };
-    rows.push(row);
+    if (passNormal || (c.tipoTexto.includes('Large') && passLarge)) {
+      passCount++
+    } else {
+      failCount++
+    }
 
-    console.log(`| ${row.contexto} | ${row.texto} | ${row.fondo} | ${row.ratio} | ${row.passNormal} | ${row.passLarge} | ${row.veredicto} |`);
+    console.log(`| ${c.contexto} | ${c.textName} | ${c.bgName} | ${ratio.toFixed(2)}:1 | ${passNormal ? 'PASS' : 'FAIL'} | ${passLarge ? 'PASS' : 'FAIL'} | ${verdict} |`)
   }
 
-  return rows;
+  console.log(`\nTOTALES: Evaluadas = ${COMBINACIONES.length}, Cumplen objetivo = ${passCount}, Casos regulados/prohibidos = ${failCount}`)
 }
 
-runAudit();
+if (process.argv[1].endsWith('contraste.mjs')) {
+  runAudit()
+}

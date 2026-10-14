@@ -235,4 +235,192 @@ Para resolver la saturación visual en dispositivos móviles (densidad de inform
      - *Corregido*: Altura máxima acotada a `max-h-[90vh]` con `overflow-y-auto` y padding adaptativo `p-4 md:p-6` para garantizar que modales largos quepan sin cortarse en viewports de `360x740`.
      - *Propuesta*: Transformar los modales en móviles en hojas inferiores ("bottom sheets") que se desplieguen desde abajo hacia arriba con animación táctil.
 
+---
+
+## 8. Verificación de Calidad y Cierre (rediseno-v1.4.1)
+
+### 1. Tokens y Contraste WCAG 2.1
+* **Verificación de tokens (`git diff rediseno-v1.3-deploy -- tailwind.config.js src/index.css`)**:
+  - `tailwind.config.js`: **0 diferencias**. Todos los tokens oficiales se conservan intactos (`verde-bosque: #12372A`, `verde-hoja: #1E8449`, `menta: #DDF3E6`, `crema: #FBF7EE`, `terracota: #E4793B`, `gris-calido: #6B6F6A`).
+  - `src/index.css`: Variables CSS idénticas. Solo se agregaron media queries específicas para móvil (`@media (max-width: 767.98px)` y `@media (min-width: 768px)`).
+* **Auditoría de contraste dinámica (`scripts/contraste.mjs`)**:
+  - El script importa los tokens dinámicamente desde `tailwind.config.js`, eliminando valores manuales o hex desactualizados.
+  - Se evaluaron todas las tipografías de 11–13px, incluyendo variantes con opacidad (`text-verde-bosque/85`, `text-verde-bosque/80`, etc.).
+
+| Contexto / Texto 11–13px | Color Texto | Color Fondo | Ratio | AA Normal (≥4.5:1) | Veredicto |
+|---|---|---|:---:|:---:|---|
+| Móvil: Barra inferior activo (`12px`) | `verde-bosque` (`#12372A`) | `crema` (`#FBF7EE`) | 12.23:1 | PASS | CUMPLE AA Normal |
+| Móvil: Barra inferior inactivo (`12px`) | `gris-calido` (`#6B6F6A`) | `crema` (`#FBF7EE`) | 4.78:1 | PASS | CUMPLE AA Normal |
+| Móvil: Franja Datos de Ejemplo (`12px`) | `crema` (`#FBF7EE`) | `verde-bosque` (`#12372A`) | 12.23:1 | PASS | CUMPLE AA Normal |
+| Móvil: LoteCard precio `"/kg"` (`13px`) | `gris-calido` (`#6B6F6A`) | `blanco` (`#FFFFFF`) | 5.11:1 | PASS | CUMPLE AA Normal |
+| Móvil: LoteCard `"Delivery · Recojo"` (`13px`) | `gris-calido` (`#6B6F6A`) | `blanco` (`#FFFFFF`) | 5.11:1 | PASS | CUMPLE AA Normal |
+| Móvil: LoteCard metadatos (`13px`) | `gris-calido` (`#6B6F6A`) | `blanco` (`#FFFFFF`) | 5.11:1 | PASS | CUMPLE AA Normal |
+| Móvil: LoteCard nombre vendedor (`13px`) | `verde-bosque` (`#12372A`) | `blanco` (`#FFFFFF`) | 13.08:1 | PASS | CUMPLE AA Normal |
+| Móvil: LoteCard avatar vendedor (`12px`) | `verde-bosque` (`#12372A`) | `menta` (`#DDF3E6`) | 11.23:1 | PASS | CUMPLE AA Normal |
+| Móvil: LoteCard calificación (`13px`) | `verde-bosque` (`#12372A`) | `blanco` (`#FFFFFF`) | 13.08:1 | PASS | CUMPLE AA Normal |
+| Móvil: Mercado contador y orden (`13px`) | `gris-calido` (`#6B6F6A`) | `crema` (`#FBF7EE`) | 4.78:1 | PASS | CUMPLE AA Normal |
+| Móvil: Mercado selector de orden (`13px`) | `verde-bosque` (`#12372A`) | `blanco` (`#FFFFFF`) | 13.08:1 | PASS | CUMPLE AA Normal |
+| Móvil: Badges 12-13px delivery/verificado | `verde-bosque` (`#12372A`) | `menta` (`#DDF3E6`) | 11.23:1 | PASS | CUMPLE AA Normal |
+| Móvil: Badges 12-13px recojo | `verde-bosque` (`#12372A`) | `accent-50` (`#FDF3EC`) | 11.96:1 | PASS | CUMPLE AA Normal |
+| Móvil: Inicio hero badge (`12px`) | `verde-bosque` (`#12372A`) | `menta` (`#DDF3E6`) | 11.23:1 | PASS | CUMPLE AA Normal |
+| Móvil: Inicio frase Swipee (`13px`) | `verde-bosque/85` | `crema` (`#FBF7EE`) | 7.82:1 | PASS | CUMPLE AA Normal |
+| Móvil: Inicio carrusel subtítulo (`13px`) | `verde-bosque/85` | `crema` (`#FBF7EE`) | 7.82:1 | PASS | CUMPLE AA Normal |
+| Móvil: Inicio chips de tela (`13px`) | `verde-bosque` (`#12372A`) | `blanco` (`#FFFFFF`) | 13.08:1 | PASS | CUMPLE AA Normal |
+| Móvil: Inicio últimos lotes subtítulo (`13px`) | `verde-bosque/85` | `crema` (`#FBF7EE`) | 7.82:1 | PASS | CUMPLE AA Normal |
+| Móvil: Inicio badge último lote (`12px`) | `crema` (`#FBF7EE`) | `verde-bosque` (`#12372A`) | 12.23:1 | PASS | CUMPLE AA Normal |
+| Móvil: ImpactBanner etiqueta (`11px`) | `verde-bosque/85` | `menta/60` sobre `crema` | 7.50:1 | PASS | CUMPLE AA Normal |
+| Móvil: ImpactBanner unidad (`12px`) | `verde-bosque/80` | `menta/60` sobre `crema` | 6.49:1 | PASS | CUMPLE AA Normal |
+| Móvil: DetalleLote reseñas vendedor (`12px`) | `gris-calido` (`#6B6F6A`) | `blanco` (`#FFFFFF`) | 5.11:1 | PASS | CUMPLE AA Normal |
+| Móvil: PublicarLote stepper labels (`12px`) | `verde-bosque` (`#12372A`) | `crema` (`#FBF7EE`) | 12.23:1 | PASS | CUMPLE AA Normal |
+
+* **Regla estricta ratificada**: Gris Cálido sobre Menta sólida da 4.39:1 (no cumple AA Normal <4.5:1), por lo que se mantiene estrictamente prohibido en todo el diseño.
+
+---
+
+### 2. Conteo de Lógica (12 Patrones Oficiales)
+Se ejecutó `scripts/logic_counter_12.mjs` evaluando el regex:
+`useState|useEffect|useMemo|useRef|onClick=|onChange=|onSubmit=|navigate\(|value=|checked=|disabled=|required`
+sobre TODOS los archivos dentro de `src/`, comparando el baseline oficial (`rediseno-v1.3-deploy`) contra `HEAD` (`rediseno-v1.4.1`):
+
+| Archivo | Baseline (`v1.3`) | HEAD (`v1.4.1`) | Diferencia | Estado |
+|---|:---:|:---:|:---:|:---:|
+| `src/App.jsx` | 0 | 0 | 0 | INTACTO |
+| `src/components/ImpactBanner.jsx` | 0 | 0 | 0 | INTACTO |
+| `src/components/Layout.jsx` | 0 | 0 | 0 | INTACTO |
+| `src/components/Logo.jsx` | 0 | 0 | 0 | INTACTO |
+| `src/components/LoteCard.jsx` | 0 | 0 | 0 | INTACTO |
+| `src/components/Modal.jsx` | 5 | 5 | 0 | INTACTO |
+| `src/components/PlaceholderImg.jsx` | 0 | 0 | 0 | INTACTO |
+| `src/components/StarRating.jsx` | 0 | 0 | 0 | INTACTO |
+| `src/components/Swipee.jsx` | 0 | 0 | 0 | INTACTO |
+| `src/data/impactoConfig.json` | 0 | 0 | 0 | INTACTO |
+| `src/data/lotes.json` | 0 | 0 | 0 | INTACTO |
+| `src/data/tiendas.json` | 0 | 0 | 0 | INTACTO |
+| `src/index.css` | 0 | 0 | 0 | INTACTO |
+| `src/main.jsx` | 0 | 0 | 0 | INTACTO |
+| `src/pages/DetalleLote.jsx` | 12 | 12 | 0 | INTACTO |
+| `src/pages/Impacto.jsx` | 4 | 4 | 0 | INTACTO |
+| `src/pages/Inicio.jsx` | 12 | 12 | 0 | INTACTO |
+| `src/pages/Mercado.jsx` | 25 | 25 | 0 | INTACTO |
+| `src/pages/PerfilVendedor.jsx` | 0 | 0 | 0 | INTACTO |
+| `src/pages/PublicarLote.jsx` | 43 | 43 | 0 | INTACTO |
+| **TOTAL GENERAL** | **101** | **101** | **0** | **100% IDÉNTICO** |
+
+* **Desglose por patrón**: `useState`: 21/21, `useEffect`: 2/2, `useMemo`: 2/2, `useRef`: 2/2, `onClick=`: 29/29, `onChange=`: 16/16, `onSubmit=`: 1/1, `navigate\(`: 1/1, `value=`: 22/22, `checked=`: 3/3, `disabled=`: 2/2, `required`: 0/0. Diferencia neta = 0.
+
+---
+
+### 3. Diff de Escritorio Ampliado (768px, 1024px, 1280px)
+Se ejecutó `scripts/expanded_desktop_pixel_diff.mjs` contrastando el servidor baseline en `rediseno-v1.3-deploy` contra `HEAD` en 15 vistas y estados:
+
+| Viewport | Pantalla / Modal / Estado | Dimensiones | Total Píxeles | Píxeles Distintos | % Dif. | Veredicto |
+|---|---|:---:|:---:|:---:|:---:|---|
+| **768px** | `inicio` | 768x1024 | 786,432 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 768px | `mercado` | 768x1024 | 786,432 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 768px | `detalle_lote` (`l1`) | 768x1024 | 786,432 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 768px | `perfil_vendedor` (`t1`) | 768x1024 | 786,432 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 768px | `publicar_paso1` | 768x1024 | 786,432 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 768px | `impacto` | 768x1024 | 786,432 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 768px | `detalle_modal_contacto` | 768x1024 | 786,432 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 768px | `detalle_modal_oferta` | 768x1024 | 786,432 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 768px | `detalle_modal_confirmar` | 768x1024 | 786,432 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 768px | `detalle_modal_trato_cerrado` | 768x1024 | 786,432 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 768px | `publicar_modal_preview` | 768x1024 | 786,432 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 768px | `publicar_modal_exito` | 768x1024 | 786,432 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 768px | `mercado_vacio` (`q=xyzinexistente`) | 768x1024 | 786,432 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 768px | `lote_no_encontrado` (`9999`) | 768x1024 | 786,432 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 768px | `tienda_no_encontrada` (`inexistente`) | 768x1024 | 786,432 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| **1024px** | `inicio` | 1024x800 | 819,200 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 1024px | `mercado` | 1024x800 | 819,200 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 1024px | `detalle_lote` (`l1`) | 1024x800 | 819,200 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 1024px | `perfil_vendedor` (`t1`) | 1024x800 | 819,200 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 1024px | `publicar_paso1` | 1024x800 | 819,200 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 1024px | `impacto` | 1024x800 | 819,200 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 1024px | `detalle_modal_contacto` | 1024x800 | 819,200 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 1024px | `detalle_modal_oferta` | 1024x800 | 819,200 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 1024px | `detalle_modal_confirmar` | 1024x800 | 819,200 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 1024px | `detalle_modal_trato_cerrado` | 1024x800 | 819,200 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 1024px | `publicar_modal_preview` | 1024x800 | 819,200 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 1024px | `publicar_modal_exito` | 1024x800 | 819,200 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 1024px | `mercado_vacio` (`q=xyzinexistente`) | 1024x800 | 819,200 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 1024px | `lote_no_encontrado` (`9999`) | 1024x800 | 819,200 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 1024px | `tienda_no_encontrada` (`inexistente`) | 1024x800 | 819,200 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| **1280px** | `inicio` | 1280x800 | 1,024,000 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 1280px | `mercado` | 1280x800 | 1,024,000 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 1280px | `detalle_lote` (`l1`) | 1280x800 | 1,024,000 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 1280px | `perfil_vendedor` (`t1`) | 1280x800 | 1,024,000 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 1280px | `publicar_paso1` | 1280x800 | 1,024,000 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 1280px | `impacto` | 1280x800 | 1,024,000 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 1280px | `detalle_modal_contacto` | 1280x800 | 1,024,000 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 1280px | `detalle_modal_oferta` | 1280x800 | 1,024,000 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 1280px | `detalle_modal_confirmar` | 1280x800 | 1,024,000 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 1280px | `detalle_modal_trato_cerrado` | 1280x800 | 1,024,000 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 1280px | `publicar_modal_preview` | 1280x800 | 1,024,000 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 1280px | `publicar_modal_exito` | 1280x800 | 1,024,000 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 1280px | `mercado_vacio` (`q=xyzinexistente`) | 1280x800 | 1,024,000 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 1280px | `lote_no_encontrado` (`9999`) | 1280x800 | 1,024,000 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| 1280px | `tienda_no_encontrada` (`inexistente`) | 1280x800 | 1,024,000 | 0 | 0.0000% | 0 PÍXELES (INTACTO) |
+| **TOTAL** | **45 comparaciones de pantalla** | — | — | **0** | **0.0000%** | **100% IDÉNTICO** |
+
+---
+
+### 4. Rango Intermedio (600px y 700px)
+Se generaron y verificaron capturas en resoluciones intermedias:
+* `capturas/intermedio_600_inicio.png` y `capturas/intermedio_700_inicio.png`
+* `capturas/intermedio_600_mercado.png` y `capturas/intermedio_700_mercado.png`
+* `capturas/intermedio_600_detalle_lote.png` y `capturas/intermedio_700_detalle_lote.png`
+
+**Hallazgos de la inspección**:
+1. **Etiqueta "Datos de ejemplo"**: Permanece en el flujo del documento como franja superior de `28px` con `position: static`, sin solapar la cabecera, el logo ni los botones de navegación.
+2. **Grilla de Mercado**: Mantiene un esquema de 2 columnas proporcional y equilibrado; no hay tarjetas estiradas ni saltos de línea irregulares.
+3. **Detalle de Lote**: La imagen y las miniaturas se escalan adecuadamente; las especificaciones técnicas y el bloque de impacto ambiental no desbordan lateralmente.
+4. **Desbordes horizontales**: Ninguna de las pantallas genera scroll horizontal no deseado (`scrollWidth === clientWidth`).
+
+---
+
+### 5. Auditoría Móvil Completa (360x740, 390x844 y 412x915)
+Se ejecutó `scripts/audit_mobile.mjs` sobre las 6 pantallas base y los 7 modales/drawers:
+
+| Viewport | Vista / Modal / Drawer | Tipo | Textos Desbordados | Interactivos <36px | Scroll Horiz. | Botón Principal Visible en Pantalla |
+|---|---|:---:|:---:|:---:|:---:|:---:|
+| **360x740** | `Inicio` | página | 0 | 0 | PASS | PASS |
+| 360x740 | `Mercado` | página | 0 | 0 | PASS | PASS |
+| 360x740 | `DetalleLote` | página | 0 | 0 | PASS | PASS |
+| 360x740 | `PerfilVendedor` | página | 0 | 0 | PASS | PASS |
+| 360x740 | `PublicarLote` | página | 0 | 0 | PASS | PASS |
+| 360x740 | `Impacto` | página | 0 | 0 | PASS | PASS |
+| 360x740 | `Modal Contacto` | modal | 0 | 0 | PASS | PASS (`bottom: 531px <= 740px`) |
+| 360x740 | `Modal Oferta` | modal | 0 | 0 | PASS | PASS (`bottom: 660px <= 740px`) |
+| 360x740 | `Modal Confirmar Entrega` | modal | 0 | 0 | PASS | PASS (`bottom: 656px <= 740px`) |
+| 360x740 | `Modal Trato Cerrado` | modal | 0 | 0 | PASS | PASS (`bottom: 716px <= 740px`) |
+| 360x740 | `Modal Vista Previa (Publicar)` | modal | 0 | 2* | PASS | PASS (`bottom: 724px <= 740px`) |
+| 360x740 | `Modal Éxito (Publicar)` | modal | 0 | 2* | PASS | PASS (`bottom: 708px <= 740px`) |
+| 360x740 | `Panel Filtros Móvil (Mercado)` | drawer | 0 | 0 | PASS | PASS (`bottom: 724px <= 740px`) |
+| **390x844** | *Todas las páginas y modales (13 vistas)* | todas | 0 | 0 (2*) | PASS | PASS (holgura >30px) |
+| **412x915** | *Todas las páginas y modales (13 vistas)* | todas | 0 | 0 (2*) | PASS | PASS (holgura >20px) |
+
+**Nota*: Los 2 inputs registrados en modales de publicar corresponden a los checkboxes subyacentes del formulario desactivado bajo el backdrop; sus contenedores `<label>` táctiles poseen `48px` de altura efectiva.
+* **Confirmación crítica**: Ningún modal requiere scroll horizontal y el 100% de los botones primarios son visibles dentro del primer viewport sin recorte en la resolución más exigente (`360x740`).
+
+---
+
+### 6. Mediciones Precisas (`getBoundingClientRect`)
+Se ejecutó `scripts/dom_measurements.mjs` registrando las dimensiones físicas calculadas por el motor de renderizado del navegador:
+
+* **(a) Logo en Header Móvil (360x740)**:
+  - Ancho visible del SVG (`<svg>`): **`55.75 px`**
+  - Alto visible del SVG (`<svg>`): **`42.00 px`**
+  - Contenedor táctil (`<a>`): **`96.00 x 55.00 px`**
+  - Inspección de recorte: Archivo `capturas/m360_logo_zoom.png` generado a 300% (`deviceScaleFactor: 3`). El recorte del `viewBox` (`"50 50 227 171"`) elimina los márgenes vacíos manteniendo la hoja, la flecha y las letras "eco swipe" 100% nítidas, centradas y sin ningún corte en trazos ni descendentes.
+* **(b) Filas completas de lotes visibles en Mercado**:
+  - En **`360x740`**: Altura útil sobre barra inferior = `684 px`.
+    * **Fila 1 (2 tarjetas)**: `top: 202px, bottom: 501px` (alto `299px`) -> **1 fila completa visible** (2 tarjetas completas).
+    * **Fila 2 (2 tarjetas)**: `top: 513px, bottom: 813px` -> **1 fila parcial asomando** (`171px` visibles sobre el fold).
+  - En **`412x915`**: Altura útil sobre barra inferior = `859 px`.
+    * **Fila 1 (2 tarjetas)**: `top: 202px, bottom: 521px` (alto `319px`) -> **Completamente visible**.
+    * **Fila 2 (2 tarjetas)**: `top: 533px, bottom: 852px` (alto `319px`) -> **Completamente visible**.
+    * **Total**: **2 filas completas visibles** (4 tarjetas completas) sin necesidad de scroll.
+* **(c) Altura de barras estructurales**:
+  - **Cabecera superior móvil (`header`)**: **`56.00 px`** exactos (clase CSS `h-14`).
+  - **Barra de navegación inferior móvil (`.bottom-nav`)**: **`56.00 px`** exactos (clase CSS `h-[56px]`), con padding adicional para safe-area en dispositivos con barra de gestos.
 
