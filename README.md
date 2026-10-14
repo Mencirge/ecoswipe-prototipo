@@ -1,22 +1,35 @@
-﻿# Eco Swipe - Prototipo
+# EcoSwipe — Prototipo
 
-Prototipo no funcional del marketplace de retazos textiles para el concurso Climatech. Construido con React, Vite y Tailwind CSS siguiendo las especificaciones de diseño.
+Marketplace circular de retazos y saldos textiles para talleres y confeccionistas en Gamarra. Construido con React, Vite y Tailwind CSS siguiendo el Brandbook oficial y especificaciones de accesibilidad WCAG 2.1 AA.
 
-## Requisitos
-- Node.js (v16+)
+## Prototipo
+Este proyecto es una versión prototipo navegable y de alta fidelidad:
+- **Datos de ejemplo**: Todos los lotes, métricas y tiendas provienen de datos locales de prueba estructurados en `src/data/` (`lotes.json`, `tiendas.json`, `impactoConfig.json`).
+- **Acciones demostrativas**: Los botones de acción transaccional, tales como el modal de contraoferta y el flujo de confirmación de entrega ("Entregué" / trato cerrado), son de carácter demostrativo para ilustrar la experiencia de usuario y la interacción de la mascota Swipee sin alterar una base de datos persistente.
 
-## Instalación y ejecución
+## Despliegue en Vercel
+El proyecto incluye `vercel.json` configurado para manejar el enrutamiento SPA mediante reescrituras a `/index.html`:
+```json
+{
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
+```
 
-1. Abre una terminal y navega a esta carpeta (prototipo).
-2. Instala las dependencias:
-   `ash
+## Requisitos y Ejecución Local
+- **Node.js**: v18+ (o superior)
+
+1. Instalar dependencias:
+   ```bash
    npm install
-   `
-3. Ejecuta el servidor de desarrollo:
-   `ash
+   ```
+2. Iniciar servidor de desarrollo:
+   ```bash
    npm run dev
-   `
-4. Abre la URL local que muestra la terminal (generalmente http://localhost:5173) en tu navegador.
-
-## Notas de revisión
-El prototipo es responsivo. Se recomienda revisarlo en anchos de 375px (móvil) y 1440px (desktop). Todos los datos mostrados son de prueba y están cargados localmente en src/data/.
+   ```
+3. Construir para producción y previsualizar:
+   ```bash
+   npm run build
+   npm run preview
+   ```

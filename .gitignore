@@ -12,6 +12,12 @@ dist
 dist-ssr
 *.local
 
+# Capturas y recursos pesados
+capturas/
+imagenes_eco_swipe/
+SWIPEE_EMOCIONES/
+logos/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
