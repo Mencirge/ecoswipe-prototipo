@@ -84,7 +84,7 @@ export default function Inicio() {
 
             {/* Swipee directamente sobre fondo Crema, sin tarjeta blanca */}
             <div className="lg:col-span-5 flex items-center gap-4 sm:gap-5">
-              <Swipee pose="principal" size={108} priority alt="" />
+              <Swipee pose="principal" size="hero" priority alt="" />
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
                   <span className="w-2.5 h-2.5 rounded-full bg-verde-hoja" />

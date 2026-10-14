@@ -278,7 +278,7 @@ export default function PublicarLote() {
                   También vender piezas por metro
                 </span>
               </label>
-              <p className="text-base text-gris-calido mt-1 ml-8">
+              <p className="text-base text-verde-bosque/85 mt-1 ml-8">
                 Habilita esta opción solo para retazos grandes continuos (≥ 1 metro).
               </p>
               

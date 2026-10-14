@@ -105,17 +105,17 @@ Para garantizar la integridad del prototipo sin alterar su modelo de datos ni su
      - *"Último lote publicado"* (etiqueta del lote protagonista).
      - *"Contacto directo de taller a taller, sin intermediarios."* (modal de contacto).
    * *Texto Preexistente del Prototipo Original (Baseline)*:
-     - *"Tienda no encontrada / No encontramos ningún taller registrado con este identificador."* (`PerfilVendedor.jsx`, condición `if (!tienda)` preexistente desde el prototipo original).
+     - *"Tienda no encontrada / No encontramos ningún taller registrado con este identificador."* (`PerfilVendedor.jsx`, condición `if (!tienda)` preexistente desde el prototipo original). [PENDIENTE DE APROBACIÓN]: Se documenta que la redacción emplea voz plural (*"No encontramos ningún taller..."*), a diferencia del tono en primera persona singular de Swipee (*"Vuelvo a buscar por ti"*), quedando como detalle pendiente de decisión de producto.
    * *Escrito en el Rediseño [PENDIENTE DE APROBACIÓN]*:
      - *"Este taller no tiene lotes activos en este momento."* (`PerfilVendedor.jsx`, estado vacío; no existía en el commit baseline original `d63bcb4`).
      - *"Anota el peso y el precio del lote."* (`PublicarLote.jsx`, cabecera paso 2 — pose Anotando).
-     - *"No encuentro ese lote. Revisa el enlace o vuelve al mercado."* (`DetalleLote.jsx` — pose Triste en lote no encontrado; en el baseline original `d63bcb4` ya existía el enlace de regreso `<Link to="/mercado">Ir al mercado</Link>`, el cual se conserva intacto).
+     - *"Revisa el enlace o vuelve al mercado."* (`DetalleLote.jsx` — pose Triste en lote no encontrado; en el baseline original `d63bcb4` ya existía el enlace de regreso `<Link to="/mercado">Ir al mercado</Link>`, el cual se conserva intacto).
 6. **Ruta 404 Global en `App.jsx` (Pendiente de Producto)**:
    * Se constata que `App.jsx` no define una ruta comodín (`<Route path="*" ... />`), por lo que URLs arbitrarias no coincidentes no cargan una vista de error 404 formal. Bajo el mandato estricto de "lógica intacta", no se modificó el árbol de rutas ni se crearon páginas adicionales; queda agendado como requerimiento de producto para próximas versiones.
 
 ---
 
-## 5. Swipee: Poses y Sistema de Ilustración (rediseno-v1.2.1)
+## 5. Swipee: Poses y Sistema de Ilustración (rediseno-v1.2.2)
 
 ### Regla Fundamental
 La mascota original (`mascota.webp` / `mascota.png`) permanece intacta como versión principal y por defecto. Las nuevas emociones amplían el sistema visual sin alterar el modelo de datos, rutas ni lógica funcional preexistente.
@@ -123,23 +123,32 @@ La mascota original (`mascota.webp` / `mascota.png`) permanece intacta como vers
 ### Factor de Escala Común y Relación Archivo -> CSS
 Todas las poses se calibraron con un **factor de escala unificado (0.3045)** contra la mascota principal de referencia (cuerpo de pie = 380 px en el archivo fuente exportado, correspondiente a 147 px CSS en tamaño `md`).
 * **Factor de densidad real Archivo -> CSS**: **~2.59×** (380 px / 147 px = 2.585×; no es 2.0× sino ~2.6×), garantizando nitidez Retina ultra-alta (>2.5×) ideal para pantallas móviles modernas de 3× sin degradación visual.
+* **Hero responsivo (`size="hero"`)**: En pantallas de escritorio (≥1024px / 1280px), la mascota principal se escala a `120 × 147 px` (factor 2.67×) con presencia destacada y equilibrada en el grid. En móviles (375px), conserva `88 × 108 px` (factor 3.63×) para no saturar el viewport.
+  - `capturas/hero_antes_1280.png`: Hero desktop previo a 88 × 108 px.
+  - `capturas/hero_despues_1280.png`: Hero desktop ampliado a 120 × 147 px. Se confirma que cabe holgadamente sin desordenar ni quebrar el layout.
 * **Alineación**: Todas las ilustraciones están alineadas por su base anatómica inferior (línea de apoyo de pies).
 * **Validación**:
   - `capturas/swipee_validacion_magenta.png`: Inspección al 400% sobre `#FF00FF` certificando la remoción total de blancos encerrados (entre piernas, bajo carta, entre brazos) preservando 100% de los brillos en ojos y lágrimas.
   - `capturas/swipee_hoja_poses.png`: Hoja de verificación comparativa de las 7 poses sobre fondos Crema `#FBF7EE` y Verde Bosque `#12372A`.
 
-### Tabla Final de Implementación de Poses (rediseno-v1.2.1)
+### Demostración de Una Sola Mascota en Pantalla (375px)
+Se certificó mediante capturas en viewport móvil de 375px que en ningún momento coexisten dos mascotas visibles:
+1. **Modal de Éxito en Publicar (`capturas/modal_exito_publicar_375.png`)**: Al confirmarse la publicación en el Paso 3, el componente del Paso 2 (donde se encontraba la pose *Anotando*) ya no está montado en el DOM. La única mascota existente es la pose *Celebrando* dentro del modal.
+2. **Modal de Trato Cerrado en DetalleLote (`capturas/modal_trato_cerrado_detalle_375.png`)**: La página de detalle de un lote existente carece de mascota; solo se renderiza la pose *Celebrando* al abrirse el modal.
+3. **Panel de Filtros Móvil sobre Estado Vacío de Mercado (`capturas/panel_filtros_mercado_vacio_375.png`)**: El cajón inferior de filtros (`bg-white rounded-t-tarjeta`) carece por completo de ilustraciones y cubre el 80% inferior de la pantalla, tapando por completo la tarjeta de estado vacío. Cero mascotas son visibles mientras el cajón está desplegado.
+
+### Tabla Final de Implementación de Poses (rediseno-v1.2.2)
 
 | Pose | Pantalla / Momento | Archivo (`px`) | Tamaño CSS Final | Factor Real (Archivo/CSS) | Copy Asociado | Estado / Origen del Copy |
 | :--- | :--- | :---: | :---: | :---: | :--- | :--- |
-| **`principal`** | Inicio (Hero de bienvenida) | 320 × 392 | 88 × 108 px (hero) | 3.63× | *“Encuentra el retazo exacto para tu confección.”* | Aprobado por el usuario |
+| **`principal`** | Inicio (Hero de bienvenida) | 320 × 392 | 88 × 108 px (móvil)<br>120 × 147 px (desktop) | 3.63× (móvil)<br>2.67× (desktop) | *“Encuentra el retazo exacto para tu confección.”* | Aprobado por el usuario |
 | **`celebrando`** | PublicarLote (Modal de éxito) | 391 × 429 | 151 × 166 px (`md`) | 2.58× | *“¡Listo! Tu retazo ya está publicado.”* | **Oficial Brandbook** |
 | **`celebrando`** | DetalleLote (Modal de trato cerrado) | 391 × 429 | 151 × 166 px (`md`) | 2.58× | *“¡Trato hecho! Ese retazo ya tiene dónde seguir.”* | Aprobado por el usuario |
 | **`pensando`** | Mercado (Sin coincidencias de filtro) | 343 × 400 | 132 × 154 px (`md`) | 2.60× | *“Aún no hay coincidencias. Vuelvo a buscar por ti.”* | **Oficial Brandbook** |
 | **`durmiendo`** | PerfilVendedor (Taller sin lotes activos) | 336 × 381 | 130 × 147 px (`md`) | 2.59× | *“Este taller no tiene lotes activos en este momento.”* | **Escrito en rediseño [Pendiente]** |
 | **`anotando`** | PublicarLote (Cabecera paso 2: Peso/Precio) | 270 × 380 | 52 × 74 px (`sm`) | 5.14× | *“Anota el peso y el precio del lote.”* | **Escrito en rediseño [Pendiente]** |
-| **`triste`** | DetalleLote (Lote no encontrado) | 271 × 380 | 105 × 147 px (`md`) | 2.58× | *“No encuentro ese lote. Revisa el enlace o vuelve al mercado.”* | **Escrito en rediseño [Pendiente]** (Enlace preexistente) |
-| **`triste`** | PerfilVendedor (Tienda no encontrada) | 271 × 380 | 105 × 147 px (`md`) | 2.58× | *“Tienda no encontrada / No encontramos ningún taller registrado...”* | **Preexistente baseline original** |
+| **`triste`** | DetalleLote (Lote no encontrado) | 271 × 380 | 105 × 147 px (`md`) | 2.58× | *“Revisa el enlace o vuelve al mercado.”* | **Escrito en rediseño [Pendiente]** (Enlace preexistente) |
+| **`triste`** | PerfilVendedor (Tienda no encontrada) | 271 × 380 | 105 × 147 px (`md`) | 2.58× | *“Tienda no encontrada / No encontramos ningún taller registrado...”* | **Preexistente baseline original [Voz plural, pendiente]** |
 | **`carta`** | *(Sin uso)* | 275 × 398 | 106 × 154 px (`md`) | 2.58× | — | Disponible en biblioteca |
 | **`molesto`** | *(Sin uso)* | 227 × 384 | 88 × 148 px (`md`) | 2.59× | — | Disponible en biblioteca |
 

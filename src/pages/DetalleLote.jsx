@@ -21,7 +21,7 @@ export default function DetalleLote() {
     <div className="page-enter max-w-5xl mx-auto px-4 md:px-8 py-20 text-center">
       <Swipee pose="triste" size="md" className="mx-auto mb-4" alt="" />
       <h2 className="text-2xl font-fredoka font-semibold text-verde-bosque">Lote no encontrado</h2>
-      <p className="text-base text-verde-bosque/85 mt-2">No encuentro ese lote. Revisa el enlace o vuelve al mercado.</p>
+      <p className="text-base text-verde-bosque/85 mt-2">Revisa el enlace o vuelve al mercado.</p>
       <Link to="/mercado" className="btn-primary mt-6 inline-flex min-h-[44px] items-center">
         Ir al mercado
       </Link>
@@ -301,7 +301,7 @@ export default function DetalleLote() {
                 </div>
                 <div className="flex-1">
                   <p className="font-semibold text-sm text-verde-bosque">WhatsApp directo</p>
-                  <p className="text-sm text-gris-calido">{tienda.contacto.whatsapp}</p>
+                  <p className="text-sm text-verde-bosque/80">{tienda.contacto.whatsapp}</p>
                 </div>
               </button>
             )}

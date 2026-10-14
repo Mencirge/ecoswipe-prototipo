@@ -70,6 +70,7 @@ const SCALE_FACTORS = {
   sm: 0.5,
   md: 1.0,
   lg: 1.15,
+  hero: 1.0,
 }
 
 export default function Swipee({
@@ -87,6 +88,7 @@ export default function Swipee({
   const width = Math.round(poseData.baseWidth * factor)
   const height = Math.round(poseData.baseHeight * factor)
   const altText = alt === '' ? '' : (alt || 'Swipee, la hojita de EcoSwipe')
+  const isHero = size === 'hero'
 
   return (
     <picture className={`inline-block flex-shrink-0 transition-opacity duration-200 motion-reduce:transition-none ${className}`}>
@@ -98,8 +100,10 @@ export default function Swipee({
         height={height}
         loading={priority ? 'eager' : 'lazy'}
         decoding={priority ? 'sync' : 'async'}
-        className="object-contain block mx-auto select-none pointer-events-none"
-        style={{ width: `${width}px`, height: `${height}px` }}
+        className={`object-contain block mx-auto select-none pointer-events-none ${
+          isHero ? 'w-[88px] h-[108px] lg:w-[120px] lg:h-[147px]' : ''
+        }`}
+        style={isHero ? undefined : { width: `${width}px`, height: `${height}px` }}
       />
     </picture>
   )
