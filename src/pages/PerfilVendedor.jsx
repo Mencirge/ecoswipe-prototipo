@@ -11,7 +11,8 @@ export default function PerfilVendedor() {
   const lotesTienda = lotes.filter(l => l.tiendaId === id)
 
   if (!tienda) return (
-    <div className="text-center py-20 px-4">
+    <div className="text-center py-20 px-4 page-enter">
+      <Swipee pose="triste" size="md" className="mx-auto mb-4" alt="" />
       <h2 className="text-2xl font-fredoka font-semibold text-verde-bosque">Tienda no encontrada</h2>
       <p className="text-base text-verde-bosque/80 mt-2">No encontramos ningún taller registrado con este identificador.</p>
       <Link to="/mercado" className="btn-primary min-h-[44px] mt-6 inline-flex items-center justify-center">

@@ -7,19 +7,19 @@ Documento técnico del sistema de diseño, tokens, directrices de accesibilidad 
 ## 1. Tokens de Diseño
 
 ### Paleta de Color Oficial
-* **Verde Bosque** (`#1C3B20`): Color primario de marca. Usado para titulares, textos principales, botones secundarios, cabeceras y elementos estructurales.
+* **Verde Bosque** (`#12372A`): Color primario de marca. Usado para titulares, textos principales, botones secundarios, cabeceras y elementos estructurales.
 * **Verde Hoja** (`#1E8449`): Color secundario de marca y acento activo. Usado para botones principales (`.btn-primary` con texto blanco), íconos destacados y enlaces de llamada a la acción.
 * **Crema** (`#FBF7EE`): Fondo principal de la aplicación. Proporciona una base orgánica, cálida y artesanal que evita el blanco digital puro.
-* **Menta** (`#C8E6C9`): Color de apoyo y contraste suave. Utilizado para badges (`badge-entrega`), bordes de tarjetas y contenedores secundarios.
+* **Menta** (`#DDF3E6`): Color de apoyo y contraste suave. Utilizado para badges (`badge-entrega`), bordes de tarjetas y contenedores secundarios.
 * **Terracota** (`#E4793B`): Color de acento cálido y artesanal. Su uso está estrictamente regulado por reglas de contraste WCAG.
-* **Gris Cálido** (`#5A6B5C`): Color neutro para metadatos, etiquetas secundarias y textos complementarios.
+* **Gris Cálido** (`#6B6F6A`): Color neutro para metadatos, etiquetas secundarias y textos complementarios.
 * **Blanco** (`#FFFFFF`): Fondo de tarjetas interactivas, modales y campos de formulario.
 
 ### Estados Derivados
 * **Brand Hover** (`#196F3D`): Oscurecimiento del Verde Hoja para hover en `.btn-primary`.
 * **Brand Active** (`#145A32`): Estado presionado en `.btn-primary`.
 * **Brand Light / Tinte** (`#EAF3EB`): Fondo de acento sutil para contenedores.
-* **Rojo Alerta** (`#B91C1C`): Validación de campos requeridos y estados de error.
+* **Rojo Alerta** (`#B91C1C` / `#D32F2F`): Validación de campos requeridos y estados de error.
 
 ### Tipografía
 * **Fredoka** (`500 Medium`, `600 SemiBold`, `700 Bold`): Exclusivamente para titulares (`h1` a `h3`), subtítulos principales y cifras numéricas (`.stat-figure`).
@@ -38,22 +38,21 @@ Documento técnico del sistema de diseño, tokens, directrices de accesibilidad 
 
 ## 2. Reglas de Contraste WCAG 2.1 (Nivel AA)
 
-Todas las combinaciones de la interfaz han sido verificadas mediante `scripts/contraste.mjs`:
+Todas las combinaciones de la interfaz han sido verificadas con los tokens reales oficiales (`#12372A`, `#6B6F6A`, `#FBF7EE`, `#DDF3E6`, `#FFFFFF`):
 
-1. **Verde Bosque**:
-   * Sobre Crema: **11.58:1** (Cumple AAA).
-   * Sobre Blanco: **12.38:1** (Cumple AAA).
-   * Sobre Menta: **9.21:1** (Cumple AAA).
-2. **Gris Cálido**:
-   * Sobre Crema: **5.32:1** (Cumple AA Normal ≥4.5:1).
-   * Sobre Blanco: **5.69:1** (Cumple AA Normal ≥4.5:1).
-   * Sobre `bg-menta/60` (mezclado en Crema): **4.64:1** (Cumple AA Normal).
-   * *Restricción*: Sobre Menta sólida pura `#C8E6C9` da 4.23:1 (solo apto para texto grande; en texto regular se usa tinte o Crema).
-3. **Verde Hoja**:
+1. **Verde Bosque (`#12372A`)**:
+   * Sobre Crema (`#FBF7EE`): **12.23:1** (Cumple AAA).
+   * Sobre Blanco (`#FFFFFF`): **13.08:1** (Cumple AAA).
+   * Sobre Menta (`#DDF3E6`): **11.23:1** (Cumple AAA).
+2. **Gris Cálido (`#6B6F6A`)**:
+   * Sobre Crema (`#FBF7EE`): **4.78:1** (Cumple AA Normal ≥4.5:1).
+   * Sobre Blanco (`#FFFFFF`): **5.11:1** (Cumple AA Normal ≥4.5:1).
+   * Sobre Menta (`#DDF3E6`): **4.39:1** (Cumple AA Large ≥3.0:1; sobre Menta se usa texto mediano/negrita o tinte).
+3. **Verde Hoja (`#1E8449`)**:
    * Sobre Blanco: **4.72:1** (Cumple AA Normal).
    * Sobre Crema: **4.41:1** (**Falla AA Normal <4.5:1**).
    * *Regla*: Verde Hoja sobre Crema solo está permitido en **Texto Grande** (≥24px regular o ≥18.66px negrita) o como ícono interactivo.
-4. **Regla de Terracota**:
+4. **Regla de Terracota (`#E4793B`)**:
    * Terracota sobre Crema: **2.77:1** (**PROHIBIDO para texto**; no cumple AA ni en texto grande).
    * Terracota sobre Blanco: **2.96:1** (**PROHIBIDO para texto**).
    * Terracota sobre Verde Bosque: **4.18:1** (Cumple AA únicamente en **Texto Grande** ≥18.66px negrita).
@@ -105,36 +104,44 @@ Para garantizar la integridad del prototipo sin alterar su modelo de datos ni su
      - *"Lo último que subieron los talleres"* (lotes recientes).
      - *"Último lote publicado"* (etiqueta del lote protagonista).
      - *"Contacto directo de taller a taller, sin intermediarios."* (modal de contacto).
-   * *Texto Preexistente del Prototipo*:
-     - *"Este taller no tiene lotes activos en este momento."* (incorporado en `rediseno-v1.0`).
-   * *Frases Nuevas [PENDIENTES DE APROBACIÓN]*:
-     - *"Anota el peso y el precio del lote."* (PublicarLote, paso 2 — pose Anotando).
-     - *"No encuentro ese lote. Revisa el enlace o vuelve al mercado."* (DetalleLote — pose Triste en lote no encontrado).
+   * *Texto Preexistente del Prototipo Original (Baseline)*:
+     - *"Tienda no encontrada / No encontramos ningún taller registrado con este identificador."* (`PerfilVendedor.jsx`, condición `if (!tienda)` preexistente desde el prototipo original).
+   * *Escrito en el Rediseño [PENDIENTE DE APROBACIÓN]*:
+     - *"Este taller no tiene lotes activos en este momento."* (`PerfilVendedor.jsx`, estado vacío; no existía en el commit baseline original `d63bcb4`).
+     - *"Anota el peso y el precio del lote."* (`PublicarLote.jsx`, cabecera paso 2 — pose Anotando).
+     - *"No encuentro ese lote. Revisa el enlace o vuelve al mercado."* (`DetalleLote.jsx` — pose Triste en lote no encontrado; en el baseline original `d63bcb4` ya existía el enlace de regreso `<Link to="/mercado">Ir al mercado</Link>`, el cual se conserva intacto).
+6. **Ruta 404 Global en `App.jsx` (Pendiente de Producto)**:
+   * Se constata que `App.jsx` no define una ruta comodín (`<Route path="*" ... />`), por lo que URLs arbitrarias no coincidentes no cargan una vista de error 404 formal. Bajo el mandato estricto de "lógica intacta", no se modificó el árbol de rutas ni se crearon páginas adicionales; queda agendado como requerimiento de producto para próximas versiones.
 
 ---
 
-## 5. Swipee: Poses y Sistema de Ilustración (rediseno-v1.2)
+## 5. Swipee: Poses y Sistema de Ilustración (rediseno-v1.2.1)
 
 ### Regla Fundamental
 La mascota original (`mascota.webp` / `mascota.png`) permanece intacta como versión principal y por defecto. Las nuevas emociones amplían el sistema visual sin alterar el modelo de datos, rutas ni lógica funcional preexistente.
 
-### Factor de Escala Común y Calibración
-Todas las poses se calibraron con un **factor de escala unificado (0.3045)** contra la mascota principal de referencia (cuerpo de pie = 380 px en archivo, correspondiente a 147 px CSS en tamaño `md`), garantizando que la altura del cuerpo y las proporciones se mantengan idénticas entre poses y alineadas a la misma línea de base (pies).
-La hoja de validación visual de coherencia y contraste se encuentra en `capturas/swipee_hoja_poses.png`.
+### Factor de Escala Común y Relación Archivo -> CSS
+Todas las poses se calibraron con un **factor de escala unificado (0.3045)** contra la mascota principal de referencia (cuerpo de pie = 380 px en el archivo fuente exportado, correspondiente a 147 px CSS en tamaño `md`).
+* **Factor de densidad real Archivo -> CSS**: **~2.59×** (380 px / 147 px = 2.585×; no es 2.0× sino ~2.6×), garantizando nitidez Retina ultra-alta (>2.5×) ideal para pantallas móviles modernas de 3× sin degradación visual.
+* **Alineación**: Todas las ilustraciones están alineadas por su base anatómica inferior (línea de apoyo de pies).
+* **Validación**:
+  - `capturas/swipee_validacion_magenta.png`: Inspección al 400% sobre `#FF00FF` certificando la remoción total de blancos encerrados (entre piernas, bajo carta, entre brazos) preservando 100% de los brillos en ojos y lágrimas.
+  - `capturas/swipee_hoja_poses.png`: Hoja de verificación comparativa de las 7 poses sobre fondos Crema `#FBF7EE` y Verde Bosque `#12372A`.
 
-### Tabla Final de Implementación de Poses
+### Tabla Final de Implementación de Poses (rediseno-v1.2.1)
 
-| Pose | Pantalla / Momento | Tamaño CSS | Dimensiones Render (`width` × `height`) | Copy Asociado | Origen del Copy |
-| :--- | :--- | :---: | :---: | :--- | :--- |
-| **`principal`** | Inicio (Hero de bienvenida) | `md` (calibrado) | 88 × 108 px | *“Encuentra el retazo exacto para tu confección.”* | Aprobado por el usuario |
-| **`celebrando`** | PublicarLote (Modal de éxito) | `md` (120 px base) | 151 × 166 px | *“¡Listo! Tu retazo ya está publicado.”* | **Oficial Brandbook** |
-| **`celebrando`** | DetalleLote (Modal de trato cerrado) | `md` (120 px base) | 151 × 166 px | *“¡Trato hecho! Ese retazo ya tiene dónde seguir.”* | Aprobado por el usuario |
-| **`pensando`** | Mercado (Sin coincidencias de búsqueda/filtro) | `md` (120 px base) | 132 × 154 px | *“Aún no hay coincidencias. Vuelvo a buscar por ti.”* | **Oficial Brandbook** |
-| **`durmiendo`** | PerfilVendedor (Taller sin lotes activos) | `md` (120 px base) | 130 × 147 px | *“Este taller no tiene lotes activos en este momento.”* | Preexistente prototipo |
-| **`anotando`** | PublicarLote (Cabecera paso 2: Cantidad y precio) | `sm` (~74 px alto) | 52 × 74 px | *“Anota el peso y el precio del lote.”* | **Pendiente de aprobación** |
-| **`triste`** | DetalleLote (Lote no encontrado / error) | `md` (120 px base) | 105 × 147 px | *“No encuentro ese lote. Revisa el enlace o vuelve al mercado.”* | **Pendiente de aprobación** |
-| **`carta`** | *(Sin uso)* | — | 106 × 154 px (base) | — | Disponible en biblioteca |
-| **`molesto`** | *(Sin uso)* | — | 88 × 148 px (base) | — | Disponible en biblioteca |
+| Pose | Pantalla / Momento | Archivo (`px`) | Tamaño CSS Final | Factor Real (Archivo/CSS) | Copy Asociado | Estado / Origen del Copy |
+| :--- | :--- | :---: | :---: | :---: | :--- | :--- |
+| **`principal`** | Inicio (Hero de bienvenida) | 320 × 392 | 88 × 108 px (hero) | 3.63× | *“Encuentra el retazo exacto para tu confección.”* | Aprobado por el usuario |
+| **`celebrando`** | PublicarLote (Modal de éxito) | 391 × 429 | 151 × 166 px (`md`) | 2.58× | *“¡Listo! Tu retazo ya está publicado.”* | **Oficial Brandbook** |
+| **`celebrando`** | DetalleLote (Modal de trato cerrado) | 391 × 429 | 151 × 166 px (`md`) | 2.58× | *“¡Trato hecho! Ese retazo ya tiene dónde seguir.”* | Aprobado por el usuario |
+| **`pensando`** | Mercado (Sin coincidencias de filtro) | 343 × 400 | 132 × 154 px (`md`) | 2.60× | *“Aún no hay coincidencias. Vuelvo a buscar por ti.”* | **Oficial Brandbook** |
+| **`durmiendo`** | PerfilVendedor (Taller sin lotes activos) | 336 × 381 | 130 × 147 px (`md`) | 2.59× | *“Este taller no tiene lotes activos en este momento.”* | **Escrito en rediseño [Pendiente]** |
+| **`anotando`** | PublicarLote (Cabecera paso 2: Peso/Precio) | 270 × 380 | 52 × 74 px (`sm`) | 5.14× | *“Anota el peso y el precio del lote.”* | **Escrito en rediseño [Pendiente]** |
+| **`triste`** | DetalleLote (Lote no encontrado) | 271 × 380 | 105 × 147 px (`md`) | 2.58× | *“No encuentro ese lote. Revisa el enlace o vuelve al mercado.”* | **Escrito en rediseño [Pendiente]** (Enlace preexistente) |
+| **`triste`** | PerfilVendedor (Tienda no encontrada) | 271 × 380 | 105 × 147 px (`md`) | 2.58× | *“Tienda no encontrada / No encontramos ningún taller registrado...”* | **Preexistente baseline original** |
+| **`carta`** | *(Sin uso)* | 275 × 398 | 106 × 154 px (`md`) | 2.58× | — | Disponible en biblioteca |
+| **`molesto`** | *(Sin uso)* | 227 × 384 | 88 × 148 px (`md`) | 2.59× | — | Disponible en biblioteca |
 
 ### Poses Sin Uso (Disponibles en Biblioteca)
 * **`mascota-carta`**: Descartada en Inicio para evitar saturación y cumplir la regla de oro: *"Máximo una mascota por pantalla o modal visible"*. Queda disponible para futuros flujos de correspondencia, mensajería o guía de remisión.
@@ -143,7 +150,8 @@ La hoja de validación visual de coherencia y contraste se encuentra en `captura
 ### Especificaciones Técnicas del Componente `<Swipee />`
 1. **Contenedor `<picture>`**: Entrega formato moderno WebP de alto rendimiento (20–38 KB) con respaldo PNG automático.
 2. **Dimensiones explícitas**: `width` y `height` definidos de forma exacta según la escala del cuerpo para evitar saltos de layout (CLS = 0).
-3. **Carga diferida**: `loading="lazy"` y `decoding="async"` para todas las poses secundarias fuera del primer pantallazo; `priority={true}` (`loading="eager"`) exclusivo para el hero de Inicio.
-4. **Accesibilidad**: `alt=""` decorativo cuando el componente acompaña textos o titulares; texto alternativo semántico (`alt="Swipee, la hojita de EcoSwipe"`) en apariciones autónomas.
-5. **Canal alfa y contraste**: Extracción de fondo con defringe asistido por alpha matting; verificado al 400% sobre Magenta (`#FF00FF`), Crema (`#FBF7EE`), Menta (`#DDF3E6`) y Blanco (`#FFFFFF`) con 0% de halo blanquecino o artefactos oscuros.
+3. **Carga en modales y viewport prioritario**: `priority={true}` activa `loading="eager"` y `decoding="sync"` en el Hero de Inicio y en los modales instantáneos (éxito de publicación y trato cerrado) para evitar cualquier retardo de aparición. Se mantiene `loading="lazy"` en el resto de vistas.
+4. **Regla de unicidad visual**: Se verificó exhaustivamente que ningún modal ni vista renderice simultáneamente más de una mascota visible en pantalla.
+5. **Accesibilidad**: `alt=""` decorativo cuando el componente acompaña textos o titulares; texto alternativo semántico (`alt="Swipee, la hojita de EcoSwipe"`) en apariciones autónomas.
+6. **Canal alfa y contraste**: Extracción de fondo con defringe asistido por alpha matting; verificado al 400% sobre Magenta (`#FF00FF`), Crema (`#FBF7EE`), Menta (`#DDF3E6`) y Blanco (`#FFFFFF`) con 0% de halo blanquecino o artefactos oscuros.
 

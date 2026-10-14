@@ -381,7 +381,7 @@ export default function DetalleLote() {
           {confirmDone ? (
             /* Vista de Trato Cerrado con Swipee */
             <div className="space-y-4 py-2 page-enter">
-              <Swipee pose="celebrando" size="md" className="mx-auto block" alt="" />
+              <Swipee pose="celebrando" size="md" priority className="mx-auto block" alt="" />
               <h3 className="text-xl font-fredoka font-semibold text-verde-bosque">
                 ¡Trato cerrado!
               </h3>

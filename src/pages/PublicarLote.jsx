@@ -496,7 +496,7 @@ export default function PublicarLote() {
       {/* Modal de Éxito con Swipee y microcopy oficial del Brandbook */}
       <Modal isOpen={successModal} onClose={() => setSuccessModal(false)} title="¡Lote publicado!">
         <div className="text-center py-4 space-y-4">
-          <Swipee pose="celebrando" size="md" className="mx-auto block" alt="" />
+          <Swipee pose="celebrando" size="md" priority className="mx-auto block" alt="" />
           <h3 className="text-xl font-fredoka font-semibold text-verde-bosque">
             ¡Listo! Tu retazo ya está publicado.
           </h3>
