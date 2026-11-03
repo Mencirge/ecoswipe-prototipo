@@ -6,7 +6,8 @@ import Modal from '../components/Modal'
 import Swipee from '../components/Swipee'
 import lotes from '../data/lotes.json'
 import tiendas from '../data/tiendas.json'
-import impactoConfig from '../data/impactoConfig.json'
+import { formatNumero, formatSoles, precioPrincipal, telaLabel } from '../utils/formato'
+import { impactoDe, kgPorMetro } from '../utils/impacto'
 
 export default function DetalleLote() {
   const { id } = useParams()
@@ -28,12 +29,9 @@ export default function DetalleLote() {
     </div>
   )
 
-  const factor = impactoConfig.factores[lote.tela] || impactoConfig.factores.mezcla
-  const reduccion = impactoConfig.reduccion
-  const impacto = {
-    co2: (lote.pesoKg * factor.co2PorKg * reduccion).toFixed(1),
-    agua: (lote.pesoKg * factor.aguaPorKg * reduccion).toFixed(0),
-  }
+  const impacto = impactoDe(lote.pesoKg, lote.tela)
+  const { precio, unidad, unidadCorta } = precioPrincipal(lote)
+  const porMetro = unidad === 'metro'
 
   const pagosLabels = { yape: 'Yape', plin: 'Plin', transferencia: 'Transferencia', efectivo: 'Efectivo' }
 
@@ -53,7 +51,7 @@ export default function DetalleLote() {
         {/* Galería visual */}
         <div className="md:w-1/2">
           <div className="card overflow-hidden border-2 border-menta">
-            <PlaceholderImg tela={lote.tela} color={lote.color} className="w-full aspect-square" size="lg" />
+            <PlaceholderImg tela={lote.tela} color={lote.color} className="w-full aspect-[4/3] md:aspect-square" size="lg" />
           </div>
           <div className="flex gap-2.5 mt-3">
             {[1, 2, 3].map(i => (
@@ -81,17 +79,17 @@ export default function DetalleLote() {
             {/* Precio en Verde Bosque sin Terracota sobre fondo claro */}
             <div className="flex items-baseline gap-2 mt-3">
               <span className="text-3xl md:text-4xl font-fredoka font-bold text-verde-bosque">
-                S/{lote.precioKg.toFixed(2)}
+                {formatSoles(precio)}
               </span>
-              <span className="text-sm font-semibold text-gris-calido">por kg</span>
+              <span className="text-sm font-semibold text-gris-calido">por {unidad}</span>
             </div>
 
-            {/* Venta por metro: sólo si metroDisponible es true */}
-            {lote.metroDisponible && (
-              <div className="mt-3 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-menta text-verde-bosque text-sm font-semibold border border-verde-hoja/20">
-                <span className="badge badge-metro">Por metro</span>
+            {/* Lote por metro: el precio principal va en metros y el precio por kg queda como alternativa */}
+            {porMetro && (
+              <div className="mt-3 flex flex-wrap items-center gap-x-2 gap-y-1 px-3 py-2 rounded-tarjeta bg-menta text-verde-bosque text-sm font-semibold border border-verde-hoja/20">
+                <span className="badge badge-metro whitespace-nowrap">Por metro</span>
                 <span>
-                  S/{lote.precioMetro?.toFixed(2)} / metro {lote.anchoM && lote.largoM ? `(${lote.anchoM}m × ${lote.largoM}m)` : ''}
+                  {formatNumero(lote.largoM)} m disponibles · {formatNumero(lote.anchoM, 2)} m de ancho · o {formatSoles(lote.precioKg)} por kg
                 </span>
               </div>
             )}
@@ -109,10 +107,11 @@ export default function DetalleLote() {
               </h2>
             </div>
             {[
-              ['Tela', lote.tela.charAt(0).toUpperCase() + lote.tela.slice(1)],
+              ['Tela', telaLabel(lote.tela)],
               ['Composición', lote.composicion],
               ['Color o tono', lote.color],
-              ['Peso total del lote', `${lote.pesoKg} kg`],
+              ...(porMetro ? [['Metros disponibles', `${formatNumero(lote.largoM)} m × ${formatNumero(lote.anchoM, 2)} m de ancho`]] : []),
+              ['Peso total del lote', `${formatNumero(lote.pesoKg)} kg`],
               ['Tamaño mín. de pieza', lote.tamanoMinPieza],
             ].map(([k, v]) => (
               <div key={k} className="flex justify-between items-baseline text-sm pt-0.5">
@@ -136,16 +135,20 @@ export default function DetalleLote() {
             </h3>
             <div className="flex gap-6 mt-1">
               <div>
-                <div className="text-xl font-bold font-fredoka text-verde-bosque">{impacto.co2}</div>
+                <div className="text-xl font-bold font-fredoka text-verde-bosque">{formatNumero(impacto.co2)}</div>
                 <div className="text-sm font-semibold text-verde-bosque/75">kg CO₂ evitados</div>
               </div>
               <div className="border-l border-verde-hoja/20 pl-6">
-                <div className="text-xl font-bold font-fredoka text-verde-bosque">{Number(impacto.agua).toLocaleString()}</div>
+                <div className="text-xl font-bold font-fredoka text-verde-bosque">{formatNumero(impacto.agua, 0)}</div>
                 <div className="text-sm font-semibold text-verde-bosque/75">L agua ahorrada</div>
               </div>
             </div>
             <p className="text-base text-verde-bosque/85 mt-2">
-              Factores referenciales de circularidad textil en Gamarra.
+              Estimación con factores conservadores por tipo de tela
+              {porMetro && <> y el peso del lote ({formatNumero(kgPorMetro(lote), 2)} kg por metro)</>}.{' '}
+              <Link to="/impacto" className="inline-flex items-center min-h-[44px] font-semibold text-verde-hoja underline underline-offset-2">
+                ¿Cómo lo calculamos?
+              </Link>
             </p>
           </div>
 
@@ -333,23 +336,23 @@ export default function DetalleLote() {
         <div className="space-y-4">
           <div>
             <label className="text-sm font-semibold text-verde-bosque block mb-1.5">
-              Tu oferta por kg (S/)
+              Tu oferta por {unidad} (S/)
             </label>
             <input
               type="number"
               className="input-field bg-white text-verde-bosque border-menta min-h-[44px]"
-              placeholder={lote.precioKg.toFixed(2)}
+              placeholder={precio.toFixed(2)}
               step="0.50"
             />
           </div>
           <div>
             <label className="text-sm font-semibold text-verde-bosque block mb-1.5">
-              Cantidad que necesitas (kg)
+              Cantidad que necesitas ({unidadCorta})
             </label>
             <input
               type="number"
               className="input-field bg-white text-verde-bosque border-menta min-h-[44px]"
-              placeholder={lote.pesoKg.toString()}
+              placeholder={String(porMetro ? lote.largoM : lote.pesoKg)}
               step="0.5"
             />
           </div>

@@ -12,7 +12,6 @@ export default function App() {
   return (
     <>
       <ScrollToTop />
-      <div className="sample-badge">Datos de ejemplo</div>
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Inicio />} />

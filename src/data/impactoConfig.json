@@ -4,27 +4,27 @@
     "algodon": {
       "co2PorKg": 8.0,
       "aguaPorKg": 10000,
-      "descripcion": "Algodon convencional"
+      "descripcion": "Algodón convencional"
     },
     "poliester": {
       "co2PorKg": 5.5,
       "aguaPorKg": 3000,
-      "descripcion": "Poliester virgen"
+      "descripcion": "Poliéster virgen"
     },
     "denim": {
       "co2PorKg": 9.0,
       "aguaPorKg": 12000,
-      "descripcion": "Denim (algodon pesado)"
+      "descripcion": "Denim (algodón pesado)"
     },
     "jersey": {
       "co2PorKg": 7.0,
       "aguaPorKg": 8000,
-      "descripcion": "Jersey de algodon"
+      "descripcion": "Jersey de algodón"
     },
     "mezcla": {
       "co2PorKg": 6.5,
       "aguaPorKg": 6000,
-      "descripcion": "Mezcla algodon-poliester"
+      "descripcion": "Mezcla algodón-poliéster"
     },
     "licra": {
       "co2PorKg": 6.0,
@@ -34,7 +34,7 @@
     "franela": {
       "co2PorKg": 7.5,
       "aguaPorKg": 9000,
-      "descripcion": "Franela de algodon"
+      "descripcion": "Franela de algodón"
     }
   },
   "reduccion": 0.7,

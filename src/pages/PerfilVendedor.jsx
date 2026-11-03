@@ -4,6 +4,8 @@ import StarRating from '../components/StarRating'
 import Swipee from '../components/Swipee'
 import lotes from '../data/lotes.json'
 import tiendas from '../data/tiendas.json'
+import { formatNumero } from '../utils/formato'
+import { impactoTienda } from '../utils/impacto'
 
 export default function PerfilVendedor() {
   const { id } = useParams()
@@ -21,6 +23,7 @@ export default function PerfilVendedor() {
     </div>
   )
 
+  const impacto = impactoTienda(tienda)
   const pagosLabels = { yape: 'Yape', plin: 'Plin', transferencia: 'Transferencia', efectivo: 'Efectivo' }
 
   return (
@@ -38,7 +41,7 @@ export default function PerfilVendedor() {
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1E8449" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <polyline points="20 6 9 17 4 12" />
               </svg>
-              <span className="text-sm font-semibold text-verde-bosque">
+              <span className="text-sm font-semibold text-verde-bosque whitespace-nowrap">
                 Taller verificado
               </span>
             </div>
@@ -80,9 +83,6 @@ export default function PerfilVendedor() {
             {/* Reputación y reseñas */}
             <div className="flex items-center gap-2 pt-1">
               <StarRating rating={tienda.calificacion} size={18} />
-              <span className="text-sm font-semibold font-fredoka text-verde-bosque text-base">
-                {tienda.calificacion.toFixed(1)}
-              </span>
               <span className="text-sm font-semibold text-verde-bosque/70">
                 ({tienda.totalResenas} reseñas de confeccionistas)
               </span>
@@ -116,7 +116,7 @@ export default function PerfilVendedor() {
                   Retazos recirculados
                 </span>
                 <span className="stat-figure text-base">
-                  {tienda.impactoTotal.kgDesviados} kg
+                  {formatNumero(impacto.kg)} kg
                 </span>
               </div>
 
@@ -125,7 +125,7 @@ export default function PerfilVendedor() {
                   CO₂ estimado evitado
                 </span>
                 <span className="stat-figure text-base">
-                  {tienda.impactoTotal.co2Kg} kg
+                  {formatNumero(impacto.co2, 0)} kg
                 </span>
               </div>
 
@@ -134,7 +134,7 @@ export default function PerfilVendedor() {
                   Agua preservada
                 </span>
                 <span className="stat-figure text-base">
-                  {tienda.impactoTotal.aguaLt.toLocaleString()} L
+                  {formatNumero(impacto.agua, 0)} L
                 </span>
               </div>
             </div>
@@ -153,12 +153,12 @@ export default function PerfilVendedor() {
                 </span>
                 <div className="flex flex-wrap gap-2">
                   {tienda.entrega.includes('delivery') && (
-                    <span className="badge-delivery">
+                    <span className="badge badge-delivery">
                       Envío a acordar
                     </span>
                   )}
                   {tienda.entrega.includes('recojo') && (
-                    <span className="badge-recojo">
+                    <span className="badge badge-recojo">
                       Recojo en taller
                     </span>
                   )}

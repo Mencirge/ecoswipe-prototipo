@@ -1,4 +1,8 @@
-export default function ImpactBanner({ co2 = 1420.5, agua = 98500, kg = 350, compact = false }) {
+import { formatNumero } from '../utils/formato'
+import { impactoComunidad } from '../utils/impacto'
+
+// Por defecto muestra el acumulado de la comunidad, calculado con los mismos factores que el resto del prototipo
+export default function ImpactBanner({ co2 = impactoComunidad.co2, agua = impactoComunidad.agua, kg = impactoComunidad.kg, compact = false }) {
   const items = [
     { label: 'CO₂ Evitado', value: co2, unit: 'kg', bg: 'bg-menta/60' },
     { label: 'Agua ahorrada', value: agua, unit: 'L', bg: 'bg-menta/40' },
@@ -21,7 +25,7 @@ export default function ImpactBanner({ co2 = 1420.5, agua = 98500, kg = 350, com
                 compact ? 'text-lg' : 'text-lg md:text-2xl'
               } border-b-2 border-terracota pb-0.5`}
             >
-              {it.value.toLocaleString?.() || it.value}
+              {formatNumero(it.value, it.value >= 100 ? 0 : 1)}
             </span>
             <span className="text-xs md:text-sm font-semibold text-verde-bosque/80">{it.unit}</span>
           </div>

@@ -4,8 +4,10 @@ import LoteCard from '../components/LoteCard'
 import Swipee from '../components/Swipee'
 import lotes from '../data/lotes.json'
 import tiendas from '../data/tiendas.json'
+import { TELA_KEYS, telaLabel, normalizar } from '../utils/formato'
 
-const TELAS = ['Todas', 'algodon', 'poliester', 'denim', 'jersey', 'mezcla', 'licra', 'franela']
+// Los chips muestran el nombre con tilde pero filtran por la clave interna del lote
+const TELAS = ['Todas', ...TELA_KEYS]
 const ORDEN = [
   { value: 'reciente', label: 'Más recientes' },
   { value: 'precio-asc', label: 'Menor precio' },
@@ -17,7 +19,8 @@ export default function Mercado() {
   const [searchParams] = useSearchParams()
   const initialQ = searchParams.get('q') || ''
   const [query, setQuery] = useState(initialQ)
-  const [tela, setTela] = useState('Todas')
+  const initialTela = searchParams.get('tela')
+  const [tela, setTela] = useState(TELA_KEYS.includes(initialTela) ? initialTela : 'Todas')
   const [entrega, setEntrega] = useState('todas')
   const [orden, setOrden] = useState('reciente')
   const [showFilters, setShowFilters] = useState(false)
@@ -25,13 +28,12 @@ export default function Mercado() {
   const filtered = useMemo(() => {
     let result = [...lotes]
     if (query) {
-      const q = query.toLowerCase()
+      // Sin tildes ni mayúsculas: "algodón", "Algodon" y "ALGODON" encuentran lo mismo
+      const q = normalizar(query)
       result = result.filter(l => {
         const t = tiendas.find(x => x.id === l.tiendaId)
-        return l.titulo.toLowerCase().includes(q) ||
-               l.tela.toLowerCase().includes(q) ||
-               l.color.toLowerCase().includes(q) ||
-               (t && t.nombre.toLowerCase().includes(q))
+        return [l.titulo, l.tela, telaLabel(l.tela), l.composicion, l.color, t?.nombre]
+          .some(campo => normalizar(campo).includes(q))
       })
     }
     if (tela !== 'Todas') result = result.filter(l => l.tela === tela)
@@ -61,7 +63,7 @@ export default function Mercado() {
                 tela === t ? 'chip-active' : 'chip-inactive'
               }`}
             >
-              {t === 'Todas' ? 'Todas' : t.charAt(0).toUpperCase() + t.slice(1)}
+              {t === 'Todas' ? 'Todas' : telaLabel(t)}
             </button>
           ))}
         </div>
@@ -91,26 +93,6 @@ export default function Mercado() {
             </button>
           ))}
         </div>
-      </div>
-
-      {/* Separador sutil con puntada textil */}
-      <div className="border-t border-dashed border-menta my-2" />
-
-      <div>
-        <label className="text-sm font-sans font-semibold text-verde-bosque mb-2 block">
-          Ordenar resultados
-        </label>
-        <select
-          value={orden}
-          onChange={e => setOrden(e.target.value)}
-          className="input-field text-sm font-sans font-semibold text-verde-bosque bg-white min-h-[44px]"
-        >
-          {ORDEN.map(o => (
-            <option key={o.value} value={o.value}>
-              {o.label}
-            </option>
-          ))}
-        </select>
       </div>
     </div>
   )
@@ -192,7 +174,7 @@ export default function Mercado() {
               <select
                 value={orden}
                 onChange={e => setOrden(e.target.value)}
-                className="text-[13px] md:text-sm font-sans font-semibold border border-menta rounded-boton px-2 md:px-3 py-1 md:py-2 text-verde-bosque bg-white min-h-[36px] md:min-h-[44px]"
+                className="text-[13px] md:text-sm font-sans font-semibold border border-menta rounded-boton px-2 md:px-3 py-1 md:py-2 text-verde-bosque bg-white min-h-[44px]"
               >
                 {ORDEN.map(o => (
                   <option key={o.value} value={o.value}>

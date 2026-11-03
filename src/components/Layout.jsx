@@ -42,7 +42,7 @@ function NavIcon({ icon, active }) {
 export default function Layout() {
   const location = useLocation()
   return (
-    <div className="min-h-screen bg-crema text-verde-bosque pb-20 md:pb-0">
+    <div className="min-h-screen bg-crema text-verde-bosque pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-0">
       {/* Mobile top bar: barra de 56px con logo a la izquierda */}
       <header className="flex md:hidden items-center h-14 px-4 bg-crema border-b border-menta sticky top-0 z-40">
         <NavLink to="/" className="flex items-center min-w-[96px] h-full py-1.5 hover:opacity-95 transition-opacity" aria-label="EcoSwipe - Ir a inicio">
@@ -51,9 +51,9 @@ export default function Layout() {
       </header>
 
       {/* Desktop top nav */}
-      <header className="hidden md:flex items-center justify-between px-6 lg:px-12 py-3.5 bg-crema border-b border-menta sticky top-0 z-40">
-        <NavLink to="/" className="flex items-center gap-2 hover:opacity-95 transition-opacity">
-          <Logo size={34} />
+      <header className="hidden md:flex items-center justify-between px-6 lg:px-12 py-2 bg-crema border-b border-menta sticky top-0 z-40">
+        <NavLink to="/" className="flex items-center gap-2 hover:opacity-95 transition-opacity min-w-[100px]" aria-label="EcoSwipe - Ir a inicio">
+          <Logo size={60} variant="mobile" />
         </NavLink>
         <nav className="flex items-center gap-1.5">
           {navItems.map(item => (
@@ -74,6 +74,8 @@ export default function Layout() {
         </nav>
         <div className="w-[100px]" />
       </header>
+
+      <div className="sample-badge" role="note">Prototipo con datos de ejemplo</div>
 
       {/* Main content */}
       <main className="page-enter">

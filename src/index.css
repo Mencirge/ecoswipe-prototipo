@@ -190,7 +190,8 @@
 
   /* Barra de Navegación Móvil - Alto ~56px + safe-area, fondo Crema sólido */
   .bottom-nav {
-    @apply fixed bottom-0 left-0 right-0 flex items-center justify-around z-50 h-[56px] px-2 md:hidden;
+    @apply fixed bottom-0 left-0 right-0 flex items-center justify-around z-50 px-2 md:hidden;
+    height: calc(56px + env(safe-area-inset-bottom, 0px));
     padding-bottom: env(safe-area-inset-bottom, 0px);
     background-color: var(--crema);
     border-top: 1.5px solid rgba(221, 243, 230, 0.9);
@@ -199,6 +200,14 @@
   /* Indicador de Datos de Ejemplo:
      Móvil: franja delgada (28px) en flujo normal arriba, se desplaza con la página.
      Desktop (md:): fixed top-2 right-2 como antes. */
+  /* Móvil: campos a 16px como mínimo para que iOS no haga zoom al enfocarlos */
+  @media (max-width: 767.98px) {
+    input, select, textarea, .input-field {
+      font-size: 16px !important;
+    }
+  }
+
+  /* Aviso discreto de datos de ejemplo: franja delgada bajo el navbar, en el flujo del documento */
   .sample-badge {
     height: 28px;
     width: 100%;
@@ -206,29 +215,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 0.375rem;
     font-family: var(--fuente-cuerpo);
     font-size: 0.75rem;
     font-weight: 600;
     pointer-events: none;
     user-select: none;
-    background-color: var(--verde-bosque);
-    color: var(--crema);
-  }
-
-  @media (min-width: 768px) {
-    .sample-badge {
-      position: fixed;
-      top: 0.5rem;
-      right: 0.5rem;
-      z-index: 100;
-      width: auto;
-      height: auto;
-      display: inline-block;
-      padding: 0.25rem 0.75rem;
-      border-radius: 9999px;
-      font-size: 0.875rem;
-      line-height: 1.25rem;
-    }
+    background-color: var(--menta);
+    color: var(--verde-bosque);
+    border-bottom: 1px solid rgba(30, 132, 73, 0.15);
   }
 
   /* Anular min-height en móvil para aspect-[4/3] sin afectar escritorio */

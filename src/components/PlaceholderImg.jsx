@@ -1,3 +1,4 @@
+import { telaLabel } from '../utils/formato'
 /**
  * PlaceholderImg: Generador visual de texturas y muestras textiles.
  * NOTA DE DISEÑO (Accesibilidad & Brandbook):
@@ -31,7 +32,7 @@ export default function PlaceholderImg({ tela, color: _color, className = '', si
     squares: `<rect x="4" y="4" width="8" height="8" rx="1" fill="${t.fg}" opacity="0.12"/><rect x="20" y="20" width="8" height="8" rx="1" fill="${t.fg}" opacity="0.12"/>`,
   }
 
-  const labelText = (tela || 'tela').toUpperCase()
+  const labelText = (tela ? telaLabel(tela) : 'Tela').toUpperCase()
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${s}" height="${s}" viewBox="0 0 ${s} ${s}">
     <rect width="${s}" height="${s}" fill="${t.bg}"/>
     <defs><pattern id="p_${tela}" width="32" height="32" patternUnits="userSpaceOnUse">${patterns[t.pattern]}</pattern></defs>

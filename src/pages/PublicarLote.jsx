@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Modal from '../components/Modal'
 import Swipee from '../components/Swipee'
-import impactoConfig from '../data/impactoConfig.json'
+import { impactoDe } from '../utils/impacto'
+import { formatNumero, formatSoles, telaLabel } from '../utils/formato'
 
 const PASOS = [
   { num: 1, label: 'Fotos y tela' },
@@ -14,6 +15,8 @@ export default function PublicarLote() {
   const [step, setStep] = useState(1)
   const [previewModal, setPreviewModal] = useState(false)
   const [successModal, setSuccessModal] = useState(false)
+  // Los errores solo se muestran después de intentar avanzar con campos vacíos
+  const [intentoAvanzar, setIntentoAvanzar] = useState(false)
   
   const [formData, setFormData] = useState({
     tela: 'algodon',
@@ -39,11 +42,29 @@ export default function PublicarLote() {
     }
   }
 
-  const factor = impactoConfig.factores[formData.tela] || impactoConfig.factores.mezcla
   const peso = parseFloat(formData.pesoKg) || 0
+  const estimado = impactoDe(peso, formData.tela)
   const impactoEstimado = {
-    co2: (peso * factor.co2PorKg * impactoConfig.reduccion).toFixed(1),
-    agua: (peso * factor.aguaPorKg * impactoConfig.reduccion).toFixed(0)
+    co2: formatNumero(estimado.co2),
+    agua: formatNumero(estimado.agua, 0)
+  }
+
+  const faltaCampo = (campo) => intentoAvanzar && !formData[campo]
+  const errorCampo = (campo) => faltaCampo(campo) && (
+    <p id={`error-${campo}`} className="text-sm font-semibold text-terracota mt-1.5" role="alert">
+      Completa este campo para continuar.
+    </p>
+  )
+
+  const intentarAvanzar = (accion) => {
+    if (!canProceed()) {
+      setIntentoAvanzar(true)
+      // Lleva el foco al primer campo obligatorio vacío
+      setTimeout(() => document.querySelector('[aria-invalid="true"]')?.focus(), 0)
+      return
+    }
+    setIntentoAvanzar(false)
+    accion()
   }
 
   const canProceed = () => {
@@ -169,7 +190,7 @@ export default function PublicarLote() {
 
             <div>
               <label className="text-sm font-semibold text-verde-bosque block mb-2">
-                Composición del tejido
+                Composición del tejido <span className="text-terracota" aria-hidden="true">*</span>
               </label>
               <input
                 type="text"
@@ -177,18 +198,17 @@ export default function PublicarLote() {
                 value={formData.composicion}
                 onChange={handleChange}
                 className="input-field bg-white text-verde-bosque border-menta rounded-boton min-h-[44px] text-sm"
-                placeholder="Ej. 100% Algodón pima, 60/40 poli-algodón..."
+                placeholder="Ej. 100% algodón pima"
+                required
+                aria-invalid={faltaCampo('composicion') || undefined}
+                aria-describedby={faltaCampo('composicion') ? 'error-composicion' : undefined}
               />
-              {!formData.composicion && step === 1 && (
-                <p className="text-base text-gris-calido mt-1.5 flex items-center gap-1">
-                  Campo requerido para avanzar al siguiente paso.
-                </p>
-              )}
+              {errorCampo('composicion')}
             </div>
 
             <div>
               <label className="text-sm font-semibold text-verde-bosque block mb-2">
-                Color o patrón
+                Color o patrón <span className="text-terracota" aria-hidden="true">*</span>
               </label>
               <input
                 type="text"
@@ -196,8 +216,12 @@ export default function PublicarLote() {
                 value={formData.color}
                 onChange={handleChange}
                 className="input-field bg-white text-verde-bosque border-menta rounded-boton min-h-[44px] text-sm"
-                placeholder="Ej. Blanco puro, Azul marino, Estampado floral..."
+                placeholder="Ej. Azul marino"
+                required
+                aria-invalid={faltaCampo('color') || undefined}
+                aria-describedby={faltaCampo('color') ? 'error-color' : undefined}
               />
+              {errorCampo('color')}
             </div>
           </div>
         )}
@@ -219,7 +243,7 @@ export default function PublicarLote() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="text-sm font-semibold text-verde-bosque block mb-2">
-                  Peso total del lote (kg)
+                  Peso total del lote (kg) <span className="text-terracota" aria-hidden="true">*</span>
                 </label>
                 <input
                   type="number"
@@ -229,11 +253,15 @@ export default function PublicarLote() {
                   className="input-field bg-white text-verde-bosque border-menta rounded-boton min-h-[44px] text-sm"
                   placeholder="0.0"
                   step="0.5"
+                  required
+                  aria-invalid={faltaCampo('pesoKg') || undefined}
+                  aria-describedby={faltaCampo('pesoKg') ? 'error-pesoKg' : undefined}
                 />
+                {errorCampo('pesoKg')}
               </div>
               <div>
                 <label className="text-sm font-semibold text-verde-bosque block mb-2">
-                  Precio por kg (S/)
+                  Precio por kg (S/) <span className="text-terracota" aria-hidden="true">*</span>
                 </label>
                 <input
                   type="number"
@@ -243,13 +271,17 @@ export default function PublicarLote() {
                   className="input-field bg-white text-verde-bosque border-menta rounded-boton min-h-[44px] text-sm"
                   placeholder="0.00"
                   step="0.5"
+                  required
+                  aria-invalid={faltaCampo('precioKg') || undefined}
+                  aria-describedby={faltaCampo('precioKg') ? 'error-precioKg' : undefined}
                 />
+                {errorCampo('precioKg')}
               </div>
             </div>
 
             <div>
               <label className="text-sm font-semibold text-verde-bosque block mb-2">
-                Tamaño mínimo de pieza
+                Tamaño mínimo de pieza <span className="text-terracota" aria-hidden="true">*</span>
               </label>
               <input
                 type="text"
@@ -257,8 +289,12 @@ export default function PublicarLote() {
                 value={formData.tamanoMinPieza}
                 onChange={handleChange}
                 className="input-field bg-white text-verde-bosque border-menta rounded-boton min-h-[44px] text-sm"
-                placeholder="Ej. Mayor a 30 cm, piezas de 50x50 cm..."
+                placeholder="Ej. Piezas de 30 cm o más"
+                required
+                aria-invalid={faltaCampo('tamanoMinPieza') || undefined}
+                aria-describedby={faltaCampo('tamanoMinPieza') ? 'error-tamanoMinPieza' : undefined}
               />
+              {errorCampo('tamanoMinPieza')}
               <p className="text-base text-gris-calido mt-1.5">
                 Ayuda a los talleres compradores a saber si el corte les sirve para sus patrones.
               </p>
@@ -287,7 +323,7 @@ export default function PublicarLote() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="text-sm font-semibold text-verde-bosque block mb-1">
-                        Ancho útil (m)
+                        Ancho útil (m) <span className="text-terracota" aria-hidden="true">*</span>
                       </label>
                       <input
                         type="number"
@@ -297,11 +333,15 @@ export default function PublicarLote() {
                         className="input-field bg-white text-verde-bosque border-menta rounded-boton min-h-[44px] text-sm"
                         placeholder="Ej. 1.5"
                         step="0.1"
+                        required
+                        aria-invalid={faltaCampo('anchoM') || undefined}
+                        aria-describedby={faltaCampo('anchoM') ? 'error-anchoM' : undefined}
                       />
+                      {errorCampo('anchoM')}
                     </div>
                     <div>
                       <label className="text-sm font-semibold text-verde-bosque block mb-1">
-                        Largo aprox. (m)
+                        Largo aprox. (m) <span className="text-terracota" aria-hidden="true">*</span>
                       </label>
                       <input
                         type="number"
@@ -311,12 +351,16 @@ export default function PublicarLote() {
                         className="input-field bg-white text-verde-bosque border-menta rounded-boton min-h-[44px] text-sm"
                         placeholder="Ej. 3.0"
                         step="0.5"
+                        required
+                        aria-invalid={faltaCampo('largoM') || undefined}
+                        aria-describedby={faltaCampo('largoM') ? 'error-largoM' : undefined}
                       />
+                      {errorCampo('largoM')}
                     </div>
                   </div>
                   <div>
                     <label className="text-sm font-semibold text-verde-bosque block mb-1">
-                      Precio por metro lineal (S/)
+                      Precio por metro lineal (S/) <span className="text-terracota" aria-hidden="true">*</span>
                     </label>
                     <input
                       type="number"
@@ -326,7 +370,11 @@ export default function PublicarLote() {
                       className="input-field bg-white text-verde-bosque border-menta rounded-boton min-h-[44px] text-sm"
                       placeholder="0.00"
                       step="0.5"
+                      required
+                      aria-invalid={faltaCampo('precioMetro') || undefined}
+                      aria-describedby={faltaCampo('precioMetro') ? 'error-precioMetro' : undefined}
                     />
+                    {errorCampo('precioMetro')}
                   </div>
                 </div>
               )}
@@ -426,7 +474,7 @@ export default function PublicarLote() {
           {step > 1 ? (
             <button
               type="button"
-              onClick={() => setStep(s => s - 1)}
+              onClick={() => { setIntentoAvanzar(false); setStep(s => s - 1) }}
               className="btn-secondary min-h-[44px] px-5"
             >
               Atrás
@@ -436,18 +484,16 @@ export default function PublicarLote() {
           {step < 3 ? (
             <button
               type="button"
-              onClick={() => setStep(s => s + 1)}
-              disabled={!canProceed()}
-              className="btn-primary min-h-[44px] px-6 disabled:opacity-50"
+              onClick={() => intentarAvanzar(() => setStep(s => s + 1))}
+              className="btn-primary min-h-[44px] px-6"
             >
               Siguiente
             </button>
           ) : (
             <button
               type="button"
-              onClick={() => setPreviewModal(true)}
-              disabled={!canProceed()}
-              className="btn-primary min-h-[44px] px-6 disabled:opacity-50"
+              onClick={() => intentarAvanzar(() => setPreviewModal(true))}
+              className="btn-primary min-h-[44px] px-6"
             >
               Vista previa y Publicar
             </button>
@@ -467,19 +513,19 @@ export default function PublicarLote() {
               {formData.entrega.recojo && <span className="badge badge-recojo">Recojo en taller</span>}
             </div>
             <h3 className="font-fredoka font-semibold text-lg text-verde-bosque uppercase">
-              {formData.tela} - {formData.color}
+              {telaLabel(formData.tela)} - {formData.color}
             </h3>
             <p className="text-sm text-gris-calido mt-0.5">{formData.composicion}</p>
             <div className="mt-3 flex items-baseline gap-2">
               <span className="text-2xl font-fredoka font-bold text-verde-bosque">
-                S/{(parseFloat(formData.precioKg) || 0).toFixed(2)}
+                {formatSoles(parseFloat(formData.precioKg) || 0)}
               </span>
               <span className="text-sm font-semibold text-gris-calido">por kg</span>
             </div>
-            <p className="text-sm text-verde-bosque font-normal mt-1">Peso total: {formData.pesoKg} kg</p>
+            <p className="text-sm text-verde-bosque font-normal mt-1">Peso total: {formatNumero(parseFloat(formData.pesoKg) || 0)} kg</p>
             {formData.metroDisponible && (
               <p className="text-sm text-verde-bosque mt-2 font-semibold bg-menta/50 p-2 rounded-boton border border-verde-hoja/20">
-                También por metro a S/{(parseFloat(formData.precioMetro) || 0).toFixed(2)} / m
+                También por metro a {formatSoles(parseFloat(formData.precioMetro) || 0)} / m
               </p>
             )}
           </div>

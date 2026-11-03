@@ -4,17 +4,21 @@ import LoteCard from '../components/LoteCard'
 import ImpactBanner from '../components/ImpactBanner'
 import Swipee from '../components/Swipee'
 import lotes from '../data/lotes.json'
+import { TELA_KEYS, telaLabel } from '../utils/formato'
+import { impactoDe } from '../utils/impacto'
 
-const TELAS = ['Todas', 'Algodón', 'Poliéster', 'Denim', 'Jersey', 'Mezcla', 'Licra', 'Franela']
+const co2Lote = (l) => impactoDe(l.pesoKg, l.tela).co2
 
 export default function Inicio() {
   const [search, setSearch] = useState('')
-  const [telaFilter, setTelaFilter] = useState('Todas')
   const scrollRef = useRef(null)
   const navigate = useNavigate()
 
-  const destacados = lotes.filter(l => l.destacado)
   const recientes = lotes.slice().sort((a, b) => b.fechaPublicacion.localeCompare(a.fechaPublicacion)).slice(0, 6)
+  // Destacados = los lotes que más CO₂ evitan, sin repetir los recién publicados
+  const destacados = lotes
+    .filter(l => !recientes.some(r => r.id === l.id))
+    .sort((a, b) => co2Lote(b) - co2Lote(a))
 
   const handleSearch = (e) => {
     e.preventDefault()
@@ -114,7 +118,7 @@ export default function Inicio() {
             <h2 className="text-base md:text-lg font-fredoka font-semibold text-verde-bosque">
               Impacto ambiental acumulado
             </h2>
-            <Link to="/impacto" className="text-sm font-semibold text-verde-bosque hover:text-verde-hoja min-h-[36px] md:min-h-0 inline-flex md:inline items-center">
+            <Link to="/impacto" className="text-sm font-semibold text-verde-bosque hover:text-verde-hoja min-h-[44px] md:min-h-0 inline-flex md:inline items-center">
               Ver detalle &rarr;
             </Link>
           </div>
@@ -132,16 +136,16 @@ export default function Inicio() {
             </span>
           </div>
           <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 md:-mx-1 md:px-1 scrollbar-none">
-            {TELAS.map(t => (
-              <button
+            {/* Cada chip abre el mercado filtrado por la clave interna de la tela; "Todas" abre el catálogo completo */}
+            {['Todas', ...TELA_KEYS].map(t => (
+              <Link
                 key={t}
-                onClick={() => setTelaFilter(t)}
-                className={`chip h-9 md:h-auto min-h-[36px] md:min-h-[44px] px-3.5 md:px-4 whitespace-nowrap text-[13px] md:text-sm font-semibold flex-shrink-0 md:flex-shrink-0 flex items-center justify-center ${
-                  telaFilter === t ? 'chip-active' : 'chip-inactive'
-                }`}
+                to={t === 'Todas' ? '/mercado' : `/mercado?tela=${t}`}
+                className={`chip ${t === 'Todas' ? 'chip-active' : 'chip-inactive'} min-h-[44px] px-3.5 md:px-4 whitespace-nowrap text-[13px] md:text-sm font-semibold flex-shrink-0 md:flex-shrink-0 flex items-center justify-center`}
+                aria-current={t === 'Todas' ? 'true' : undefined}
               >
-                {t}
-              </button>
+                {t === 'Todas' ? 'Todas' : telaLabel(t)}
+              </Link>
             ))}
           </div>
         </section>
@@ -154,7 +158,7 @@ export default function Inicio() {
                 <span>Lotes destacados</span>
               </h2>
               <p className="text-[13px] md:text-base text-verde-bosque/85 mt-0.5">
-                Desliza para ver m&aacute;s lotes
+                Los que m&aacute;s CO&#8322; evitan<span className="md:hidden"> &middot; desliza para ver m&aacute;s</span>
               </p>
             </div>
 
@@ -187,7 +191,7 @@ export default function Inicio() {
 
               <Link
                 to="/mercado"
-                className="text-sm font-semibold text-verde-bosque hover:text-verde-hoja whitespace-nowrap md:ml-2 md:pl-2 md:border-l md:border-menta min-h-[36px] md:min-h-0 inline-flex md:inline items-center"
+                className="text-sm font-semibold text-verde-bosque hover:text-verde-hoja whitespace-nowrap md:ml-2 md:pl-2 md:border-l md:border-menta min-h-[44px] md:min-h-0 inline-flex md:inline items-center"
               >
                 Ver todos &rarr;
               </Link>
@@ -209,7 +213,7 @@ export default function Inicio() {
 
         {/* Sección de lotes recién publicados */}
         <section>
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-1 mb-4">
             <div>
               <h2 className="text-xl md:text-2xl font-fredoka font-semibold text-verde-bosque">
                 Últimos lotes publicados
@@ -218,8 +222,9 @@ export default function Inicio() {
                 Lo &uacute;ltimo que subieron los talleres.
               </p>
             </div>
-            <Link to="/mercado" className="text-sm font-semibold text-verde-bosque hover:text-verde-hoja min-h-[36px] md:min-h-0 inline-flex md:inline items-center">
-              Ver catálogo completo &rarr;
+            <Link to="/mercado" className="text-sm font-semibold text-verde-bosque hover:text-verde-hoja min-h-[44px] md:min-h-0 inline-flex md:inline items-center">
+              <span className="md:hidden">Ver todos &rarr;</span>
+              <span className="hidden md:inline">Ver catálogo completo &rarr;</span>
             </Link>
           </div>
 

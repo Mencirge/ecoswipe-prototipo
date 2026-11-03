@@ -2,12 +2,12 @@
   {
     "id": "l1",
     "tiendaId": "t1",
-    "titulo": "Retazos de algodon pima blanco",
+    "titulo": "Retazos de algodón pima blanco",
     "tela": "algodon",
-    "composicion": "100% Algodon Pima",
+    "composicion": "100% Algodón Pima",
     "color": "Blanco",
     "pesoKg": 3.5,
-    "precioKg": 8.0,
+    "precioKg": 14.0,
     "tamanoMinPieza": "30 cm",
     "entrega": [
       "recojo",
@@ -16,7 +16,7 @@
     "fotos": [],
     "resenas": [
       {
-        "usuario": "Maria L.",
+        "usuario": "María L.",
         "calificacion": 5,
         "texto": "Excelente calidad, retazos grandes y limpios.",
         "fecha": "2026-09-15"
@@ -24,7 +24,7 @@
       {
         "usuario": "Carlos R.",
         "calificacion": 4,
-        "texto": "Buen material, llego rapido.",
+        "texto": "Buen material, llegó rápido.",
         "fecha": "2026-09-20"
       }
     ],
@@ -35,12 +35,12 @@
   {
     "id": "l2",
     "tiendaId": "t1",
-    "titulo": "Mezcla algodon-poly colores variados",
+    "titulo": "Mezcla algodón-poly colores variados",
     "tela": "mezcla",
-    "composicion": "60% Algodon, 40% Poliester",
+    "composicion": "60% Algodón, 40% Poliéster",
     "color": "Variados",
     "pesoKg": 5.0,
-    "precioKg": 5.5,
+    "precioKg": 11.0,
     "tamanoMinPieza": "20 cm",
     "entrega": [
       "recojo"
@@ -63,10 +63,10 @@
     "tiendaId": "t2",
     "titulo": "Jersey gris para reciclaje",
     "tela": "jersey",
-    "composicion": "90% Algodon, 10% Elastano",
+    "composicion": "90% Algodón, 10% Elastano",
     "color": "Gris",
     "pesoKg": 2.8,
-    "precioKg": 7.0,
+    "precioKg": 13.0,
     "tamanoMinPieza": "25 cm",
     "entrega": [
       "recojo"
@@ -82,10 +82,10 @@
     "tiendaId": "t3",
     "titulo": "Denim azul medio 12 oz",
     "tela": "denim",
-    "composicion": "100% Algodon",
+    "composicion": "100% Algodón",
     "color": "Azul",
     "pesoKg": 4.2,
-    "precioKg": 6.0,
+    "precioKg": 12.0,
     "tamanoMinPieza": "35 cm",
     "entrega": [
       "recojo"
@@ -108,10 +108,10 @@
     "tiendaId": "t3",
     "titulo": "Retazos denim negro",
     "tela": "denim",
-    "composicion": "98% Algodon, 2% Elastano",
+    "composicion": "98% Algodón, 2% Elastano",
     "color": "Negro",
     "pesoKg": 2.0,
-    "precioKg": 7.5,
+    "precioKg": 15.0,
     "tamanoMinPieza": "30 cm",
     "entrega": [
       "recojo"
@@ -130,7 +130,7 @@
     "composicion": "Varias composiciones",
     "color": "Rojo",
     "pesoKg": 8.0,
-    "precioKg": 4.5,
+    "precioKg": 9.0,
     "tamanoMinPieza": "15 cm",
     "entrega": [
       "recojo",
@@ -139,7 +139,7 @@
     "fotos": [],
     "resenas": [
       {
-        "usuario": "Lucia M.",
+        "usuario": "Lucía M.",
         "calificacion": 5,
         "texto": "Genial para mis proyectos de arte textil.",
         "fecha": "2026-09-30"
@@ -158,12 +158,12 @@
   {
     "id": "l7",
     "tiendaId": "t4",
-    "titulo": "Algodon crudo sin tintura",
+    "titulo": "Algodón crudo sin tintura",
     "tela": "algodon",
-    "composicion": "100% Algodon",
+    "composicion": "100% Algodón",
     "color": "Crudo",
     "pesoKg": 6.0,
-    "precioKg": 6.0,
+    "precioKg": 11.0,
     "tamanoMinPieza": "40 cm",
     "entrega": [
       "recojo",
@@ -174,7 +174,7 @@
       {
         "usuario": "Valentina G.",
         "calificacion": 5,
-        "texto": "Perfecto para tenir, muy buena fibra.",
+        "texto": "Perfecto para teñir, muy buena fibra.",
         "fecha": "2026-10-02"
       }
     ],
@@ -185,12 +185,12 @@
   {
     "id": "l8",
     "tiendaId": "t5",
-    "titulo": "Poliester deportivo colores neon",
+    "titulo": "Poliéster deportivo colores neón",
     "tela": "poliester",
-    "composicion": "100% Poliester",
-    "color": "Neon variados",
+    "composicion": "100% Poliéster",
+    "color": "Neón variados",
     "pesoKg": 3.0,
-    "precioKg": 5.0,
+    "precioKg": 12.0,
     "tamanoMinPieza": "25 cm",
     "entrega": [
       "recojo",
@@ -210,7 +210,7 @@
     "composicion": "80% Nylon, 20% Elastano",
     "color": "Negro",
     "pesoKg": 1.5,
-    "precioKg": 12.0,
+    "precioKg": 18.0,
     "tamanoMinPieza": "30 cm",
     "entrega": [
       "delivery"
@@ -228,19 +228,19 @@
     "fechaPublicacion": "2026-10-03",
     "destacado": false,
     "metroDisponible": true,
-    "precioMetro": 18.0,
+    "precioMetro": 14.0,
     "anchoM": 1.5,
     "largoM": 2.0
   },
   {
     "id": "l10",
     "tiendaId": "t6",
-    "titulo": "Pack arcoiris - retazos clasificados",
+    "titulo": "Pack arcoíris - retazos clasificados",
     "tela": "mezcla",
     "composicion": "Varias",
     "color": "Multicolor",
     "pesoKg": 4.0,
-    "precioKg": 5.5,
+    "precioKg": 13.0,
     "tamanoMinPieza": "10 cm",
     "entrega": [
       "delivery"
@@ -256,10 +256,10 @@
     "tiendaId": "t2",
     "titulo": "Franela estampada para mantas",
     "tela": "franela",
-    "composicion": "100% Algodon",
+    "composicion": "100% Algodón",
     "color": "Estampados variados",
     "pesoKg": 3.2,
-    "precioKg": 6.5,
+    "precioKg": 13.0,
     "tamanoMinPieza": "35 cm",
     "entrega": [
       "recojo"
@@ -280,12 +280,12 @@
   {
     "id": "l12",
     "tiendaId": "t4",
-    "titulo": "Retazos grandes de algodon - por metro",
+    "titulo": "Retazos grandes de algodón - por metro",
     "tela": "algodon",
-    "composicion": "100% Algodon Tanguis",
+    "composicion": "100% Algodón Tangüis",
     "color": "Blanco",
     "pesoKg": 2.5,
-    "precioKg": 9.0,
+    "precioKg": 18.0,
     "tamanoMinPieza": "100 cm",
     "entrega": [
       "recojo",
